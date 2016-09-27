@@ -1,0 +1,17 @@
+
+  <uib-accordion close-others="oneAtATime"><br/><br/><br/>
+    <div uib-accordion-group class="panel-default" is-open="status.isCustomHeaderOpen" template-url="group-template.html">
+      <uib-accordion-heading>
+        {{groups[1].name}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.isCustomHeaderOpen, 'glyphicon-chevron-right': !status.isCustomHeaderOpen}"></i>
+      </uib-accordion-heading>
+      <p ng-repeat="item in groups[1].items">{{item}}</p>
+    </div>
+    <div uib-accordion-group  class="panel-default" is-open="status.open">
+      <uib-accordion-heading>
+        {{groups[2].name}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+      </uib-accordion-heading>
+      <p ng-repeat="item in groups[2].items">{{item}}</p>
+    </div>
+  </uib-accordion>
+  
+  

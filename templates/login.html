@@ -1,0 +1,52 @@
+<div class="row logo">
+	<img src="img/logo_priv.png">
+</div>
+
+<div class="row col text-center" >
+	<p class="padding">Watch Your Money Grow</p>
+</div>
+<form name="authorizationForm" novalidate="" ng-submit="signIn(authorizationForm)">
+	<div class="list">
+		<div  class="error" >
+			<div ng-show="serverError">  Entered Credentials did not validate </div>
+			<div ng-show="passwordError"> Entered PIN didn't match</div>
+		</div>
+		<label class="item item-input" ng-class="{ 'has-errors' : authorizationForm.mobile.$touched && authorizationForm.mobile.$invalid, 'no-errors' :  authorizationForm.mobile.$touched && authorizationForm.mobile.$valid}">
+			<input type="number" name="mobile" ng-model="mobileNumber"  maxlength="10" ng-minlength="10" ng-maxlength="10" ng-pattern="/^[0-9]{1,10}$/" required placeholder="Mobile Number" step="1">
+		</label>
+		<div class="error-container" ng-show="authorizationForm.mobile.$error && authorizationForm.$submitted" ng-messages="authorizationForm.mobile.$error">
+			<div  class="error" >
+				<div ng-message="required">You did not enter a field</div>
+				<div ng-message="minlength, maxlength">Mobile number must be 10 digits.</div>
+				<div  ng-message="step, pattern">Enter valid mobile number</div>
+			</div>
+		</div>
+		<div class="error-container" ng-hide="authorizationForm.mobile.$error && authorizationForm.$submitted">
+			<div  class="error" ng-show="message" >
+				Please enter your mobile number to reset PIN
+			</div>
+		</div>
+		<label class="item item-input" ng-class="{ 'has-errors' : authorizationForm.password.$invalid && authorizationForm.$submitted, 'no-errors' : authorizationForm.password.$valid  && authorizationForm.$submitted}">
+			<input type="password" name="password" ng-pattern="/^[0-9]{1,4}$/" ng-model="digitPin" maxlength="4" ng-minlength="4" ng-maxlength="4" required placeholder="Enter 4 digit PIN" >
+		</label>
+		<p class="text-right forgot_pin" ng-click="forgotPin(authorizationForm.mobile)">Forgot Pin?</p>
+		<div class="error-container last-error-container" ng-show="authorizationForm.password.$error && authorizationForm.$submitted" ng-messages="authorizationForm.password.$error">
+			<div  class="error" >
+				<div ng-message="required">You did not enter a field</div>
+				<div ng-message="minlength, maxlength">Enter 4 digit PIN</div>
+				<div ng-message="pattern">Enter digits only</div>
+			</div>
+		</div>
+		<label class="row rememberme">
+			<input ng-model="rememberMe" type="checkbox" ng-init="rememberMe=true" id="remember_me" style="margin: 4px;"><label id="remember_me_label" for="remember_me" >Remember Me</label>
+		</label>
+	</div>
+	<button ion-track-tap="login" class="button button-full button-positive" type="submit">
+		<i class="icon ion-locked secure_lock"></i><span>Secure Login</span>
+		<a class='clear'data-ng-click="authorization.password = ''"></a>
+	</button>
+	<a href="#page8" class="button button-positive button-clear button-block create_acc_btn ">or create an account</a>
+	<div  class="agree_terms" ng-controller="FundsMethodCtrl">
+		<span class="check_agree item-checkbox item_checkbox">By clicking Login, I agree to <span class="inappLinks" ng-click="terms()"> T & C</span> and <span  class="inappLinks" ng-click="policy()">Privacy Policy.</span> For queries please contact us at support@finozen.com</span>
+	</div>
+</form>

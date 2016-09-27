@@ -1,0 +1,28 @@
+<ion-view title="FAQ">
+<div class="screen_faq"> 
+<div class="bar bar-header fino_head">
+<button class="button button-clear ion-android-arrow-back " ng-controller="goOneStep" ng-click="goOneStepback()"></button>
+  <div class="h1 title"><p class="head_title"><span id="title">FAQ - SUPPORT</span></p></div>
+  <a class="button button-clear button-positive  ion-android-call" ng-href="tel:07899825545"></a>
+</div>
+	<ion-content overflow-scroll="true" padding="true" class="has-header faq_question">
+        <div ng-repeat="group in groups" class="faq_question_content">
+          <div class="item-stable col question"
+                    ng-click="toggleGroup(group)"
+                    ng-class="{active: isGroupShown(group)}">
+              
+            &nbsp;
+            <p>{{group.name}}</p>
+			<i class="icon" ng-class="isGroupShown(group) ? 'ion-chevron-up' : 'ion-chevron-down'"></i>
+          </div>
+          <div class="item-accordion col answer"
+                    ng-repeat="item in group.items"
+                    ng-show="isGroupShown(group)">
+            <p>{{item}}</p>
+          </div>
+        </div>
+    </ion-content>
+      
+
+</div>
+</ion-view>

@@ -1,0 +1,18 @@
+<div class="col-md-9 col-sm-9 col-xs-9 summary" id="viewOne" >
+	<div class="row circle" >
+		<p class="total_value" ><span style="font-size:28px"><sup>&#x20B9;</sup></span>{{ balance()|currency:""}}
+			<br/><span class="current_bal item-note">CURRENT BALANCE</span>
+		</p>
+	</div>
+	<div class="row text-center" >
+		<div class="col-md-6 col-sm-6 col-xs-6 " >
+			<p class="inner_numbers"><span><sup>&#x20B9;</sup></span>{{ investAmount()|currency:""}}</p>
+			<p class="item-note left inner_numbersLabel leftLine" >Net Investment</p>
+		 </div>
+		<div class="col-md-6 col-sm-6 col-xs-6 ">
+			<p class="inner_numbers leftLine"><span><sup>&#x20B9;</sup></span>{{gainToday() | currency:""}}</p>
+			<p class="item-note left inner_numbersLabel leftLine">Net Gains Today</p>
+		</div>
+	</div>
+</div>
+

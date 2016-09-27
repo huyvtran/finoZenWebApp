@@ -1,0 +1,32 @@
+<div class="calculator row text-center"  ng-controller="calculatorCtrl" >
+
+	<div class="returnsBlock">
+		<p class="padding returnsBlockText" >Your expected returns<br/><br/> <span class="total_value expectedReturn"><sup style="font-size: 24px;">&#x20B9;</sup>{{returnsAmount | currency:""}}</span></p>
+	</div>
+	<div class="col-md-12 col-sm-12 col-xs-12 " >
+		<div class="row" >
+			<div class="calcLabelDiv">
+				<p class="calcLabel">Investments</p>
+			</div>
+			<div class="calcInputDiv"><span>₹</span>
+				<input type="text" ng-model="investmentAmount" format>
+			</div>
+		</div>
+		<div class="row" >
+			<div class="calcLabelDiv">
+				<p class="calcLabel">No. of days</p>
+			</div>
+			<div class="calcInputDiv">
+				<input type="number" ng-model="totalDays">
+			</div>
+		</div>
+		<p class="error" style="margin:0;">{{errorInputs}}</p>
+		<div class="row text-center" >
+			<!--<button  class="button button-positive invest_button" style="margin: auto;" ng-click="clearValues()">Clear </button>-->
+			<button  class="button button-positive invest_button" style="margin: auto;" ng-click="calculateValues()">calculate</button>
+		</div>
+	</div>
+	<div class=" col-md-12 col-sm-12 col-xs-12  button-bar ">
+		<sup >*<sup>Based on scheme performance last year</sup></sup>
+	</div>
+</div>	

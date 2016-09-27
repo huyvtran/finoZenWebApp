@@ -1,0 +1,31 @@
+<ion-view title="Account">
+<div class="bar bar-header fino_head">
+<button class="button button-clear ion-android-arrow-back " ng-controller="goOneStep" ng-click="goOneStepback()"></button>
+  <div class="h1 title"><p class="head_title"><span id="title">ACCOUNT</span></p></div>
+  <a class="button button-clear button-positive  ion-android-call" ng-controller="popupController" ng-click="showPopup()"></a>
+</div>
+<div class="screen_account">
+    <ion-content overflow-scroll="false" padding="false" class="has-header">
+        <div class="row account_img"><img src="img/account-image.png" alt=""></div>
+        <div class="row account_info" ng-controller="withdrawCtrl">
+          <h2>{{clientName}} </h2>
+          <p class="">{{clientMobile}} </p>
+        </div>
+		<div class="list">
+		<a class="row item item-icon-right" style="padding:12px;">
+			<div class="col ">
+				<p style="color: rgb(66, 66, 66);font-size:18px">Account Type</p>
+			</div>
+			<div class="col">
+				<p class="text-right" style="color: rgb(66, 66, 66);font-size:18px" ng-controller="withdrawCtrl"><span>{{schemeNamep}}</span></p>
+			</div>
+		</a>
+		
+		  <a class="item item-icon-right" href="#/change_pin"><i class="icon ion-ios-arrow-right"></i>Change PIN</a>
+		  <a class="item item-icon-right" href="#/page7" ng-controller="signoutCtrl" ng-click="signOut()"><i class="icon ion-ios-arrow-right"></i>Sign Out</a>
+		</div>
+
+    </ion-content>
+
+</div>
+</ion-view>

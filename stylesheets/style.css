@@ -1,0 +1,260 @@
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Montserrat-Regular"), url(http://fonts.gstatic.com/s/montserrat/v6/zhcz-_WihjSQC0oHJ9TCYPk_vArhqVIZ0nv9q090hN8.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+/* latin */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Montserrat-Bold"), url(http://fonts.gstatic.com/s/montserrat/v6/IQHow_FEYlDC4Gzy_m8fcoWiMMZ7xLd792ULpGE4W_Y.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+/* line 17, ../sass/style.scss */
+.summary .total_value {
+  font-family: 'bebas_neueregular';
+  font-size: 38px;
+  text-align: center;
+  width: 100%;
+  padding-top: 8%;
+}
+/* line 23, ../sass/style.scss */
+.summary .total_value .summary_values {
+  margin-top: 15px;
+}
+/* line 26, ../sass/style.scss */
+.summary .current_bal {
+  position: relative;
+  font-family: open_sansregular;
+}
+/* line 31, ../sass/style.scss */
+.summary .total {
+  text-align: center;
+  margin-bottom: 1em;
+}
+/* line 32, ../sass/style.scss */
+.summary.pane {
+  display: flex;
+  flex-flow: row wrap;
+  height: 65vh;
+}
+/* line 37, ../sass/style.scss */
+.summary .inner_numbers {
+  margin: 0;
+}
+/* line 39, ../sass/style.scss */
+.summary .inner_numbers .leftLine {
+  border-left: 3px solid #808080;
+}
+/* line 40, ../sass/style.scss */
+.summary .inner_numbers span {
+  font-size: 28px;
+}
+/* line 42, ../sass/style.scss */
+.summary .inner_numbersLabel {
+  margin: 0;
+}
+
+/* line 47, ../sass/style.scss */
+.inner-head .navbar-header {
+  border-right: 2px solid #808080;
+  padding-right: 1em;
+}
+/* line 51, ../sass/style.scss */
+.inner-head .dropdown-toggle {
+  width: 248px;
+}
+@media (min-width: 1200px) {
+  /* line 52, ../sass/style.scss */
+  .inner-head .username {
+    border-left: 2px solid #808080;
+  }
+}
+@media (max-width: 1200px) {
+  /* line 53, ../sass/style.scss */
+  .inner-head .navbar-header {
+    border-right: none;
+  }
+}
+@media (max-width: 1200px) {
+  /* line 54, ../sass/style.scss */
+  .inner-head img {
+    margin-top: 4px;
+  }
+}
+/* line 55, ../sass/style.scss */
+.inner-head .navbar-right li {
+  cursor: pointer;
+}
+/* line 56, ../sass/style.scss */
+.inner-head .navbar-right li:hover, .inner-head .navbar-right li active {
+  background: #263646;
+}
+/* line 57, ../sass/style.scss */
+.inner-head.navbar.navbar-default .navbar-nav > li a {
+  color: gray;
+}
+/* line 59, ../sass/style.scss */
+.inner-head.navbar.navbar-default .navbar-nav > li a:hover {
+  color: white;
+}
+/* line 60, ../sass/style.scss */
+.inner-head.navbar.navbar-default .navbar-nav > li a.active-now {
+  color: #fff;
+}
+/* line 61, ../sass/style.scss */
+.inner-head .inner-button {
+  color: #18bb9c;
+  height: 40px;
+  margin-bottom: 0;
+  width: 43px;
+}
+@media (max-width: 1200px) {
+  /* line 68, ../sass/style.scss */
+  .inner-head .navbar-header {
+    float: none;
+  }
+  /* line 71, ../sass/style.scss */
+  .inner-head .navbar-left, .inner-head .navbar-right {
+    float: none !important;
+  }
+  /* line 74, ../sass/style.scss */
+  .inner-head .navbar-toggle {
+    display: block;
+  }
+  /* line 77, ../sass/style.scss */
+  .inner-head .navbar-collapse {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  /* line 80, ../sass/style.scss */
+  .inner-head .navbar-fixed-top {
+    top: 0;
+    overflow: hidden;
+    border-width: 0 0 1px;
+  }
+  /* line 85, ../sass/style.scss */
+  .inner-head .navbar-collapse.collapse {
+    display: none !important;
+  }
+  /* line 88, ../sass/style.scss */
+  .inner-head .navbar-nav {
+    float: none !important;
+    margin-top: 7.5px;
+  }
+  /* line 92, ../sass/style.scss */
+  .inner-head .navbar-nav > li {
+    float: none;
+  }
+  /* line 95, ../sass/style.scss */
+  .inner-head .navbar-nav > li > a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  /* line 99, ../sass/style.scss */
+  .inner-head .collapse.in {
+    display: block !important;
+  }
+}
+
+/* line 104, ../sass/style.scss */
+.navbar {
+  position: relative;
+  min-height: 60px;
+  margin-bottom: 21px;
+  border: 1px solid transparent;
+  border-radius: 0;
+}
+/* line 110, ../sass/style.scss */
+.navbar.navbar-default {
+  background-color: #2C3E51;
+  text-transform: uppercase;
+  padding-top: 4px;
+}
+/* line 114, ../sass/style.scss */
+.navbar.navbar-default #sign-up {
+  background: #18bb9c;
+  border-radius: 5px;
+  height: 30px;
+  margin-top: 10px;
+}
+/* line 114, ../sass/style.scss */
+.navbar.navbar-default #sign-up a {
+  margin-top: -10px;
+}
+/* line 114, ../sass/style.scss */
+.navbar.navbar-default #sign-up:hover {
+  background: white;
+}
+/* line 118, ../sass/style.scss */
+.navbar.navbar-default .navbar-nav > li a {
+  font-family: Montserrat;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+}
+/* line 123, ../sass/style.scss */
+.navbar.navbar-default .navbar-nav > li a.active-now {
+  color: #18bb9c;
+}
+/* line 125, ../sass/style.scss */
+.navbar.navbar-default .navbar-nav > li a:hover {
+  color: #18bc9c;
+  background: transparent;
+}
+/* line 129, ../sass/style.scss */
+.navbar.navbar-default .navbar-nav > li.dropdown-menu {
+  z-index: 1100;
+}
+/* line 132, ../sass/style.scss */
+.navbar.navbar-default .navbar-nav > li ul.dropdown-menu {
+  background-color: #2C3E50;
+  margin-top: 3px;
+  width: 250px;
+}
+/* line 136, ../sass/style.scss */
+.navbar.navbar-default .navbar-nav > li ul.dropdown-menu li {
+  padding: 1em;
+}
+/* line 137, ../sass/style.scss */
+.navbar.navbar-default .navbar-nav > li ul.dropdown-menu li a:hover {
+  color: #2C3E50;
+}
+/* line 138, ../sass/style.scss */
+.navbar.navbar-default .navbar-nav > li ul.dropdown-menu li:hover {
+  background-color: white;
+}
+@media (max-width: 1200px) {
+  /* line 141, ../sass/style.scss */
+  .navbar.navbar-default .navbar-nav > li ul.dropdown-menu {
+    width: 102%;
+    border: none;
+    margin-top: 0px;
+  }
+}
+@media (max-width: 950px) {
+  /* line 145, ../sass/style.scss */
+  .navbar.navbar-default .navbar-nav > #sign-up {
+    border: none;
+    background: #2C3E50;
+  }
+  /* line 146, ../sass/style.scss */
+  .navbar.navbar-default .navbar-nav > #sign-up:hover {
+    background: transparent;
+    color: #009788;
+  }
+}
+/* line 151, ../sass/style.scss */
+.navbar.navbar-default .navbar-brand {
+  padding: 10px 15px;
+}
+/* line 153, ../sass/style.scss */
+.navbar.navbar-default .navbar-brand img {
+  max-height: 35px;
+}
+/* line 156, ../sass/style.scss */
+.navbar.navbar-fixed-top {
+  position: fixed;
+}
