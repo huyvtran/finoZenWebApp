@@ -1,8 +1,38 @@
 angular.module('myApp.controllers', [])
 
-    .controller('summaryPageCtrl', function($scope) {
-		
+    .controller('summaryPageCtrl', function($scope,$state,$timeout) {
+		$scope.signout=function(){
+      //location.reload();
+      $timeout(function() {location.reload();}, 10);
+      $state.go('home');
+    }
 	})
+
+.controller('navTabsCtrl', ['$scope','$state', function ($scope,$state) {
+    $scope.navTabs = [{
+            title: 'PROFILE',
+            url: 'account'
+        }, {
+            title: 'ABOUT US',
+            url: 'aboutUs'
+        }, {
+            title: 'FAQ',
+            url: 'faq'
+    }];
+
+    $scope.currentTab = 'templates/summaryTab.html';
+
+    $scope.onClickTab = function (tab) {
+        $state.go(tab.url);
+    }
+    $scope.defaultTab = function () {
+      $state.go('tabsController');
+    }
+    
+    $scope.isActiveTab = function(tabUrl) {
+        return tabUrl == $scope.currentTab;
+    }
+}])
 .controller('TabsCtrl', ['$scope', function ($scope) {
     $scope.tabs = [{
             title: 'Summary',
@@ -98,6 +128,8 @@ $scope.xirrRate= function(){
          Report.$promise.then(function(data){
          if(data.responseCode=="Cali_SUC_1030"){
          $scope.products=data.jsonStr;
+
+ 
          }
          })
     })
@@ -244,6 +276,12 @@ $scope.xirrRate= function(){
 
 //FAQ controllers START
     .controller('FundsMethodCtrl', function($scope) {
+              $scope.oneAtATime = true;
+  $scope.status = {
+    isCustomHeaderOpen: false,
+    isFirstOpen: true,
+    isFirstDisabled: false
+  };
         $scope.message = "In FinoZen, we have ensured that there is minimal risk to your investments with high returns and almost instantaneous liquidity. Your investments directly go to a pre-selected liquid mutual fund. FinoZen selection algorithm is based on following parameters –";
         $scope.groups = [];
         $scope.groups["0"] = {name: "A. Net Assets of Liquid Fund", items: ["We give high weightage to the Net Amount Invested in a fund, and only those funds with greater than Rs. 2,000 Cr. in net assets are considered. This ensures that there is no liquidity crunch."] };
@@ -297,11 +335,24 @@ $scope.terms = function()
         $scope.groups["2"] = {name: "Who is FinoZen meant for?" , items: ["FinoZen is meant for anyone who has excess money parked in their bank account. If you wish to make your money work for you and earn you interest to the tune of 7.0-8.5% p.a. in just a click, then FinoZen is meant for you.  You should be an Indian National investing in individual capacity.FinoZen is not available for NRIs, companies, firms, trusts etc."] };
         $scope.groups["3"] = {name: "Why should I use Finozen over other options like savings accounts, fixed deposits?" , items: ["If your money is in Savings account, you get low returns at best quarterly.  Fixed Deposits  and other saving instruments will have higher returns but have a lock in period. With FinoZen, your returns are usually 7.0-8.5%, returns get credited in your account everyday, and you can add or withdraw any time!"] };
 
+  $scope.oneAtATime = true;
 
+  $scope.groups2 = [
+    {
+      title: 'Dynamic Group Header - 1',
+      content: 'Dynamic Group Body - 1'
+    },
+    {
+      title: 'Dynamic Group Header - 2',
+      content: 'Dynamic Group Body - 2'
+    }
+  ];
         /*
          * if given group is the selected group, deselect it
          * else, select the given group
          */
+
+  $scope.oneAtATime = true;
   $scope.status = {
     isCustomHeaderOpen: false,
     isFirstOpen: true,
@@ -310,6 +361,13 @@ $scope.terms = function()
 
     })
     .controller('AddMoneyCtrl', function($scope) {
+        $scope.oneAtATime = true;
+  $scope.status = {
+    isCustomHeaderOpen: false,
+    isFirstOpen: true,
+    isFirstDisabled: false
+  };
+
         $scope.groups = [];
         $scope.groups["0"] = {name: "I have signed up, what happens next?",items: ["Congratulations and welcome to Finozen! Here are the next steps:",
             "  1) Welcome Call: We will call you shortly (during office hours) and introduce FinoZen to you. Our executive will answer all your queries and will request you to proceed for Account Activation.",
@@ -319,24 +377,17 @@ $scope.terms = function()
         ] };
         $scope.groups["1"] = {name: "Why are these documents required?",items: ["  These requirements are specified by SEBI (Securities and Exchange Board of India) and other regulatore bodies. We submit these documents to the Mutual fund for account creation."] };
 
-        /*
-         * if given group is the selected group, deselect it
-         * else, select the given group
-         */
-        $scope.toggleGroup = function(group) {
-            if ($scope.isGroupShown(group)) {
-                $scope.shownGroup = null;
-            } else {
-                $scope.shownGroup = group;
-            }
-        };
-        $scope.isGroupShown = function(group) {
-            return $scope.shownGroup === group;
-        };
 
     })
 
     .controller('WithdrawMoneyCtrl', function($scope) {
+        $scope.oneAtATime = true;
+  $scope.status = {
+    isCustomHeaderOpen: false,
+    isFirstOpen: true,
+    isFirstDisabled: false
+  };
+
         $scope.groups = [];
         $scope.groups["0"] = {name: "Where does my money go?",items: ["FinoZen channels your money to the selected liquid mutual fund. You will have full visibility and control of your money at all times. You can choose to Add or withdraw money anytime, anywhere with no penalties applicable. "] };
         $scope.groups["1"] = {name: "How soon can I start investing?",items: ["It will take us 5 mins to activate your account post you provide your documents to us. We will notify you once your account is activated. Once activated, you can start investing immediately."] };
@@ -349,44 +400,17 @@ $scope.terms = function()
         $scope.groups["8"] = {name: "Can I invest through cash/cheque?",items: ["No. You can invest only through app from the bank account that you have declared at the time of registration.  When you invest via the app, you will be automatically re-directed to the net-banking page of your chosen bank. "] };
 
 
-        /*
-         * if given group is the selected group, deselect it
-         * else, select the given group
-         */
-        $scope.toggleGroup = function(group) {
-            if ($scope.isGroupShown(group)) {
-                $scope.shownGroup = null;
-            } else {
-                $scope.shownGroup = group;
-            }
-        };
-        $scope.isGroupShown = function(group) {
-            return $scope.shownGroup === group;
-        };
-
     })
 
     .controller('OthersCtrl', function($scope) {
         $scope.groups = [];
         $scope.groups["0"] = {name: "Where is your office?",items: ["Our office is located at:","25, 18th Cross,","9th Main, Behind McDonald,","HSR Layout,Sector 7, ","Bengaluru, 560102 Karnataka","Our business hours are Monday to Friday 10 am to 8 pm."] };
-        $scope.groups["1"] = {name: "How can I reach you in case of any questions?",items: ["You can call us Monday to Friday 10am to 8 pm by using the dialer icon on the top right corner on any page of the app.","You can also reach us via email at support@finozen.com. We will respond to your queries within 1 business day.","You can also send us your feedback by going to the “Contact Us” section on the left menu panel of the app."] };
-
-
-        /*
-         * if given group is the selected group, deselect it
-         * else, select the given group
-         */
-        $scope.toggleGroup = function(group) {
-            if ($scope.isGroupShown(group)) {
-                $scope.shownGroup = null;
-            } else {
-                $scope.shownGroup = group;
-
-            }
-        };
-        $scope.isGroupShown = function(group) {
-            return $scope.shownGroup === group;
-        };
+  $scope.oneAtATime = true;
+  $scope.status = {
+    isCustomHeaderOpen: false,
+    isFirstOpen: true,
+    isFirstDisabled: false
+  };
 
     })
 

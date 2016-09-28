@@ -44,7 +44,18 @@ angular.module('myApp', ['ngRoute','myApp.services','myApp.directives','myApp.co
           templateUrl: 'templates/faq4.html',
           controller: 'OthersCtrl'     
     })  
-
+        
+        .state('account', {
+            url: '/account',
+            templateUrl: 'templates/account.html'
+        })
+        
+                
+        .state('aboutUs', {
+            url: '/aboutUs',
+            templateUrl: 'templates/aboutUs.html'
+        })
+       
 
 ;   
 });

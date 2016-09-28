@@ -8,9 +8,9 @@
 	<script src="lib/angular-route.js"></script>
 	<link href="stylesheets/style.css" rel="stylesheet">
 <body>
-<div  ng-app="myApp" >
+<div  ng-app="myApp"  ng-hide="headd">
 
-	<div class="container" ui-view></div>
+	<div class="container" style="margin-top: 90px" ui-view></div>
 </div>
 	<script src="js/app.js"></script>
 	<script src="js/controller.js"></script>
@@ -21,6 +21,15 @@
 	<script src="lib/ngStorage/ngStorage.min.js"></script>
 	<script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
 	<script src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+$(document).on('click','.navbar-collapse.in',function(e) {
+    if( $(e.target).is('a') ) {
+        $(this).collapse('hide');
+    }
+});
+</script>
 </body>
 </html>
 

@@ -1,28 +1,32 @@
-<ion-view title="FAQ">
-<div class="screen_faq"> 
-<div class="bar bar-header fino_head">
-<button class="button button-clear ion-android-arrow-back " ng-controller="goOneStep" ng-click="goOneStepback()"></button>
-  <div class="h1 title"><p class="head_title"><span id="title">FAQ - SUPPORT</span></p></div>
-  <a class="button button-clear button-positive  ion-android-call" ng-href="tel:07899825545"></a>
-</div>
-	<ion-content overflow-scroll="true" padding="true" class="has-header faq_question">
-        <div ng-repeat="group in groups" class="faq_question_content">
-          <div class="item-stable col question"
-                    ng-click="toggleGroup(group)"
-                    ng-class="{active: isGroupShown(group)}">
-              
-            &nbsp;
-            <p>{{group.name}}</p>
-			<i class="icon" ng-class="isGroupShown(group) ? 'ion-chevron-up' : 'ion-chevron-down'"></i>
-          </div>
-          <div class="item-accordion col answer"
-                    ng-repeat="item in group.items"
-                    ng-show="isGroupShown(group)">
-            <p>{{item}}</p>
-          </div>
+    <div ng-controller="navTabsCtrl" class="col-md-12">
+    <nav class="navbar navbar-default navbar-fixed-top"  >
+      <div class="container">
+        <div class="navbar-header page-scroll">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#/summary"><img src="img/logo_priv.png" ></a>
         </div>
-    </ion-content>
-      
 
-</div>
-</ion-view>
+          <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+              <li ><a index="0" ng-click="defaultTab()"> Home</a></li>
+              <li ng-repeat="liTab in navTabs" ><a index="$index + 1" ng-click="onClickTab(liTab)">{{liTab.title}}</a></li>
+              <li index="4" ><a ng-controller="summaryPageCtrl" ng-click="signout()"> Sign Out</a></li>
+            </ul>
+          </div>
+      </div>
+
+    </nav>
+
+  </div>
+  <uib-accordion close-others="oneAtATime">
+
+    <div uib-accordion-group class="panel-default" heading="{{group.name}}" ng-repeat="group in groups">
+      {{group.name}}
+      <p ng-repeat="item in group.items">{{item}}</p>
+    </div>
+  </uib-accordion>
