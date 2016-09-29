@@ -23,18 +23,19 @@
 		</nav>
 
 	</div>
-<div ng-controller="TabsCtrl"  class="row">
+<div ng-controller="TabsCtrl"  class="row summaryTab">
 <span ng-controller="transListController as listControl"></span>
-	<div class="col-md-3">
-	</div>
-	<div class="col-md-9">
-	  <uib-tabset active="active">
+	  <uib-tabset active="active"  vertical="true" class="col-md-4 col-sm-4 col-lg-4 sideTabs">
 		<uib-tab ng-repeat="liTab in tabs" heading="{{liTab.title}}"  ng-click="onClickTab(liTab)"  disable="liTab.disabled">
 		</uib-tab>
 	  </uib-tabset>
 	  
-		<div id="mainView">
-			<div ng-include="currentTab"></div>
+		<div id="mainView" class="col-md-8 col-sm-8 col-lg-8 sideBody">
+			<div class="currentTabDiv" ng-include="currentTab"></div>
+
+			<div class=" invest_button_footer"  style="width: 100%; background:#E5ECF4 ;" ng-controller="transactionAccessCtrl">
+			  <div ng-click="addId()" class="col-md-6 col-sm-6 col-xs-6 col-lg-6 invest_button"><span  ng-click="withdrawCheck()"   class="button button-clear button-positive  glyphicon glyphicon-minus invest_btn red" ></span><br /><span class="invest_bottom_button red" >WITHDRAW</span></div>
+			  <div ion-track-tap="invest" class="col-md-6 col-sm-6 col-xs-6 col-lg-6  invest_button"><span ng-click="investCheck()" class="button button-clear button-positive  glyphicon glyphicon-plus invest_btn green" ></span><br /><span class="invest_bottom_button green" >ADD MONEY</span></div>
+			</div>
 		</div>
-	</div>
 </div>

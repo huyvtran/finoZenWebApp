@@ -1,10 +1,10 @@
-<div class="col-md-9 col-sm-9 col-xs-9 " ng-controller="transListController as listControl">
+<div class="col-md-9 col-sm-12 col-lg-9  col-xs-12" ng-controller="transListController as listControl">
 	<div class="row list recent_transactions" >
-	  <div class="item item-avatar item-icon-right in in done done" ng-repeat="lists in products | orderBy:'-orderId'" ng-class="{'lastItem': $last}">
-		<p class="success {{lists.txnTypeStr}}"><span>&#x20B9;</span> {{lists.amount|currency :"":2}}</p>
-		<span class="item-note right">Transaction ID: {{ lists.orderId}}</span><br/>
-		<span class="item-note left">{{lists.txnDate}} </span>
-		<i class="icon ion-ios-checkmark-outline payment"></i>
+	  <div class="list-group" ng-repeat="lists in products | orderBy:'-orderId'" ng-class="{'lastItem': $last}">
+		<p class="success list-group-item {{lists.txnTypeStr}}"><span class="col-md-2">&#x20B9;{{lists.amount|currency :"":2}}</span>
+		<span class="item-note right col-md-4">Transaction ID: {{ lists.orderId}}</span>
+		{{lists.txnDate}} <span class="badge"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span></p>
+		
 	  </div>
 	  <div class="noTxn" ng-show="noTxnIcon"><p>There are no transactions to display<br/>START INVESTING NOW <img ng-src="{{noTxnIcon}}"></p>
 	  </div>

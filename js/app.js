@@ -1,5 +1,15 @@
-angular.module('myApp', ['ngRoute','myApp.services','myApp.directives','myApp.controllers','ngMessages','ngResource','ngStorage','ui.router','ui.bootstrap'])
-
+angular.module('myApp', ['ngRoute','myApp.services','myApp.directives','myApp.controllers','ngMessages','ngIdle','ngResource','ngStorage','ui.router','ui.bootstrap'])
+.config(function(IdleProvider, KeepaliveProvider) {
+  IdleProvider.idle(10*60); // 10 minutes idle
+  IdleProvider.timeout(10); // after 30 seconds idle, time the user out
+  KeepaliveProvider.interval(5*60); // 5 minute keep-alive ping
+})
+.run(function($rootScope,$state) {
+    $rootScope.$on('IdleTimeout', function() {
+        // end their session and redirect to login
+        $state.go('home');
+    });
+})
 .config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/home');
     $stateProvider
@@ -55,6 +65,22 @@ angular.module('myApp', ['ngRoute','myApp.services','myApp.directives','myApp.co
             url: '/aboutUs',
             templateUrl: 'templates/aboutUs.html'
         })
+       
+    .state('invest', {
+      url: '/invest',         
+          templateUrl: 'templates/invest.html'
+
+    })  
+
+    .state('withdraw', {
+      url: '/withdraw',         
+          templateUrl: 'templates/withdraw.html',
+          controller: 'withdrawCtrl'     
+    }) 
+     .state('successPage', {
+    url: '/success',
+    templateUrl: 'templates/payment_success.html'
+    })
        
 
 ;   

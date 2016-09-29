@@ -3,25 +3,25 @@
 	<div class="returnsBlock">
 		<p class="padding returnsBlockText" >Your expected returns<br/><br/> <span class="total_value expectedReturn"><sup style="font-size: 24px;">&#x20B9;</sup>{{returnsAmount | currency:""}}</span></p>
 	</div>
-	<div class="col-md-12 col-sm-12 col-xs-12 " >
-		<div class="row" >
-			<div class="calcLabelDiv">
+	<div class="col-md-12 col-sm-12 col-xs-12 calDiv" >
+		<div class="row labelDiv" >
+			<div class="calcLabelDiv col-md-5 col-xs-5 col-sm-5 col-lg-5">
 				<p class="calcLabel">Investments</p>
 			</div>
-			<div class="calcInputDiv"><span>₹</span>
+			<div class="calcInputDiv col-md-7 col-xs-7 col-sm-7 col-lg-7"><span>₹</span>
 				<input type="text" ng-model="investmentAmount" format>
 			</div>
 		</div>
-		<div class="row" >
-			<div class="calcLabelDiv">
+		<div class="row labelDiv"  >
+			<div class="calcLabelDiv col-md-5 col-xs-5 col-sm-5 col-lg-5 ">
 				<p class="calcLabel">No. of days</p>
 			</div>
-			<div class="calcInputDiv">
+			<div class="calcInputDiv col-md-7 col-xs-7 col-sm-7 col-lg-7 ">
 				<input type="number" ng-model="totalDays">
 			</div>
 		</div>
 		<p class="error" style="margin:0;">{{errorInputs}}</p>
-		<div class="row text-center" >
+		<div class="row col-md-8 col-xs-8 col-sm-8 col-lg-12 text-center" >
 			<!--<button  class="button button-positive invest_button" style="margin: auto;" ng-click="clearValues()">Clear </button>-->
 			<button  class="button button-positive invest_button" style="margin: auto;" ng-click="calculateValues()">calculate</button>
 		</div>

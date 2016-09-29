@@ -38,9 +38,6 @@ angular.module('myApp.controllers', [])
             title: 'Summary',
             url: 'templates/summaryPage.html'
         }, {
-            title: 'Growth Rate',
-            url: 'templates/growthRate.html'
-        }, {
             title: 'Calculator',
             url: 'templates/calculator.html'
         }, {
@@ -132,6 +129,13 @@ $scope.xirrRate= function(){
  
          }
          })
+
+    $interval(function () {
+      $timeout(function(){
+        $rootScope.$broadcast('flip',{});
+      },4000)
+      
+    },5000);
     })
 
 
@@ -516,4 +520,255 @@ $scope.$broadcast("scroll.refreshComplete");
          });*/
 
     })
+  /*add money page check*/
+.controller('transactionAccessCtrl', function($scope,$sessionStorage,$state){
+  $scope.investCheck=function(){
+  if($sessionStorage.SessionStatus=="N" || $sessionStorage.SessionStatus=="I" || $sessionStorage.SessionStatus== 'null' ||$sessionStorage.SessionStatus==undefined ){
+    $state.go("inactiveClient");
+  }
+  else{
+      if($sessionStorage.SessionStatus=="P" || ($sessionStorage.SessionStatus=="Q" && $sessionStorage.docStatus!='11111')) {
+      $state.go("status");
+      }
+      else {
+      $state.go("invest");
+      }
+  }
 
+  }
+  $scope.withdrawCheck=function(){
+  if($sessionStorage.SessionStatus=="N" || $sessionStorage.SessionStatus=="I" || $sessionStorage.SessionStatus== 'null' || $sessionStorage.SessionStatus==undefined ){
+    $state.go("verifySuccess");
+  }
+  else{
+      $state.go("withdraw");
+  }
+
+  }
+
+})
+
+.controller('sampleCtrl', function ($scope,$state,mfOrderUrlService,$sessionStorage,dateService,$timeout) {
+
+  var finalComputedVal;
+    if($sessionStorage.clientType=="GO"){
+    console.log($sessionStorage.clientType+ "  gold")
+    $scope.schemePlan="RELIANCE LIQUID FUND-CASH PLAN-GROWTH";
+    $scope.averageRate=7.0;
+  }
+    else if($sessionStorage.clientType=="PL") {
+    console.log($sessionStorage.clientType+ "  platinum")
+      $scope.schemePlan="RELIANCE LIQUID FUND - TREASURY PLAN - IP - Growth";
+    $scope.averageRate=8.0;
+    }
+  var dayNow = new Date().getDay();
+  console.log(dayNow);
+  if(dayNow >=1 && dayNow <5){$scope.nav=$sessionStorage.nav*(1+ 0.0002);}
+  else if(dayNow ==5) {$scope.nav=$sessionStorage.nav*(Math.pow((1+ 0.0002),3));}
+  else if(dayNow ==6) {$scope.nav=$sessionStorage.nav*(Math.pow((1+ 0.0002),2));}
+  else if(dayNow ==0) {$scope.nav=$sessionStorage.nav;}
+
+  console.log($scope.nav);
+  // till here
+
+    $scope.final=function(initial,nav,suggest){
+    console.log($scope.nav + "nav");
+    var theory=initial/nav ;
+    var rounded= Math.round(theory * 1000)/1000;
+    //loss=theory-rounded;
+    var diff=rounded*nav-initial;
+    if(initial>0){
+    if(diff>0){
+    finalComputedVal=initial;
+    return suggest;
+    }
+    else{
+    return $scope.test(initial,nav,suggest);
+    }
+    }
+    else{return 0;}
+  }
+    $scope.test=function(initial,nav,suggest){
+    suggest++;
+    initial=initial+1;
+            return $scope.final(initial,nav,suggest);
+        }
+
+    $scope.Invest = function(form) {
+            if(form.$valid && $scope.initial>=100) {
+        if($sessionStorage.allTransactions > 0 && $sessionStorage.SessionFolioNums==0){
+          $ionicPopup.alert({
+          title: 'Transaction In-Progress',
+          template: 'Your first transaction is in progress. For next transaction, we request you to wait till the first investment reflects in your FinoZen account.'
+          });
+          }
+          // comment this part for nachStatus
+          /*
+          $ionicLoading.show({templateUrl:"templates/loading.html"});
+          console.log('its entering the nach mandate');
+          $scope.sendMfOrder()
+          */
+          // till here
+
+          //Nach status redirection
+
+        else if($sessionStorage.nachStatus !='A'){
+               // $ionicLoading.show({templateUrl:"templates/loading.html"});
+              console.log('its entering the nach mandate');
+              if($sessionStorage.SessionStatus=="P" ){
+                if($scope.initial<=1000){$scope.sendMfOrder();}
+                else{
+                  //$ionicLoading.hide();
+                  var log=$ionicPopup.alert({
+                    title: 'Acctivate account',
+                    template: 'You are not allowed to Invest more than Rs.1000 untill you submit all documents'
+                    });
+                    log.then(function(res) {
+                    state.go("invest");
+                  });
+                }
+              }
+              else{
+                $scope.sendMfOrder();
+              }
+            }
+            else{
+              //$ionicLoading.show({templateUrl:"templates/loading.html"});
+              $scope.nach();
+            }
+            }
+        }
+
+        $scope.sendMfOrder=function() {
+            var date=dateService.getDate();
+            mfOrderUrlService.save({"portfolioCode": $sessionStorage.SessionPortfolio,"amcCode": $sessionStorage.amcCode,"rtaCode":$sessionStorage.rtaCode,"orderTxnDate": date,"amount": finalComputedVal,"folioNo":$sessionStorage.folioNums},function(data){
+                if(data.responseCode=="Cali_SUC_1030"){
+location.replace("file:///Users/apple/Documents/finoZenWebApp/index.html#/summary");
+                   // var ref =  window.open('https://finotrust.com/WealthWeb/ws/pymt/pymtView?mfOrderId='+data.id,'_self');
+          ref.addEventListener('loadstop', function(event) { if( event.url.match('pymt/bdesk') ){
+            $timeout(function () {
+              location.replace("file:///Users/apple/Documents/finoZenWebApp/index.html#/summary");
+            },10000);
+          ;} });
+          $timeout(function () {
+              $state.go('tabsController.recentTransactions');
+            },1000);
+
+                }
+        else{
+          $ionicLoading.hide();
+        }
+            },function(error){
+        //$ionicLoading.hide();
+
+        $scope.mess="Enter a value";
+            });
+        };
+
+  //nach status
+  $scope.nach=function() {
+    var date=dateService.getDate();
+    mfOrderUrlService.save({"portfolioCode": $sessionStorage.SessionPortfolio,"amcCode": $sessionStorage.amcCode,"rtaCode":$sessionStorage.rtaCode,"orderTxnDate": date,"amount": finalComputedVal,"folioNo":$sessionStorage.folioNums,"paymentMode" : "a"},function(data){
+      if(data.responseCode=="Cali_SUC_1030"){
+        //$ionicLoading.hide();
+
+       $state.go('invest_success');
+      }
+      else{
+       // $ionicLoading.hide();
+      }
+
+    },function(error){
+
+      $scope.mess="Enter a value";
+    });
+  };
+        var mid=$sessionStorage.orderId;//dynamic id
+    })
+
+
+
+    .controller('AuthWithdrawlCtrl', function($scope, $state,mfSellUrlService,dateService,$sessionStorage,relianceUserBank,relianceInstantAmount) {
+        $scope.Withdrawl = function(form) {
+console.log($scope.amount);
+console.log($scope.checked_withdraw );
+console.log(($scope.amount!=undefined || $scope.checked_withdraw) );
+            var date=dateService.getDate();
+            if(form.$valid) {
+            if(($scope.amount!=undefined || $scope.checked_withdraw) && ($scope.amount>0 || $scope.checked_withdraw)) {
+      if($scope.checked_withdraw == true){
+            mfSellUrlService.save({"portfolioCode": $sessionStorage.SessionPortfolio,"amcCode": $sessionStorage.amcCode,"rtaCode":$sessionStorage.rtaCode,"orderTxnDate": date,"allUnits":"Y","folioNo":$sessionStorage.folioNums},function(data){
+                        console.log(data.responseCode);
+            if(data.responseCode=="Cali_SUC_1030") {
+                            $state.go('successPage');
+                        }
+            else
+            {
+              $scope.withdraw_Networkerror="Please try again";
+            }
+                    },function(error){
+
+            $scope.withdraw_Networkerror="Please try again";
+                    });
+      }
+      else{
+          mfSellUrlService.save({"portfolioCode": $sessionStorage.SessionPortfolio,"amcCode":$sessionStorage.amcCode,"rtaCode":$sessionStorage.rtaCode,"orderTxnDate": date,"amount":$scope.amount,"folioNo":$sessionStorage.folioNums},function(data){
+              console.log(data.responseCode);
+              if(data.responseCode!="Cali_SUC_1030") {
+                console.log("failed");
+                $scope.withdraw_Networkerror="Unable to accept request. Please re-login and try again";
+
+              }
+              else
+              {
+                console.log("success");
+                $state.go('successPage');
+              }
+            },function(error){
+              $scope.withdraw_Networkerror="Unable to accept request. Please re-login and try again";
+            });
+      }
+            }
+      else{
+        $scope.withdraw_error="Please enter a valid amount.";
+      }
+    }
+
+        };
+
+        $scope.amountClear= function() {
+            $scope.amount='';
+        }
+
+
+
+    })
+
+
+.directive('flipContainer1', function() {
+  return {
+    restrict: 'C',
+    link: function($scope, $elem, $attrs) {
+      $scope.flip1 = function() {
+        $elem.toggleClass('flip');
+      }
+      $scope.$on('flip',function(event, data){
+             $scope.flip1()
+         });
+     
+    }
+  };
+ })
+.directive('flipContainer2', function() {
+  return {
+    restrict: 'C',
+    link: function($scope, $elem, $attrs) {
+      $scope.flip2 = function() {
+        $elem.toggleClass('flip');
+      }
+      $scope.$on('flip',function(event, data){
+             $scope.flip2()
+         });
+    }
+  };
+ })

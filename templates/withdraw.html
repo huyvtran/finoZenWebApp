@@ -1,0 +1,78 @@
+
+<div class="screen_invest" ng-controller="AuthWithdrawlCtrl">
+		<div class="row bar bar-subheader invest_subheader">
+		  <p class="title" ng-controller="withdrawCtrl"><span >TEXT_CURRENT_BALANCE</span> <span style="color:#18bb9c">{{ balance() |currency:"&#x20B9; "}}</span></p>
+		</div>
+		<div class="row invest_info">
+		<p>TEXT_WIHTDRAW_BALANCE</p>
+		</div>
+		<form name="withdrawForm" novalidate="" >
+
+	<div class="list">
+		<label class="item item-input" ng-class="{ 'has-errors' : withdrawForm.amount.$touched && withdrawForm.amount.$invalid, 'no-errors' :  withdrawForm.amount.$touched && withdrawForm.amount.$valid}">
+			<input type="number" name="amount" ng-disabled="checked_withdraw" ng-model="amount" ng-pattern="/^[0-9]{1,9}$/" max="{{balance()}}" min="100">
+		</label>
+		<div class="error-container" ng-show="withdrawForm.amount.$error && withdrawForm.$submitted" ng-messages="withdrawForm.amount.$error">
+			<div  class="error" >
+				<div  ng-message="max" ng-hide="checked_withdraw" >
+					Enter valid amount
+				</div>
+				<div  ng-message="min" ng-hide="checked_withdraw" >
+					 Minimum withdrawal amount is <span>&#x20B9;</span> 100
+				</div>
+				<div  ng-message="pattern" ng-hide="checked_withdraw" >
+					Enter valid Integer
+				</div>
+				<div ng-hide="checked_withdraw">{{withdraw_error}} </div>
+				<div>{{withdraw_Networkerror}} </div>
+			</div>
+
+
+		</div>
+		<label class="row withdraw_all">
+			<input ng-model="checked_withdraw" type="checkbox" id="withdraw_money" ng-change="amountClear()" placeholder="Enter Amount" style="margin: 4px;"><label for="withdraw_money" >TEXT_WITHDRAW_COMPLETEBALANCE </label>
+		</label>
+	</div>
+	<button ion-track-tap="withdraw confirm" class="button button-full button-positive" type="submit" ng-click="Withdrawl(withdrawForm)">BUTTON_LANG_WITH
+
+	</button>
+	<p class="scheduled_text" ></p>
+	<div class="row deposit_table" >
+	<!--	<p><br/>
+
+		Withdraw Sun - Thur, before 2 p.m.: Money will be deposited in your Bank account next day by 10 a.m.<br/>
+
+		Withdraw Sun - Thur after 2 p.m.: Money will be deposited in your Bank account day after next by 10 a.m.<br/>
+
+		Withdraw Fri - Sat: Money will be deposited in your Bank account on Monday by 10 a.m.<br/>
+		<br/></p>
+		<table>
+			<thead>
+				<th translate="Withdrawal"></th>
+				<th translate="deposit"></th>
+			</thead>
+			<tr>
+				<td>Mon - Thur, <span translate="withdrawlTimeBefore"></span></td>
+				<td><span translate="dayAfter"></span> 10 a.m.</td>
+			</tr>
+			<tr>
+				<td>Mon - Thur, <span translate="withdrawlTimeAfter"></span>.</td>
+				<td><span translate="dayAfterNext"></span> 10 a.m.</td>
+			</tr>
+			<tr>
+				<td>Fri <span translate="withdrawlTimeBefore"></span></td>
+				<td>Monday 10 a.m.</td>
+			</tr>
+			<tr>
+				<td>Fri <span translate="withdrawlTimeAfter"></span>, Sat <span translate="andText"></span> Sun.</td>
+				<td>Tuesday 10 a.m.</td>
+			</tr>
+		</table>
+-->
+
+		</div>
+
+		<p class="small_text" >withdrawBottomLine</p>
+</form>
+</div>
+</ion-view>
