@@ -23,7 +23,21 @@ angular.module('myApp', ['ngRoute','myApp.services','myApp.directives','myApp.co
 		templateUrl: 'templates/tabsController.html',
 		controller: 'withdrawCtrl'
 	})
-	
+	        
+     .state('sliders', {
+    url: '/sliders',
+    templateUrl: 'templates/slides.html',
+    controller: ''
+    })
+    .state('signup', {
+      url: '/page8',
+      templateUrl: 'templates/signup.html'
+    })
+     .state('forgot_pin', {
+    url: '/forgot_pin',
+    templateUrl: 'templates/forgot_password.html',
+    controller: 'forgotPinCtrl'
+    })
           .state('faq', {
       url: '/faq',         
           templateUrl: 'templates/faq.html',

@@ -20,6 +20,14 @@
   padding-top: 59px;
   height: 100vh;
   background: #F7F7F7; }
+  .finoApp .logo img {
+    width: 250px;
+    margin: 1em auto 0em; }
+  .finoApp .table td, .finoApp .table tr {
+    border: none; }
+
+.zero_padding {
+  padding: o; }
 
 .summaryTab {
   height: 100%; }
@@ -401,5 +409,84 @@
       display: block;
       background: red none repeat scroll 0% 0%;
       width: 30%; }
+
+.signin_background {
+  background-image: url("../img/sign.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center center; }
+  .signin_background .secure_lock {
+    padding-right: 10px;
+    color: white !important; }
+  .signin_background .forgot_pin {
+    padding: 10px 10px 5px 0;
+    width: 125px;
+    display: inline-block;
+    float: right;
+    color: #18bb9c; }
+    .signin_background .forgot_pin.activated {
+      opacity: 0.5 !important; }
+  .signin_background .rememberme {
+    margin-top: 20px;
+    width: 150px; }
+    .signin_background .rememberme #remember_me_label {
+      line-height: 1.82857;
+      width: 100px; }
+
+.signin_background .item-input, .sign_up .item-input {
+  border: none;
+  border-bottom: 1px solid #18bb9c;
+  margin: 1px;
+  background: transparent; }
+  .signin_background .item-input.has-errors, .sign_up .item-input.has-errors {
+    border-bottom: 2px solid red; }
+  .signin_background .item-input.no-errors, .sign_up .item-input.no-errors {
+    border-bottom: 2px solid #18bb9c; }
+  .signin_background .item-input input, .sign_up .item-input input {
+    font-size: 16px;
+    max-width: 98%;
+    border: none;
+    background: transparent; }
+.signin_background .agree_terms, .sign_up .agree_terms {
+  display: block;
+  margin: 14px 2px 70px 0px; }
+.signin_background .button, .sign_up .button {
+  background: #18bb9c;
+  border: #18bb9c; }
+  .signin_background .button p, .sign_up .button p {
+    color: white; }
+    .signin_background .button p:hover, .sign_up .button p:hover {
+      color: white; }
+  .signin_background .button.create_acc_btn, .sign_up .button.create_acc_btn {
+    text-transform: none;
+    color: #18bb9c;
+    background: transparent; }
+    .signin_background .button.create_acc_btn.activated, .sign_up .button.create_acc_btn.activated {
+      opacity: 0.5 !important; }
+
+.sign_up .list .item:last-child {
+  border-radius: 0 !important; }
+.sign_up .row {
+  padding: 0; }
+.sign_up .col {
+  padding: 0; }
+.sign_up .signup_icons {
+  margin-right: 10px; }
+.sign_up .button, .sign_up .button:hover {
+  color: white; }
+  .sign_up .button.activated, .sign_up .button:hover.activated {
+    background: #18bb9c;
+    opacity: 0.8 !important; }
+
+.slides .carousel-caption {
+  position: initial; }
+.slides .carousel-indicators {
+  position: relative; }
+  .slides .carousel-indicators li {
+    border: 1px solid #18bb9c; }
+    .slides .carousel-indicators li.active {
+      background: #18bb9c; }
+.slides .carousel-control {
+  background: transparent; }
 
 /*# sourceMappingURL=style.css.map */

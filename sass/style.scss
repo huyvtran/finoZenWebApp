@@ -26,7 +26,16 @@
 	padding-top: 59px;
 	height: 100vh;
 	background: #F7F7F7 ;
+	.logo img{
+		width: 250px;
+		margin: 1em auto 0em;
+	}
+	.table{
+		td,tr{border:none;}
+
+	}
 }
+.zero_padding{padding:o;}
 .summaryTab{
 	height:100%;
 	.sideBody{
@@ -398,17 +407,92 @@ box-shadow: 1px 1px 12px 13px #ddd !important;
 	background:#18bb9c;
 	color:white;
 	.invest_bottom_button {
-    display: block;
-    margin-top: -44px;
-    text-align: center;
-	&.green{color:green;}
-	&.red{color:red;}
+	    display: block;
+	    margin-top: -44px;
+	    text-align: center;
+		&.green{color:green;}
+		&.red{color:red;}
+	}
+	.invest_button{
+		border:none; background:#e5ecf4; height:180px;text-align: -moz-center;
+		& a{display: block;
+		background: red none repeat scroll 0% 0%;
+		width: 30%;}
+	}
 }
-.invest_button{
-border:none; background:#e5ecf4; height:180px;text-align: -moz-center;
-& a{display: block;
-background: red none repeat scroll 0% 0%;
-width: 30%;}
-}
-}
+.signin_background{
+	background-image: url("../img/sign.jpg");
+	  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center center;
+  .secure_lock{padding-right: 10px; color: white !important;}
+  .forgot_pin{
+		padding: 10px 10px 5px 0;
+		width: 125px;
+		display: inline-block;
+		float: right;
+		color:#18bb9c; 
+		&.activated{opacity:0.5 !important;}
+		}
+	.rememberme{
+	margin-top: 20px;
+	width: 150px;
+	#remember_me_label{line-height:1.82857; width:100px} }
+}  
+.signin_background, .sign_up{
+.item-input{
+	border:none; border-bottom:1px solid #18bb9c; margin:1px;background:transparent;
+	&.has-errors {
+	  border-bottom: 2px solid red;
+	}
 
+	&.no-errors {
+	  border-bottom: 2px solid #18bb9c;
+	}
+	input {font-size: 16px;max-width: 98%; border:none; background:transparent; }
+	}  
+	.agree_terms {
+    display: block;
+    margin: 14px 2px 70px 0px;
+}
+  .button{
+	background:#18bb9c;
+	border:#18bb9c;
+		p{
+			color:white; 
+			&:hover{color:white;}
+		} 
+		&.create_acc_btn{
+			text-transform:none;
+			color: #18bb9c; 
+			background:transparent ;
+			&.activated{opacity:0.5 !important;}
+		}
+	}
+}
+.sign_up{ 
+.list .item:last-child{border-radius:0 !important;} 
+.row{padding:0;}
+.col{padding:0;}
+.signup_icons{margin-right:10px;}
+.button, .button:hover{color:white; &.activated{background:#18bb9c; opacity:0.8 !important;}}
+}
+.slides{
+	.carousel-caption{
+		position:initial;
+	}
+	.carousel-indicators {
+    	position: relative;
+    	li {
+    		border: 1px solid #18bb9c;
+	    	&.active{
+	    		background:#18bb9c;
+	    	}
+    	}
+    }
+    .carousel-control{
+    	background:transparent;
+    }
+
+
+}

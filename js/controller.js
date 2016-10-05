@@ -743,8 +743,163 @@ console.log(($scope.amount!=undefined || $scope.checked_withdraw) );
 
 
     })
+  /*forgot pin controller*/
+    .controller('forgotPinCtrl', function($scope,$sessionStorage,$http,$state,$timeout) {
+      $scope.resetPinFn=function(form,change,newPIN) {
+        if(form.$valid) {
+          console.log("data match "+ newPIN, $scope.confirmPin);
+          if(newPIN==$scope.confirmPin){
+            $scope.forget5 = JSON.parse(forgotPin2(change));
+            $scope.forget5.mobileNumber = JSON.stringify($sessionStorage.forgotPinPhone);
+            var forgotpinPass = JSON.stringify($scope.forget5);
+            console.log(forgotpinPass + 'string');
+            $http.post('https://finotrust.com/WealthWeb/ws/clientFcps/setNewPassword', forgotpinPass).success(function(data){
+              console.log(data+'response');
+              if(data.responseCode=="Cali_SUC_1030"){
+
+                var popup= $ionicPopup.alert({
+                  title: 'PIN Change status',
+                  template: 'PIN Changed Successfully'
+                });
+
+                popup.then(function(res) {
+                  $state.go("login");
+                });
+              }
+         else if(data.responseCode=="Cali_ERR_2059"){ 
+
+                  $scope.error_pin="Entered OTP didn't mached";
+                    $timeout(function(){
+                    $scope.error_pin="";
+                  },3000)
+          }
+          else{
+            console.log("failure Error");
+          }
 
 
+            }).error(function(data){
+              {
+                console.log("Error");
+                $ionicPopup.alert({
+                  title: 'PIN Change status',
+                  template: 'PIN Changed UnSuccessfully'
+                });
+              }
+            });
+          }
+          else{
+
+  $scope.error_pin="Entered password didn't match";
+    $timeout(function(){
+    $scope.error_pin="";
+  },3000)
+              
+          }
+        }
+          else{
+
+                  $scope.error_pin="Entered match";
+                    $timeout(function(){
+                    $scope.error_pin="";
+                  },3000)
+              
+          }
+      }
+        var  forgotPin2 = function(change2){
+            return JSON.stringify(change2)
+        }
+
+
+
+})
+    .controller('AuthSignUpCtrl', function($scope, $state,signUpService,$sessionStorage) {
+
+        $scope.signUp = function(form,searchText2,signupForm) {
+            $sessionStorage.SessionClientName=signupForm.fName+' '+signupForm.lName;
+            $sessionStorage.SessionMobNo=signupForm.mobileNumber;
+            if(angular.equals(signupForm.pin,searchText2))
+            {
+                if( signupForm.mobileNumber==signupForm.referral) {
+          console.log("same number");
+          form.referral.$dirty=false;
+          console.log( form.referral.$dirty+ " in cont");
+          $scope.error_referal="Entered mobile number and referral number should be different";
+        }
+        else{
+
+          if(form.$valid) {
+            console.log("not same number");
+            //$ionicLoading.show({templateUrl:"templates/loadingNormal.html"});
+            $sessionStorage.signUpData = (signupForm);
+            $scope.addUserInfo();
+          }
+        }
+            }
+            else{
+                $scope.error_pin="Entered password didn't match";
+            }
+        }
+
+        $scope.addUserInfo=function(){
+            signUpService.sendSignUp($sessionStorage.signUpData).then(function(data){
+        //$sessionStorage.
+
+                if(data.responseCode!="Cali_SUC_1030"){
+
+
+          if(data.responseCode=="Cali_ERR_2050" || data.responseCode=="Cali_ERR_2066" ){
+
+            $scope.mobileError="Mobile number in use";
+          }
+          else if(data.responseCode=="Cali_ERR_1838" || data.responseCode=="Cali_ERR_1838" ){
+            $scope.serverError="Please enter your full name";
+          }
+          else{
+            $scope.serverError="Sign Up failed, please try again";
+          }
+        }
+                else {
+          //saving the signUp data with similar name convention as per sign in controller
+          $sessionStorage.SessionPortfolio=(JSON.parse(data.jsonStr)).portfolioCode;
+          $sessionStorage.SessionClientCode=(JSON.parse(data.jsonStr)).clientCode;
+          $sessionStorage.clientType=(JSON.parse(data.jsonStr)).clientType;
+          $sessionStorage.stepCount=0;
+          $sessionStorage.disbledSkip=false;
+                    $state.go('sliders');    // new sign upflow
+          //$state.go('reference');
+         // $ionicLoading.hide();
+                }
+            },function(error){
+        //$ionicLoading.hide();
+        console.log(data.responseCode + "hdfdhskjhkjh");
+                $scope.serverError="Sign Up failed, please call us";
+
+            });
+        }
+    })
+.controller('CarouselDemoCtrl', function ($scope) {
+  $scope.myInterval = 1000;
+  $scope.noWrapSlides = false;
+  $scope.active = 0;
+  var slides = $scope.slides = [];
+  var currIndex = 0;
+
+  $scope.addSlide = function() {
+    var newWidth = 600 + slides.length + 1;
+    slides.push({
+      image: ['img/1.png', 'img/2.png', 'img/3.png', 'img/4.png'],
+      text: ['Nice image','Awesome photograph','That is so cool','I love that'][slides.length % 4],
+      id: currIndex++
+    });
+  };
+
+  for (var i = 0; i < 4; i++) {
+    $scope.addSlide();
+  }
+
+
+})
 .directive('flipContainer1', function() {
   return {
     restrict: 'C',
