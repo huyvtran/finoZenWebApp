@@ -1,10 +1,36 @@
 
 <div class="screen_invest" ng-controller="AuthWithdrawlCtrl">
+    <div ng-controller="navTabsCtrl" class="col-md-12">
+    <nav class="navbar navbar-default navbar-fixed-top"  >
+      <div class="container">
+        <div class="navbar-header page-scroll">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#/summary"><img src="img/logo_priv.png" ></a>
+        </div>
+
+          <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+              <li ><a index="0" ng-click="defaultTab()"> Home</a></li>
+              <li ng-repeat="liTab in navTabs" ><a index="$index + 1" ng-click="onClickTab(liTab)">{{liTab.title}}</a></li>
+              <li index="4" ><a ng-controller="summaryPageCtrl" ng-click="signout()"> Sign Out</a></li>
+            </ul>
+          </div>
+      </div>
+
+    </nav>
+
+  </div>
+  <br/>
 		<div class="row bar bar-subheader invest_subheader">
-		  <p class="title" ng-controller="withdrawCtrl"><span >TEXT_CURRENT_BALANCE</span> <span style="color:#18bb9c">{{ balance() |currency:"&#x20B9; "}}</span></p>
+		  <p class="title" ng-controller="withdrawCtrl"><span >CURRENT BALANCE</span> <span style="color:#18bb9c">{{ balance() |currency:"&#x20B9; "}}</span></p>
 		</div>
 		<div class="row invest_info">
-		<p>TEXT_WIHTDRAW_BALANCE</p>
+		<p>How much would you like to withdraw ?</p>
 		</div>
 		<form name="withdrawForm" novalidate="" >
 
@@ -28,51 +54,19 @@
 			</div>
 
 
-		</div>
+		</div><br/>
 		<label class="row withdraw_all">
-			<input ng-model="checked_withdraw" type="checkbox" id="withdraw_money" ng-change="amountClear()" placeholder="Enter Amount" style="margin: 4px;"><label for="withdraw_money" >TEXT_WITHDRAW_COMPLETEBALANCE </label>
+			<input ng-model="checked_withdraw" type="checkbox" id="withdraw_money" ng-change="amountClear()" placeholder="Enter Amount" style="margin: 4px;"><label for="withdraw_money" >withdraw my complete balance </label>
 		</label>
 	</div>
-	<button ion-track-tap="withdraw confirm" class="button button-full button-positive" type="submit" ng-click="Withdrawl(withdrawForm)">BUTTON_LANG_WITH
+	<button ion-track-tap="withdraw confirm" class="button button-full button-positive" type="submit" ng-click="Withdrawl(withdrawForm)">WITHDRAW
 
 	</button>
 	<p class="scheduled_text" ></p>
 	<div class="row deposit_table" >
-	<!--	<p><br/>
+	</div>
 
-		Withdraw Sun - Thur, before 2 p.m.: Money will be deposited in your Bank account next day by 10 a.m.<br/>
-
-		Withdraw Sun - Thur after 2 p.m.: Money will be deposited in your Bank account day after next by 10 a.m.<br/>
-
-		Withdraw Fri - Sat: Money will be deposited in your Bank account on Monday by 10 a.m.<br/>
-		<br/></p>
-		<table>
-			<thead>
-				<th translate="Withdrawal"></th>
-				<th translate="deposit"></th>
-			</thead>
-			<tr>
-				<td>Mon - Thur, <span translate="withdrawlTimeBefore"></span></td>
-				<td><span translate="dayAfter"></span> 10 a.m.</td>
-			</tr>
-			<tr>
-				<td>Mon - Thur, <span translate="withdrawlTimeAfter"></span>.</td>
-				<td><span translate="dayAfterNext"></span> 10 a.m.</td>
-			</tr>
-			<tr>
-				<td>Fri <span translate="withdrawlTimeBefore"></span></td>
-				<td>Monday 10 a.m.</td>
-			</tr>
-			<tr>
-				<td>Fri <span translate="withdrawlTimeAfter"></span>, Sat <span translate="andText"></span> Sun.</td>
-				<td>Tuesday 10 a.m.</td>
-			</tr>
-		</table>
--->
-
-		</div>
-
-		<p class="small_text" >withdrawBottomLine</p>
+		<p class="small_text" >Working days Mon-Fri. If the day of deposit is a Bank Holiday, money will be deposited the next working day.</p>
 </form>
 </div>
 </ion-view>

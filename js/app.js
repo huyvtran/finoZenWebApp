@@ -1,15 +1,8 @@
+
+
+var confirmation=0;
 angular.module('myApp', ['ngRoute','myApp.services','myApp.directives','myApp.controllers','ngMessages','ngIdle','ngResource','ngStorage','ui.router','ui.bootstrap'])
-.config(function(IdleProvider, KeepaliveProvider) {
-  IdleProvider.idle(10*60); // 10 minutes idle
-  IdleProvider.timeout(10); // after 30 seconds idle, time the user out
-  KeepaliveProvider.interval(5*60); // 5 minute keep-alive ping
-})
-.run(function($rootScope,$state) {
-    $rootScope.$on('IdleTimeout', function() {
-        // end their session and redirect to login
-        $state.go('home');
-    });
-})
+
 .config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/home');
     $stateProvider
@@ -24,11 +17,22 @@ angular.module('myApp', ['ngRoute','myApp.services','myApp.directives','myApp.co
 		controller: 'withdrawCtrl'
 	})
 	        
-     .state('sliders', {
+   .state('sliders', {
     url: '/sliders',
     templateUrl: 'templates/slides.html',
     controller: ''
     })
+    .state('bank', {
+    url: '/bank',         
+        templateUrl: 'templates/bank.html',
+        controller: ''     
+    }) 
+     .state('questions', {
+      url: '/questions',         
+          templateUrl: 'templates/questions.html',
+          controller: ''     
+    })
+    
     .state('signup', {
       url: '/page8',
       templateUrl: 'templates/signup.html'
@@ -95,7 +99,32 @@ angular.module('myApp', ['ngRoute','myApp.services','myApp.directives','myApp.co
     url: '/success',
     templateUrl: 'templates/payment_success.html'
     })
-       
+    .state('change_password', {
+    url: '/change_password',
+    templateUrl: 'templates/change_password.html'
+    })   
+    .state('mutualFund', {
+      url: '/mutualFund',         
+          templateUrl: 'templates/mutualFund.html'   
+    })  
+   .state('inactiveClient', {
+      url: '/inactiveClient',         
+          templateUrl: 'templates/inactiveClient.html'
+    })
+  
+    .state('status', {
+      url: '/status',
+      templateUrl: 'templates/status.html',
+    })
+        
+    .state('activeClientStatus', {
+      url: '/activeClientStatus',         
+          templateUrl: 'templates/activeClientStatus.html'
+})
+   .state('verifySuccess', {
+      url: '/verifySuccess',         
+          templateUrl: 'templates/success.html'
+    })
 
 ;   
 });

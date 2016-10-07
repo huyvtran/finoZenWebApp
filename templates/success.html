@@ -1,0 +1,16 @@
+<div class="verification"  ng-controller="verifySuccessCtrl">
+		<div class="container">
+			<div class="rows"><img ng-src={{statusImage}} class="steps" /></div>
+			<div class="rows padding">		
+				<h5 class="text-center" style="font-weight:600; text-transform:uppercase;color:#18bb9c;">Congratulations!</h5>
+				<p class="padding">We have received and verified your details and you can start investing.</p>
+				<p class="padding">However, we will need additional details to process your investments, Please click on 'Complete Activatation' to provide these details</p>
+				<p class="padding" style="padding: 0px 10px; margin: 0px;" ><b>1. Pan Card<br/>2. Address proof (Aadhar/ Driving Licence/ Voter ID/ Passport/ Ration Card)</b></p>
+			</div>
+		</div>
+
+	<div class="button-bar " style="padding:0;">
+		<button class="button button-positive" ng-click="notnowFunction()" >Complete Activation</button>
+		<button class="button button-positive" ng-click="investNowFunction()">Start Investing</button>
+	</div>
+</div>

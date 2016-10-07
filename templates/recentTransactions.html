@@ -1,12 +1,21 @@
 <div class="col-md-9 col-sm-12 col-lg-9  col-xs-12" ng-controller="transListController as listControl">
 	<div class="row list recent_transactions" >
-	  <div class="list-group" ng-repeat="lists in products | orderBy:'-orderId'" ng-class="{'lastItem': $last}">
-		<p class="success list-group-item {{lists.txnTypeStr}}"><span class="col-md-2">&#x20B9;{{lists.amount|currency :"":2}}</span>
-		<span class="item-note right col-md-4">Transaction ID: {{ lists.orderId}}</span>
-		{{lists.txnDate}} <span class="badge"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span></p>
-		
-	  </div>
+		  <div class="list-group" ng-repeat="customer in pagedData | limitTo:pageSize" ng-class="{'lastItem': $last}">
+	            <p class="success list-group-item"><span class="col-md-3 {{customer.txnTypeStr}}">&#x20B9;{{customer.amount|currency :"":2}}</span>
+			<span class="item-note right col-md-6">Transaction ID: {{ customer.orderId}}</span>
+			{{customer.txnDate}} <span class="badge"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span></p>
+		</div>
+		<div class="text-center" ng-hide="noTxnIcon">
+			 <button ng-disabled="pageButtonDisabled(-1)" ng-click="paginate(-1)">Previous</button>&nbsp;&nbsp;
+	    Page {{currentPage+1}} of {{totalPages}}
+	    	 <button ng-disabled="pageButtonDisabled(1)" ng-click="paginate(1)">Next</button>
+		</div>
+	     
+	    
 	  <div class="noTxn" ng-show="noTxnIcon"><p>There are no transactions to display<br/>START INVESTING NOW <img ng-src="{{noTxnIcon}}"></p>
+
 	  </div>
-	</div>
+	  <br/>
+	  <br/>
 </div>
+

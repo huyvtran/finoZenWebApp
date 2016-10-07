@@ -1,0 +1,30 @@
+<ion-view title="pre_verification" class="verification">
+<div class="bar bar-header fino_head" ng-controller="popupController as popup">
+	<div class="h1 title"><p class="head_title"><span id="title">VERIFYING YOUR DETAILS</span></p></div>
+	<a class="button button-clear button-positive  ion-android-call" ng-click="showPopup()"></a>
+</div>
+  <span ng-controller="showhistoryController"></span>
+    <ion-content overflow-scroll="true" padding="false" class="has-header">
+		<div class="container statusPage">
+			<div class="rows"><img src="img/step1.jpg" class="steps"></div>
+			<div class="rows padding">
+				<p >You are just one step away to activate your account. Please send us these details to <b>support@finozen.com</b> or by WhatsApp @<b>7899825545</b></p>
+			</div>
+			<hr/>			
+			<div class="rows padding" ng-repeat="n in [42, 42, 43, 43] track by $index">
+				<span class="custom_bullets">1</span><p >Photo of your PAN card</p><br/>
+			</div>
+			<hr/>
+			<div class="rows padding">
+				<p >We will update you once your account is ready for transactions. Happy Investing!</p>
+			</div>
+		</div>
+    </ion-content>
+
+<ion-footer-bar padding="false">
+	<div class="button-bar " style="padding:0;">
+		<a href="#/sliders" class="button button-positive" style="margin:1px;line-height: 44px;" >know more</a>
+		<a href="#/tour" class="button button-positive" style="margin:1px; line-height: 44px;" >start investing</a>
+	</div>
+</ion-footer-bar>
+</ion-view>

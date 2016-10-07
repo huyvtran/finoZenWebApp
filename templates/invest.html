@@ -1,52 +1,66 @@
+<div class="screen_invest">
+    <div ng-controller="navTabsCtrl" class="col-md-12">
+    <nav class="navbar navbar-default navbar-fixed-top"  >
+      <div class="container">
+        <div class="navbar-header page-scroll">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#/summary"><img src="img/logo_priv.png" ></a>
+        </div>
 
-		<div class="row bar bar-subheader invest_subheader">
-		  <h2 class="title" >TEXT_CURRENT_BALANCE<span style="color:#18bb9c" ng-controller="withdrawCtrl">{{balance() | currency:"&#8377;" }}</span></h2>
-		</div>
-		<div class="row invest_info">
-		<br/>
-		</div>
-		<div class="list invest_info"  ng-controller="sampleCtrl">
-			<p class="returns_hint" ><sup>*</sup><span>TEXT_LANG_EXPECTEDVALUE</span>
+          <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+              <li ><a index="0" ng-click="defaultTab()"> Home</a></li>
+              <li ng-repeat="liTab in navTabs" ><a index="$index + 1" ng-click="onClickTab(liTab)">{{liTab.title}}</a></li>
+              <li index="4" ><a ng-controller="summaryPageCtrl" ng-click="signout()"> Sign Out</a></li>
+            </ul>
+          </div>
+      </div>
+
+    </nav>
+
+  </div>
+	<div class="row bar bar-subheader invest_subheader">
+	  <h2 class="title" >CURRENT BALANCE <span style="color:#18bb9c" ng-controller="withdrawCtrl">{{balance() | currency:"&#8377;" }}</span></h2>
+	</div>
+	<div class="list invest_info"  ng-controller="sampleCtrl">
+			<br/>
+			<p class="returns_hint" ><sup>*</sup><span>Expected Value in a year</span>
 				<span style="color:#18bb9c;"><label id="income" >&nbsp; {{apprxVal | currency:"&#8377;" }} </label></span>
 			</p>
-<form name="investForm" novalidate="" ng-submit="Invest(investForm)">
+		<form name="investForm" novalidate="" ng-submit="Invest(investForm)">
 
-<label class="item item-input" ng-class="{ 'has-errors' : investForm.amount.$touched && investForm.amount.$invalid, 'no-errors' :  investForm.amount.$touched && investForm.amount.$valid}">
-	<input type="number" placeholder="Enter Amount"  name="amount"  ng-model="initial" ng-pattern="/^[0-9]{1,20}$/"  min="100"  ng-keyup="apprxVal=initial+((initial*averageRate)/100)" required>
-</label>
-<div class="error-container add_money" ng-show="investForm.amount.$error && investForm.$submitted" ng-messages="investForm.amount.$error">
-	<div  class="error" >
-		<div ng-message="required">You did not enter a field</div>
-		<div  ng-message="min">
-			Add minimum amount of <span>&#x20B9;</span> 100
-		</div>
-		<div  ng-message="pattern">
-			Enter valid Integer
-		</div>
+			<label class="item item-input" ng-class="{ 'has-errors' : investForm.amount.$touched && investForm.amount.$invalid, 'no-errors' :  investForm.amount.$touched && investForm.amount.$valid}">
+				<input type="number" placeholder="Enter Amount"  name="amount"  ng-model="initial" ng-pattern="/^[0-9]{1,20}$/"  min="100"  ng-keyup="apprxVal=initial+((initial*averageRate)/100)" required>
+			</label>
+			<div class="error-container add_money" ng-show="investForm.amount.$error && investForm.$submitted" ng-messages="investForm.amount.$error">
+				<div  class="error" >
+					<div ng-message="required">You did not enter a field</div>
+					<div  ng-message="min">
+						Add minimum amount of <span>&#x20B9;</span> 100
+					</div>
+					<div  ng-message="pattern">
+						Enter valid Integer
+					</div>
+				</div>
+			</div>
+			<div class="" >
+			<p><br><span >To optimize returns, we will add </span> <span class="suggested"> {{ final(initial,nav,0) | currency:"&#8377;" }} </span> <span>to your investments</span><br> </p>
+			</div>
+
+			<div class="text-center">
+				<button ion-track-tap="add money" type="submit" class="button button-positive bar-footer invest_button_footer" >ADD MONEY</button>
+			</div>
+			<p class="item_checkbox"><span >By clicking ADD MONEY you agree to have read</span> <a href="#" onclick="window.open('https://www.reliancemutual.com/InvestorServices/SIDDebt/Reliance-Liquid-TP-CP-SID.pdf', '_system', 'location=yes'); return false;">Scheme Information Document</a>, <a href="#" onclick="window.open('http://finozen.com/t&c.html', '_self', 'location=yes'); return false;">T&C </a><span >before making the investment</span></p>
+			<div class="" >
+				<p><br>Scheme :<br/><a href="#/mutualFund"><span class="suggestedScheme">{{schemePlan}}</span> </a>  </p>
+			</div>
+		</form>		
 	</div>
-</div>
-
-<!--
-<div  class="error" ng-hide="investForm.$dirty" ng-show="investForm.amount.$invalid">
-	<div>{{mess}} </div>
-</div>-->
-
-		<div class="row" >
-		<p><br><span >TEXT_LANG_INVEST1</span> <span class="suggested"> {{ final(initial,nav,0) | currency:"&#8377;" }} </span> <span>TEXT_LANG_INVEST12</span><br> </p>
-		</div>
-
-
-<!--		<label class="item item-input">
-		<input type="Date" placeholder="Select Date" name="date"/>
-		</label>-->
-
-
-		<div class="row">
-		<button ion-track-tap="add money" type="submit" class="button button-full button-positive bar-footer invest_button_footer" >TEXT_LANG_HEADER</button>
-		</div>
-		<p class="item_checkbox"><span >TEXT_LANG_INVEST_TERMS_1</span> <a href="#" onclick="window.open('https://www.reliancemutual.com/InvestorServices/SIDDebt/Reliance-Liquid-TP-CP-SID.pdf', '_system', 'location=yes'); return false;">Scheme Information Document</a>, <a href="#" onclick="window.open('http://finozen.com/t&c.html', '_self', 'location=yes'); return false;">T&C </a><span >TEXT_LANG_INVEST_TERMS_2</span></p>
-		<div class="row" ><p><br>Scheme :<br/><a href="#/mutualFund"><span class="suggestedScheme">{{schemePlan}}</span> </a>  </p></div>
-</form>		</div>
 	
 	<div class="button-bar " style="padding-top:30px;padding-left:20px;" >
 		<sup >*<sup>Based on scheme performance last year</sup></sup>

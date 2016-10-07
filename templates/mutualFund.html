@@ -1,5 +1,4 @@
-
-<div class=" payment_success">
+<div class="has-header payment_success">
     <div ng-controller="navTabsCtrl" class="col-md-12">
     <nav class="navbar navbar-default navbar-fixed-top"  >
       <div class="container">
@@ -25,18 +24,44 @@
     </nav>
 
   </div>
-	<div class="payment padding">
-	  <div class="item_success text-center" >
-		<p class="status">REQUEST STATUS</p>
-	 </div>
-	  <div class="success_block" >
-		<div class="inner_block text-center">
-			<h4 class="message">Thank you<br/></h4>
-			<p class="scheduled_text"> Your request has been accepted.</p>
-			<p class="scheduled_text">Schedule for deposit to your registered bank account</p>
-			<p class="scheduled_text">If the day of deposit is a Bank Holiday, money will be deposited the next working day.</p>
-			<a class="button button-positive" href="#/summary">DONE</a>
+	<div class="padding" ng-controller="schemeText">
+		<div class="list">
+			<div class="item_success" >
+				<h4 class="text-center">{{schemeName}}</h4>
+				<p class="">{{schemeBody}} </p>
+			</div>
+			<div class="selectedFund" >
+				<table>
+					<thead>
+						<th>Time Period*</th>
+						<th>Annualized Returns</th>
+					</thead>
+					<tr>
+						<td>1 Month</td>
+						<td>{{returnsOneM}}</td>
+					</tr>
+					<tr>
+						<td>3 Month</td>
+						<td>{{returnsThreeM}}</td>
+					</tr>
+					<tr>
+						<td>1 Year</td>
+						<td>{{returnsOneY}}</td>
+					</tr>
+					<tr>
+						<td>3 Year</td>
+						<td>{{returnsThreeY}}</td>
+					</tr>
+					<tr>
+						<td>5 Year</td>
+						<td>{{returnsFiveY}}</td>
+					</tr>
+				</table>
+			</div>
+			<p><b>Current AUM:</b>{{currentAUM}}</p>
+			<p><b>Tax Benefit: </b>{{TaxBenifits}}</p>
+			<p><b><a ng-href={{schemeLink}}>Click here</a></b>  {{schemeLinkText}}</p>
+			<p><sup>* As of April 2016</sup></p>
 		</div>
-	 </div>
-	</div>	
+	</div>
 </div>

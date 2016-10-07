@@ -1,0 +1,23 @@
+
+
+<div class="verification"  ng-controller="verifySuccessCtrl">
+		<div class="container">
+			<div class="rows"><img ng-src={{statusImage}} class="steps" /></div>
+			<div class="rows padding">
+			<h5 class="text-center" style="font-weight:600; text-transform:uppercase;color:#18bb9c;">Congratulations!</h5>
+				<p class="padding">{{para1}}</p>
+				<p class="padding">{{para2}}</p>
+				<p class="padding" style="padding: 0px 10px; margin: 0px;"><b>FinoZen Key Features -<br/></b></p>
+				<ol >
+					<li><span style="color: rgb(24, 187, 156); padding: 11px;" class="ion-checkmark-circled"></span>Completely safe and secure</li>
+					<li><span style="color: rgb(24, 187, 156); padding: 11px;" class="ion-checkmark-circled"></span>Expected returns better than FD</li>
+					<li><span style="color: rgb(24, 187, 156); padding: 11px;" class="ion-checkmark-circled"></span>Withdraw anytime without penalty</li>
+					<li><span style="color: rgb(24, 187, 156); padding: 11px;" class="ion-checkmark-circled"></span>24X7 Customer Support</li>
+				</ol>
+			</div>
+		</div>
+	<div class="btn-group text-center" role="group" aria-label="...">
+		<button type="button" class="btn btn-default button button-positive" ng-click="notnowFunction()" ng-disabled="true">{{notNow}}</button>
+		<button type="button" class="btn btn-default button button-positive"  ng-click="investNowFunction()">{{startInvesting}}</button>
+	</div>
+</div>

@@ -1,0 +1,85 @@
+
+<div class="has-header" ng-controller="bankDetailsCTRL">
+		
+	<form name="bankDetailsTest" novalidate="" >
+		<div class="list">
+			<div  class="error" >
+				<div ng-show="serverError">  Entered Credentials did not validate </div>
+				<div ng-show="passwordError"> Entered PIN didn't match</div>
+			</div>			
+			<table class="table">
+			    <tbody>
+
+			        <tr>
+			        	<td colspan="2">
+			        		<p style="padding: 20px 0 3px;">Please enter your valid PAN No. and net banking enabled bank details to activate your FinoZen account instantaneously.</p>
+			        	</td>
+			        </tr>
+			        <tr>
+			            <td class="">Enter Your PAN Number</td>
+			            <td class="text-left col-md-6 col-xs-6 col-lg-6 col-sm-6">
+			            	<label class="item item-input" >
+								<input type="text" name="panNo" placeholder="Enter Your PAN Number"  uppercase-only ng-model="panNo" minlength="10"  maxlength="10"  required />
+							</label>
+			            </td>
+			        </tr>
+			        <tr>
+			            <td class="">Enter Bank Account Number</td>
+			            <td class="text-left col-md-6 col-xs-6 col-lg-6 col-sm-6">
+			            	<label class="item item-input" >
+								<input type="text" name="accNo" placeholder="Enter Bank Account Number" ng-model="accNumber" required />
+							</label>
+			            </td>
+			        </tr>
+			        <tr>
+			            <td class=" col-md-2 col-xs-2 col-lg-2 col-sm-2">Enter IFSC Code</td>
+			            <td class="text-left col-md-6 col-xs-6 col-lg-6 col-sm-6">
+			            	<label class="item item-input" >
+								<input type="text" name="ifsc" placeholder="Enter IFSC Code"  uppercase-only ng-model="IFSC_code" minlength="11" required maxlength="11" />
+							</label>
+			            </td>
+			        </tr>
+			        <tr>
+			            <td class="">Type of account</td>
+			            <td class="text-left col-md-6 col-xs-6 col-lg-6 col-sm-6">
+			            	<label class = "item item-input item-select item-light">
+							  <select ng-model='accountType.type' required ng-options='option.value as option.name for option in accountTypeOptions'></select>
+							</label>
+			            </td>
+			        </tr>
+			        <tr>
+			        	<td colspan="2">
+			        		<p style="padding: 10px 0; text-align:left;font-size: 10px;"><sup>*</sup>By clicking on SUBMIT you agree that these are your personal bank account details. Please note that all transactions, including withdrawals are permitted only through your personal registered bank account.</p>
+			        	</td>
+			        </tr>
+			        <tr>
+			        	<td></td>
+			        	<td >
+							<div class="btn-group text-center" role="group" aria-label="...">
+							  <button type="button" class="btn btn-default" ng-click="bankSkip()">SKIP</button>
+							  <button type="button" class="btn btn-default" ng-click="bankUpload(bankDetailsTest)">SUBMIT</button>
+							</div>
+			        	</td>
+			        </tr>
+			    </tbody>
+			</table>
+
+			<div class="error-container" ng-show="bankDetailsTest.ifsc.$error && bankDetailsTest.$submitted" ng-messages="bankDetailsTest.ifsc.$error">
+				<div  class="error" >
+					<div ng-message="required">All fields are mandatory.</div>
+					<div ng-message="minlength, maxlength">
+						IFSC code must be 11 digits.
+					</div>
+				</div>
+			</div>
+			<div class="error-container" ng-show="bankDetailsTest.panNo.$error && bankDetailsTest.$submitted" ng-messages="bankDetailsTest.panNo.$error">
+				<div  class="error" >
+					<div ng-message="minlength, maxlength">
+						PAN number must be 10 digits.
+					</div>
+				</div>
+			</div>
+							
+		</div>
+	</form>
+</div>

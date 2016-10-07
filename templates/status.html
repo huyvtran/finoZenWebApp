@@ -1,0 +1,26 @@
+<div class="verification" ng-controller="statusPageCtrl">
+		<div class="container statusPage" >
+			<div class="rows"><img src="img/step1.jpg" class="steps"></div>
+			<div class="rows padding">
+				<p>{{para1}}</p>
+			</div>
+			<div ng-hide="docstatus">
+				<hr/>
+				<div class="rows padding" ng-repeat="n in nextSteps track by $index">
+					<span class="custom_bullets">{{ $index+1}}</span><p >{{docsToSubmit[nextSteps[$index]]}}</p>
+				</div>
+				<hr/>
+			</div>
+			<div ng-if="docstatus">
+				<p class="padding" style="padding: 0px 10px; margin: 0px;"><b>FinoZen Key Features -<br/></b></p>
+				<p>
+					<span style="color: rgb(24, 187, 156); padding: 11px;" class="ion-checkmark-circled"></span>Completely safe and secure<br/><span style="color: rgb(24, 187, 156); padding: 11px;" class="ion-checkmark-circled"></span>Expected returns better than FD<br/><span style="color: rgb(24, 187, 156); padding: 11px;" class="ion-checkmark-circled"></span>Withdraw anytime without penalty<br/><span style="color: rgb(24, 187, 156); padding: 11px;" class="ion-checkmark-circled"></span>24X7 Customer Support</li>
+				</p>
+			</div>
+		</div>
+
+	<div class="button-bar " style="padding:0;">
+		<button class="button button-positive" ng-click="investNowFunction()" >Invest Now</button>
+	</div>
+
+</div>

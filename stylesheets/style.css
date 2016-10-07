@@ -24,7 +24,10 @@
     width: 250px;
     margin: 1em auto 0em; }
   .finoApp .table td, .finoApp .table tr {
-    border: none; }
+    border: none;
+    font-size: 18px; }
+  .finoApp body, .finoApp p {
+    font-size: 18px; }
 
 .zero_padding {
   padding: o; }
@@ -34,7 +37,8 @@
   .summaryTab .sideBody {
     padding: 0; }
     .summaryTab .sideBody .currentTabDiv {
-      padding: 7% 0 0 0; }
+      padding: 7% 0 0 0;
+      min-height: 64vh; }
   .summaryTab .sideTabs {
     padding-top: 5%;
     background: #F5F5F5;
@@ -56,6 +60,10 @@
   @media (max-width: 768px) {
     .summaryTab .sideTabs {
       height: auto; } }
+  .summaryTab .invest_button_footer {
+    bottom: 0px; }
+    .summaryTab .invest_button_footer .invest_button {
+      line-height: 40px; }
 
 .invest_button_footer .button.button-clear.button-positive {
   box-shadow: 1px 1px 10px 1px #ccc; }
@@ -75,6 +83,17 @@
     .invest_button_footer .button.button-clear.button-positive.invest_btn.activated {
       opacity: 0.6 !important;
       box-shadow: 1px 1px 12px 13px #ddd !important; }
+
+.custom_bullets {
+  display: inline-block;
+  float: left;
+  height: 20px;
+  width: 20px;
+  background: #18bb9c;
+  border-radius: 50%;
+  color: white;
+  text-align: center;
+  margin: 0px 10px; }
 
 .screen_invest .button {
   background: #18bb9c;
@@ -123,7 +142,6 @@
   border: none; }
 .screen_invest .item_checkbox {
   font-size: 10px;
-  margin-top: -14px;
   width: 100%; }
   .screen_invest .item_checkbox a {
     color: #ccc; }
@@ -386,8 +404,6 @@
   bottom: 80px;
   padding: 0px;
   margin: auto;
-  line-height: 40px;
-  width: 100%;
   border-radius: 5px;
   text-transform: uppercase;
   background: #18bb9c;
@@ -414,39 +430,25 @@
   background-image: url("../img/sign.jpg");
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  background-position: center center; }
+  background-position: center center;
+  height: 100%; }
   .signin_background .secure_lock {
     padding-right: 10px;
-    color: white !important; }
+    color: white; }
   .signin_background .forgot_pin {
     padding: 10px 10px 5px 0;
-    width: 125px;
+    min-width: 125px;
     display: inline-block;
     float: right;
     color: #18bb9c; }
     .signin_background .forgot_pin.activated {
-      opacity: 0.5 !important; }
+      opacity: 0.5; }
   .signin_background .rememberme {
-    margin-top: 20px;
-    width: 150px; }
+    min-width: 150px; }
     .signin_background .rememberme #remember_me_label {
       line-height: 1.82857;
-      width: 100px; }
+      min-width: 160px; }
 
-.signin_background .item-input, .sign_up .item-input {
-  border: none;
-  border-bottom: 1px solid #18bb9c;
-  margin: 1px;
-  background: transparent; }
-  .signin_background .item-input.has-errors, .sign_up .item-input.has-errors {
-    border-bottom: 2px solid red; }
-  .signin_background .item-input.no-errors, .sign_up .item-input.no-errors {
-    border-bottom: 2px solid #18bb9c; }
-  .signin_background .item-input input, .sign_up .item-input input {
-    font-size: 16px;
-    max-width: 98%;
-    border: none;
-    background: transparent; }
 .signin_background .agree_terms, .sign_up .agree_terms {
   display: block;
   margin: 14px 2px 70px 0px; }
@@ -463,6 +465,26 @@
     background: transparent; }
     .signin_background .button.create_acc_btn.activated, .sign_up .button.create_acc_btn.activated {
       opacity: 0.5 !important; }
+
+.item-input {
+  border: none;
+  border-bottom: 1px solid #18bb9c;
+  margin: 1px;
+  background: transparent;
+  width: 70%; }
+  .item-input.has-errors {
+    border-bottom: 2px solid red; }
+  .item-input.no-errors {
+    border-bottom: 2px solid #18bb9c; }
+  .item-input input, .item-input select {
+    font-size: 16px;
+    width: 95%;
+    border: none;
+    background: transparent;
+    outline: none; }
+  .item-input select:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #000; }
 
 .sign_up .list .item:last-child {
   border-radius: 0 !important; }
@@ -488,5 +510,74 @@
       background: #18bb9c; }
 .slides .carousel-control {
   background: transparent; }
+
+.error-container {
+  margin-bottom: 15px; }
+
+.error-container:last-child {
+  margin: 5px 0 0; }
+
+.error {
+  font-family: "Arial Black", Gadget, sans-serif;
+  font-size: 11px;
+  color: red;
+  vertical-align: middle; }
+
+.error i {
+  font-size: 24px;
+  color: #B83E2C;
+  vertical-align: middle; }
+
+.recent_transactions .Sell {
+  color: red; }
+.recent_transactions .Buy {
+  color: green; }
+
+.payment_success {
+  width: 50%;
+  margin: auto; }
+  .payment_success .payment {
+    margin: 10px; }
+    .payment_success .payment .status {
+      font-size: 24px;
+      text-align: center;
+      font-weight: 300;
+      padding: 0 15px 10px; }
+    .payment_success .payment .success_block {
+      padding: 10px;
+      background: #e8e8e8 none repeat scroll 0 0;
+      border-radius: 10px;
+      border: 2px dashed #424242; }
+      .payment_success .payment .success_block .inner_block {
+        height: 100%;
+        flex-flow: row wrap; }
+      .payment_success .payment .success_block .message {
+        font-weight: 600;
+        width: 100%;
+        padding: 2%;
+        text-align: center; }
+      .payment_success .payment .success_block .disclaimer {
+        padding: 8% 0; }
+      .payment_success .payment .success_block table td {
+        text-align: left;
+        padding: 5px;
+        color: #424242;
+        font-size: 11px; }
+
+.button {
+  text-transform: uppercase;
+  padding: 10px;
+  border-radius: 6px;
+  display: inline-block; }
+  .button:hover, .button:active {
+    text-decoration: none; }
+  .button.button-positive {
+    background: #18bb9c;
+    color: white;
+    border: #18bb9c;
+    margin: 3px; }
+    .button.button-positive.activated {
+      background: #18bb9c;
+      opacity: 0.8; }
 
 /*# sourceMappingURL=style.css.map */

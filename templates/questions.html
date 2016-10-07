@@ -1,0 +1,71 @@
+<div overflow-scroll="true" padding="false" ng-controller="questionsCTRL" class="has-header" >
+<p class="text-left padding">YOU ARE ALMOST DONE!</p>
+	<div class = "list questionsSelect">
+		<form  name="addKYC" novalidate="" ng-submit="questionUpload(addKYC)">
+			<table class="table">
+			    <tbody>
+			        <tr>
+			        	<td class="col-md-2 col-sm-2 col-lg-2 col-xs-2">
+			        		1) Gross Annual Income
+			        	</td>
+			        	<td class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+							<label class = "item item-input item-select item-light">
+								<select ng-model='clientIncome.type' required ng-options='option.value as option.name for option in clientIncomeOptions'></select>		
+							</label>
+			        	</td>
+			        </tr>
+			        <tr>
+			        	<td class="col-md-2 col-sm-2 col-lg-2 col-xs-2">
+			        		 2) Occupation
+			        	</td>
+			        	<td class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+			        		<label class = "item item-input item-select item-light">
+								<select ng-model='clientOccupation.type' required ng-options='option.value as option.name for option in clientOccupationOptions'></select>
+							</label>
+			        	</td>
+			        </tr>
+			        <tr>
+			        	<td class="col-md-2 col-sm-2 col-lg-2 col-xs-2">
+			        		3) Political Exposure*
+			        	</td>
+			        	<td class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+			        		<label class = "item item-input item-select item-light">
+								<select ng-model='clientPEP.type' required ng-options='option.value as option.name for option in clientPEPOptions'></select>
+							</label>
+			        	</td>
+			        </tr>
+			        <tr>
+			        	<td class="col-md-2 col-sm-2 col-lg-2 col-xs-2">
+			        		4) Date of Birth*
+			        	</td>
+			        	<td class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+							<label class="item item-input" ng-class="{ 'has-errors' : addKYC.DOB.$touched && addKYC.DOB.$invalid, 'no-errors' :  addKYC.DOB.$touched && addKYC.DOB.$valid}">
+								<input name="DOB" type="number" ng-model='clientDOB' required />
+							</label>
+			        	</td>
+			        </tr>
+			        <tr>
+			        	<td colspan="2">
+			        		<p style="padding: 22px 10px 0px; text-align:left;font-size: 12px;"><sup>*Politically exposed person is an indivdual who is or has been entrusted with a prominent public function e.g. Heads of State or of Governments,Senior Politicans etc.<br/>By clicking on submit I agree that I am an Indian PAN card holder and a resident individual.</sup>.</p>
+			        	</td>
+			        </tr>
+			        <tr>
+			        	<td></td>
+			        	<td >
+							<div class="btn-group text-center" role="group" aria-label="...">
+							  <button type="button" class="btn btn-default" ng-click="question()" ng-disabled="true" >SKIP</button>
+							  <button type="submit" class="btn btn-default" >SUBMIT</button>
+							</div>
+			        	</td>
+			        </tr>
+				</tbody>
+			</table>
+			<div class="error-container" ng-show="addKYC.DOB.$error && addKYC.$submitted" ng-messages="addKYC.DOB.$error">
+				<div  class="error" >
+					<div ng-message="required">All fields are mandatory.</div>  
+
+				</div>
+			</div>	
+		</form>
+	</div>
+</div>

@@ -1,8 +1,9 @@
-angular.module('myApp.controllers', [])
 
+angular.module('myApp.controllers', [])
     .controller('summaryPageCtrl', function($scope,$state,$timeout) {
 		$scope.signout=function(){
       //location.reload();
+      sessionStorage.clear();
       $timeout(function() {location.reload();}, 10);
       $state.go('home');
     }
@@ -191,7 +192,6 @@ $scope.xirrRate= function(){
 	
 	
 .controller('AuthSigninCtrl', function($scope,$state,$sessionStorage,$http,loginInfoService,$localStorage,$timeout) {
-
  $scope.mobileNumber=$localStorage.loginData;
 	$scope.signIn = function(form,loginForm) {
 		if(form.$valid) {
@@ -314,24 +314,164 @@ $scope.xirrRate= function(){
 $scope.policy = function()
 {
 	//window.open('http://finozen.com/policy.html','_self');
-	cordova.InAppBrowser.open('http://finozen.com/policy.html','_blank', 'location=no');
+	window.open('http://finozen.com/policy.html','_self', 'location=no');
   //$ionicHistory.goBack(-1);
 }
 $scope.terms = function()
 {
 	//window.open('http://finozen.com/t&c.html','_self');
-	cordova.InAppBrowser.open('http://finozen.com/t&c.html','_blank', 'location=no');
+	window.open('http://finozen.com/t&c.html','_self', 'location=no');
   //$ionicHistory.goBack(-1);
 
 }
 
     })
 
-    .controller('languageCtrl', function($scope,$translate,$state,$localStorage) {
+  .controller('bankDetailsCTRL',function($scope,$state,$sessionStorage,bankDetailsService,$window,proofRedirectFactory,myService){
+    $scope.accountTypeOptions = [
+    { name: 'Savings', value: 'SB_New' },
+    { name: 'Current', value: 'CA_new' }
+    ];
+
+    $scope.accountType = {type : $scope.accountTypeOptions[0].value};
+
+    $scope.pastInvestmentsOptions = [
+    { name: 'Yes', value: 'SB_New' },
+    { name: 'No', value: 'CA_new' }
+    ];
+
+    $scope.pastInvestments = {type : $scope.pastInvestmentsOptions[0].value};
+
+
+    $scope.bankUpload=function(bankData){
+    if(bankData.$valid){
+        var bank = JSON.parse(JSON.stringify({}));
+            bank.clientCode=$sessionStorage.SessionClientCode;
+            //bank.kyphCode="CRN23919";
+            bank.panNumber= $scope.panNo //pan number
+            bank.bankAccNo= $scope.accNumber //bank account number
+            bank.ifscCode= $scope.IFSC_code//ifsc Code
+            bank.accountType= $scope.accountType.type//savings type either savings or personal
+            bank.updateNach= "N" //either yes or no
+            bank=JSON.stringify(bank);
+            console.log(bank);
+               bankDetailsService.save(bank,function(data){
+                 if(data.responseCode == "Cali_SUC_1030") {
+                  $sessionStorage.docStatus=data.jsonStr.docStatus; // document status received on bank submittion of bank details  (have to update value according to response)
+                  $sessionStorage.SessionStatus=data.jsonStr.activeStatus;
+                  console.log($sessionStorage.SessionStatus+ "   bank submit $sessionStorage.SessionStatus");
+                  console.log($sessionStorage.docStatus+ "   bank submit $sessionStorage.docStatus");
+                  $state.go('questions');
+                 }
+
+                 else {
+                     console.log('upload error') ;
+                 }
+
+               },function(error){
+
+         if(error.data.responseCode == "Cali_ERR_2021"){
+              console.log('IFSC Code invalid') ;
+ 
+         }
+         else if(error.data.responseCode == "Cali_ERR_2035"){
+
+             console.log('Account Number Duplicate') ;
+
+         }
+         else{
+          console.log('error check the error code') ;
+         }
+
+               });
+  }
+             }
+    $scope.bankSkip=function(){
+      console.log($sessionStorage.SessionStatus + "    $sessionStorage.SessionStatus");
+      if($sessionStorage.SessionStatus=="T"){$state.go('activeClientStatus');}
+          else if($sessionStorage.SessionStatus=="I" || $sessionStorage.SessionStatus==null || $sessionStorage.SessionStatus=="null" || $sessionStorage.SessionStatus==undefined ){$state.go('inactiveClient');}
+          else{$state.go('verifySuccess');}
+           }
+    })
+
+
+    .controller('languageCtrl', function($scope,$state,$localStorage) {
 		//console.log($localStorage.language + " language selected");
 		$scope.changeLan=function(){$translate.use("1");}
 
 	})
+          /*for question's*/
+    .controller('questionsCTRL',function($scope,myService,proofRedirectFactory,questionsService,$sessionStorage,$state,$window){
+$scope.diasbleSkip=$sessionStorage.disbledSkip;
+     $scope.clientIncomeOptions = [
+    { name: 'Below 1 Lakh', value: '31' },
+    { name: '1 - 5 Lakh', value: '32' },
+    { name: '5 - 10 Lakh', value: '33' },
+    { name: '10 - 25 Lakh', value: '34' },
+    { name: '25 Lakh - 1 Cr', value: '35' },
+    { name: 'Above 1 Cr', value: '36' }
+    ];
+    $scope.clientIncome = {type : $scope.clientIncomeOptions[2].value};
+
+     $scope.clientOccupationOptions = [
+    { name: 'Business', value: 'Business_New' },
+    { name: 'Professional', value: 'Professional_New' },
+    { name: 'Public Sector', value: 'Service_New' },
+    { name: 'Private Sector', value: 'Professional_New' },
+    { name: 'Government Service', value: 'Service_New' },
+    { name: 'Agriculturist', value: 'Farmer_New' },
+    { name: 'Housewife', value: 'Household_New' },
+    { name: 'Student', value: 'Student_New' },
+    { name: 'Retired', value: 'Retired_New' },
+    { name: 'Others', value: 'Others_New' }
+    ];
+
+    $scope.clientOccupation = {type : $scope.clientOccupationOptions[3].value};
+
+     $scope.clientPEPOptions = [
+    { name: 'Not Applicable', value: 'N' },
+    { name: 'Politically Exposed Person', value: 'Y' },
+    { name: 'Related to Politically Exposed Person', value: 'R' }
+    ];
+
+    $scope.clientPEP = {type : $scope.clientPEPOptions[0].value};
+
+
+    $scope.question=function(){
+      if($sessionStorage.SessionStatus=="T"){$state.go('activeClientStatus');}
+      else if($sessionStorage.SessionStatus=="I" || $sessionStorage.SessionStatus==null || $sessionStorage.SessionStatus==undefined ){$state.go('inactiveClient');}
+      else{$state.go('verifySuccess');}
+    }
+      $scope.questionUpload = function(form){
+        if(form.$valid){
+          var questUpload=JSON.parse(JSON.stringify({}));
+          questUpload.kyphCode = $sessionStorage.SessionClientCode;
+          questUpload.income=$scope.clientIncome.type; // income level from 31-36
+          questUpload.occup=$scope.clientOccupation.type; // for the occupation
+          questUpload.pep=$scope.clientPEP.type; //for the pep status either Y or N
+          questUpload.resStatus="Individual"; // for the resdential status hardcoding it to individual
+          questUpload = JSON.stringify(questUpload);
+          console.log($scope.clientIncome.type + " clientIncome");
+          console.log($scope.clientPEP.type + " clientPEP");
+          console.log($scope.clientOccupation.type + " clientOccupation");
+          console.log(questUpload + " questUpload");
+
+              questionsService.save(questUpload,function(data){
+              if($sessionStorage.SessionStatus=="T"){$state.go('activeClientStatus');}
+              else if($sessionStorage.SessionStatus=="I" || $sessionStorage.SessionStatus==null || $sessionStorage.SessionStatus==undefined ){$state.go('inactiveClient');}
+              else{$state.go('verifySuccess');}
+                         
+            //}
+            },function(error){
+              //$state.go('signature');     //comment this line if api is working
+              if($sessionStorage.SessionStatus=="T"){$state.go('activeClientStatus');}
+              else if($sessionStorage.SessionStatus=="I" || $sessionStorage.SessionStatus==null || $sessionStorage.SessionStatus==undefined ){$state.go('inactiveClient');}
+              else{$state.go('verifySuccess');}
+                });
+          }
+        }
+      }
+    )
     .controller('AccountfaqCtrl', function($scope) {
         $scope.groups = [];
         $scope.groups["0"] = {name: "What is FinoZen?",items: ["FinoZen is a mobile app where you can watch your money grow, literally! It enables you to invest and withdraw in just a click while your money grows at an expected rate of 7.0 – 8.5% p.a."] };
@@ -491,7 +631,7 @@ $sessionStorage.xirr=data.jsonStr.xirr;
 
 
 
-
+/*
   $scope.doRefresh=function() {
    $timeout(function(){
    var Report = getReportService.get();
@@ -510,7 +650,7 @@ $sessionStorage.xirr=data.jsonStr.xirr;
    })
 $scope.$broadcast("scroll.refreshComplete");
 },2000)
-}
+}*/
 
         /*var tList=this;
          tList.products=[];
@@ -519,7 +659,35 @@ $scope.$broadcast("scroll.refreshComplete");
          tList.products=data;
          });*/
 
-    })
+
+  //Client-side pagination example
+    $scope.currentPage = 0;
+    $scope.pageSize = 5;
+    $scope.totalPages = 0;
+    $scope.pagedData = [];
+    $scope.data = [1,2,3,4,5,6,7,8,9,10,11,12];
+    $scope.pageButtonDisabled = function(dir) {
+      if (dir == -1) {
+      return $scope.currentPage == 0;
+      }
+    return $scope.currentPage >=  $scope.products.length/$scope.pageSize - 1;
+    }
+
+    $scope.paginate = function(nextPrevMultiplier) {
+      $scope.currentPage += (nextPrevMultiplier * 1);
+      $scope.pagedData =  $scope.products.slice($scope.currentPage*$scope.pageSize);
+    }
+
+    function init() {
+      $scope.totalPages = Math.ceil( $scope.products.length/$scope.pageSize);
+      $scope.pagedData =  $scope.products;
+    }
+
+   
+$timeout(function() {
+   init();
+}, 00);
+})
   /*add money page check*/
 .controller('transactionAccessCtrl', function($scope,$sessionStorage,$state){
   $scope.investCheck=function(){
@@ -548,6 +716,52 @@ $scope.$broadcast("scroll.refreshComplete");
 
 })
 
+.controller('statusPageCtrl', function($scope ,$sessionStorage,$state,proofRedirectFactory,myService){
+
+
+
+
+  if($sessionStorage.docStatus=='11111'){
+    $scope.para1="We have received your details and they are being verified. We will update you within 12 hours on status of your account activation.";
+    $scope.para2="However, you can start investing right away. Happy Investing!";
+    $scope.docstatus=true;
+    $scope.notNow="Start Investing";
+  }
+  else{
+    $scope.para1="Congratulations you can start investing. However, we will need additional details to process your investments, Please click on 'Activate Now' to provide these details.";
+    $scope.para2="We will update you once your account is ready for transactions. Happy Investing!";
+    $scope.docstatus=false;
+    $scope.notNow="Not Now";
+  }
+  if($sessionStorage.SessionStatus=='I'){
+    $scope.investNowFunction= function(){$state.go('invest');}
+    $scope.withdrawNowFunction= function(){$state.go('withdraw');}
+    $scope.notnowFunction= function(){
+      var nextStepsUrl=proofRedirectFactory.name;
+      var totalSteps=myService.myFunction($sessionStorage.docStatus).length;
+  //    var nextSteps=myService.myFunction($sessionStorage.docStatus);
+      $sessionStorage.stepCount=0;
+      $state.go(nextStepsUrl[$scope.nextSteps[$sessionStorage.stepCount]]);
+    }
+    $scope.docsToSubmit=['Photo of your PAN card ', 'Your selfie with PAN Card', 'Photo of your Address Proof Front', 'Photo of your Address Proof back', 'Your Signature'];
+    $scope.nextSteps=myService.myFunction($sessionStorage.docStatus);
+    console.log($scope.nextSteps);
+  }
+  else{
+    $scope.investNowFunction= function(){$state.go('invest');}
+    $scope.withdrawNowFunction= function(){$state.go('withdraw');}
+    $scope.notnowFunction= function(){
+      var nextStepsUrl=proofRedirectFactory.name;
+      var totalSteps=myService.myFunction($sessionStorage.docStatus).length;
+  //    var nextSteps=myService.myFunction($sessionStorage.docStatus);
+      $sessionStorage.stepCount=0;
+      $state.go(nextStepsUrl[$scope.nextSteps[$sessionStorage.stepCount]]);
+    }
+    $scope.docsToSubmit=['Photo of your PAN card ', 'Your selfie with PAN Card', 'Photo of your Address Proof Front', 'Photo of your Address Proof Back', 'Your Signature'];
+    $scope.nextSteps=myService.myFunction($sessionStorage.docStatus);
+    console.log($scope.nextSteps);
+  }
+})
 .controller('sampleCtrl', function ($scope,$state,mfOrderUrlService,$sessionStorage,dateService,$timeout) {
 
   var finalComputedVal;
@@ -643,9 +857,9 @@ $scope.$broadcast("scroll.refreshComplete");
             var date=dateService.getDate();
             mfOrderUrlService.save({"portfolioCode": $sessionStorage.SessionPortfolio,"amcCode": $sessionStorage.amcCode,"rtaCode":$sessionStorage.rtaCode,"orderTxnDate": date,"amount": finalComputedVal,"folioNo":$sessionStorage.folioNums},function(data){
                 if(data.responseCode=="Cali_SUC_1030"){
-location.replace("file:///Users/apple/Documents/finoZenWebApp/index.html#/summary");
-                   // var ref =  window.open('https://finotrust.com/WealthWeb/ws/pymt/pymtView?mfOrderId='+data.id,'_self');
+            var ref =  window.open('https://finotrust.com/WealthWeb/ws/pymt/pymtView?mfOrderId='+data.id,'_self');
           ref.addEventListener('loadstop', function(event) { if( event.url.match('pymt/bdesk') ){
+            console.log("hereeeee");
             $timeout(function () {
               location.replace("file:///Users/apple/Documents/finoZenWebApp/index.html#/summary");
             },10000);
@@ -686,6 +900,75 @@ location.replace("file:///Users/apple/Documents/finoZenWebApp/index.html#/summar
         var mid=$sessionStorage.orderId;//dynamic id
     })
 
+.controller('schemeText', function($scope,$sessionStorage) {
+  if($sessionStorage.clientType=='GO'){
+    $scope.schemeName="Reliance Liquid Fund Cash Plan - Growth";
+    $scope.schemeBody="Reliance Liquid Fund ensure that your investments are very low risk, no-lock in on withdrawl and generate stable returns. This fund primarily invests in money market instruments of public sector banks like Axis Bank, Kotak Mahindra Bank and undertakings such as Steel Authority of India, Idea Cellular, Tata Capital making it ultra-safe (almost as safe as your savings bank deposits) to invest your money. ";
+    $scope.returnsOneM="7.2%";
+    $scope.returnsThreeM="7.6%";
+    $scope.returnsOneY="7.4%";
+    $scope.returnsThreeY="8.1%";
+    $scope.returnsFiveY="8.5%";
+    $scope.currentAUM=" Rs. 3,775 Crores";
+    $scope.TaxBenifits=" Unlike FD, there is no TDS for investments in this fund. Also, for investments more than 3 years, tax payout becomes negligible as there is indexation benefits. However for investments less than 3 years, you will have to declare the returns from this investment at the time of tax filing and pay tax as per your salary bracket.";
+    $scope.schemeLink="http://www.moneycontrol.com/mutual-funds/nav/reliance-liquid-fund-cash-plan/MRC014";
+    $scope.schemeLinkText=" to read more about Reliance Liquid Fund Cash Plan – Growth on moneycontrol.";
+  }
+  else{
+    $scope.schemeName="Reliance Liquid Fund Treasury Plan (IP) – G";
+    $scope.schemeBody="Reliance Liquid Fund ensure that your investments are very low risk, no-lock in on withdrawl and generate stable returns. This fund primarily invests in money market instruments of public sector banks and undertakings such as HUDCO, L&T and Tata Steel  making it ultra-safe (almost as safe as your savings bank deposits) to invest your money.";
+    $scope.returnsOneM="9.48%";
+    $scope.returnsThreeM="8.2%";
+    $scope.returnsOneY="8.2%";
+    $scope.returnsThreeY="8.84%";
+    $scope.returnsFiveY="9.06%";
+    $scope.currentAUM=" Rs. 14,469 Crores";
+    $scope.TaxBenifits=" Unlike FD, there is no TDS for investments in this fund. Also, for investments more than 3 years, tax payout becomes negligible as there is indexation benefits. However for investments less than 3 years, you will have to declare the returns from this investment at the time of tax filing and pay tax as per your salary bracket.";
+    $scope.schemeLink="http://www.moneycontrol.com/mutual-funds/nav/reliance-liquid-fund-treasury-plan-ip/MRC046";
+    $scope.schemeLinkText=" to read more about Reliance Liquid Fund Treasury Plan (IP) – G on moneycontrol.";
+  }
+  /*else{
+    $scope.schemeName="Reliance Money Manager Fund – Growth Plan";
+    $scope.schemeBody="Reliance Money Manager Fund ensures that your investments are at low risk, no lock-in on withdrawal and generate stable returns. This fund primarily invests in money market instruments and NCDs of public sector banks and AAA rated companies like Axis Bank, ICICI Bank, HDFC Ltd. etc. making it a safe option to park your surplus bank balance.";
+    $scope.returnsOneM="7.80%";
+    $scope.returnsThreeM="9.04%";
+    $scope.returnsOneY="9.26%";
+    $scope.returnsThreeY="8.77%";
+    $scope.returnsFiveY="8.63%";
+    $scope.currentAUM=" Rs. 14,469 Crores";
+    $scope.TaxBenifits=" Unlike FD, there is no TDS for investments in this fund. Also, for investments more than 3 years, tax payout becomes negligible as there is indexation benefits. However for investments less than 3 years, you will have to declare the returns from this investment at the time of tax filing and pay tax as per your salary bracket.";
+    $scope.schemeLink="http://www.moneycontrol.com/mutual-funds/nav/reliance-liquid-fund-treasury-plan-ip/MRC046";
+    $scope.schemeLinkText=" to read more about Reliance Liquid Fund Treasury Plan (IP) – G on moneycontrol.";
+  }*/
+})
+
+    .controller('changeCtrl', function(changePinService,$scope,$sessionStorage,$state){
+
+        $scope.resetPin=function(changePinForm){
+
+            changePinForm.clientCode=$sessionStorage.SessionClientCode;
+            changePinForm=JSON.stringify(changePinForm);
+            console.log(changePinForm + " form data");
+//changePinService.changePin(changePinForm);
+            changePinService.save(changePinForm,function(data){
+                console.log(data);
+                if(data.responseCode == "Cali_SUC_1030") {
+
+
+                    console.log('PIN Changed Successfully');
+                   
+                }
+                else {
+                    console.log('PIN Changed unSuccessfully');
+                }
+            },function(error){
+                console.log("eror");
+
+            });
+
+        }
+
+    })
 
 
     .controller('AuthWithdrawlCtrl', function($scope, $state,mfSellUrlService,dateService,$sessionStorage,relianceUserBank,relianceInstantAmount) {
@@ -860,6 +1143,7 @@ console.log(($scope.amount!=undefined || $scope.checked_withdraw) );
           }
         }
                 else {
+                  $sessionStorage.SessionStatus='I';
           //saving the signUp data with similar name convention as per sign in controller
           $sessionStorage.SessionPortfolio=(JSON.parse(data.jsonStr)).portfolioCode;
           $sessionStorage.SessionClientCode=(JSON.parse(data.jsonStr)).clientCode;
@@ -900,6 +1184,124 @@ console.log(($scope.amount!=undefined || $scope.checked_withdraw) );
 
 
 })
+
+
+.controller('verifySuccessCtrl', function($scope,$sessionStorage,$state,myService,proofRedirectFactory,$timeout,$window) {
+console.log($sessionStorage.SessionStatus+"   $sessionStorage.SessionStatus verifySuccessCtrl");
+  $timeout(function(){
+    //$window.location.reload(true)
+    $scope.initial();
+  },3000)
+  $scope.notnowFunction= function(){
+  if(confirmation==1){$state.go("tabsController");}
+  else{
+    if ($sessionStorage.SessionStatus=='I' || $sessionStorage.SessionStatus=='N' || $sessionStorage.SessionStatus==null ){
+      $state.go("tabsController");
+    }
+    else if ($sessionStorage.SessionStatus=='T'){
+      $state.go("tabsController");
+    }
+    else if ($sessionStorage.SessionStatus=='P' || $sessionStorage.SessionStatus=='Q' ){
+      if($sessionStorage.docStatus !="11111"){
+        $sessionStorage.disbledSkip=true;
+        console.log($sessionStorage.docStatus + " I am here")
+        var nextStepsUrl=proofRedirectFactory.name;
+        var totalSteps=myService.myFunction($sessionStorage.docStatus).length;
+        $sessionStorage.stepCount=-1;  var nextSteps=myService.myFunction($sessionStorage.docStatus);
+        $sessionStorage.stepCount=$sessionStorage.stepCount+1;
+        console.log($sessionStorage.stepCount + "step count");
+        console.log(nextSteps + "next step");
+        console.log(nextStepsUrl[1] + "next step url");
+        console.log(nextStepsUrl[nextSteps[$sessionStorage.stepCount]] + "next state");
+        if(nextSteps[$sessionStorage.stepCount]==2 && nextSteps[$sessionStorage.stepCount+1]==3){$sessionStorage.stepCount=$sessionStorage.stepCount+1; $state.go('imageSelection');}
+        else if(nextSteps[$sessionStorage.stepCount]==2 || nextSteps[$sessionStorage.stepCount]==3){$state.go('imageSelection');}
+        else{
+        if(totalSteps==$sessionStorage.stepCount){confirmation=1; console.log("iam going");  $state.go('feedback');}
+          else{$state.go(nextStepsUrl[nextSteps[$sessionStorage.stepCount]]);}
+        }
+      }
+    }
+  }
+}
+  $scope.investNowFunction= function(){
+    if(confirmation==1){$state.go("tabsController");}
+    else{
+      if ($sessionStorage.SessionStatus=='I' || $sessionStorage.SessionStatus=='N' || $sessionStorage.SessionStatus==null ){
+        $state.go("bank");
+      }
+      else if ($sessionStorage.SessionStatus=='T'){
+        $state.go("tabsController");
+      }
+      else if ($sessionStorage.SessionStatus=='P' || $sessionStorage.SessionStatus=='Q' ){
+        $state.go("tabsController");
+      }
+    }
+}
+  $scope.initial= function(){
+    $scope.features=true;
+    if(confirmation==1){
+      $scope.disbledSkip=true;
+      $scope.statusImage="img/steplast.jpg";
+      $scope.para1="We have received your details, we will update you within 12 hours on account activation";
+      $scope.para2="You can start investing now. Happy Investing!";
+      $scope.notNow="Know more";
+      $scope.startInvesting="Start Investing";
+    }
+    else{
+      if ($sessionStorage.SessionStatus=='I' || $sessionStorage.SessionStatus=='N' || $sessionStorage.SessionStatus== null ){
+        $scope.disbledSkip=true;
+        $scope.statusImage="img/step1.jpg";
+        $scope.para1="Your FinoZen account is currently inactive. Do you wish to start saving and growing your money everyday?";
+        $scope.para2="If yes, please click on “Activate Now” and submit your PAN Number and Bank Details. We will activate your account instantaneously!";
+        $scope.notNow ="Not Now";
+        $scope.startInvesting="Activate Now";
+      }
+      else if ($sessionStorage.SessionStatus=='T'){
+        $scope.disbledSkip=false;
+        $scope.statusImage="img/steplast.jpg";
+        $scope.para1="We have received and verified your details, your FinoZen account is now active.";
+        $scope.para2="You can start investing now. Happy Investing!";
+        $scope.startInvesting="Start Investing";
+        $scope.notNow="Activate Now";
+      }
+      else if ($sessionStorage.SessionStatus=='P'){
+        $scope.disbledSkip=false;
+        $scope.statusImage="img/step1.jpg";
+        $scope.para1="We have received and verified your details and you can start investing.";
+        $scope.para2="However, we will need additional details to process your investments, Please click on 'Complete Activatation' to provide these details";
+        $scope.para3="Pan Card";
+        $scope.para4="Address proof (Aadhar/ Driving Licence/ Voter ID/ Passport/ Ration Card)";
+        //$scope.para2="We will update you within 12 hours on account activation. Happy Investing!";
+        $scope.notNow="Complete Activation";
+        $scope.startInvesting="Start Investing";
+      }
+      else if ($sessionStorage.SessionStatus=='Q'){
+        if ($sessionStorage.docStatus=='11111'){
+          $scope.disbledSkip=true;
+          $scope.statusImage="img/steplast.jpg";
+          $scope.para1="We have received your details, we will update you within 12 hours on account activation";
+          $scope.para2="You can start investing now. Happy Investing!";
+          $scope.notNow="Know more";
+          $scope.startInvesting="Start Investing";
+        }
+        else{
+          $scope.disbledSkip=false;
+          $scope.statusImage="img/step3.jpg";
+          $scope.para1="One of your details is pending for account activation.";
+          $scope.para2="Please click on 'Activate Now' to provide that detail.";
+          $scope.notNow="Activate Now";
+          $scope.startInvesting="Start Investing";
+        }
+      }
+    }
+  }
+
+$scope.initial();
+
+})
+
+
+
 .directive('flipContainer1', function() {
   return {
     restrict: 'C',
