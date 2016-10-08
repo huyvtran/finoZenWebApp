@@ -1,7 +1,15 @@
 
-
+<div ng-controller="navTabsCtrl">
+<nav class="navbar navbar-default navbar-fixed-top"  >
+  <div class="container">
+    <div class="navbar-header page-scroll">
+      <a class="navbar-brand" ><img src="img/logo_priv.png" ></a>
+    </div>
+  </div>
+</nav>
+</div>
 <div class="slides" ng-controller="CarouselDemoCtrl">
-  <div style="height: 305px">
+  <div style="height: 305px; padding-top: 30px;">
     <div uib-carousel active="active" interval="myInterval"  no-transition="false"  no-wrap="noWrapSlides">
       <div uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
         <img ng-src="{{slide.image[slide.id]}}" style="margin:auto;"><br/>
@@ -11,6 +19,9 @@
         </div>
       </div>
     </div>
+  </div>
+    <div class="btn-group text-center" role="group" aria-label="...">
+      <a type="button" class="btn btn-default button button-positive"  href="#/bank">SKIP</a>
   </div>
 </div>
 

@@ -6,7 +6,7 @@
 			<div class="flip-container2 flip-container">
 		        <div class="flipper clearfix">
 		          <div class="front">
-						<p class="total_value" ><span style="font-size:28px"><img class="flipImage"	 src="img/left.png"style="float: left;" /><sup>&#x20B9;</sup></span>{{ balance()|currency:""}}
+						<p class="total_value" ><span><img class="flipImage"	 src="img/left.png"style="float: left;" /><sup>&#x20B9;</sup></span>{{ balance()|currency:""}}
 						<img class="flipImage" src="img/right.png"style="float: right;"/></p>
 						<p class="total_value_label" ><span class="current_bal item-note">CURRENT BALANCE</span></p>
 		          </div>
@@ -25,7 +25,7 @@
 
 					  <div class="back success ">
 
-						<p class="inner_numbers" style="margin:0; "><span style="font-size:28px"><sup>&#x20B9;</sup></span>{{netGain() | currency:""}} </p>
+						<p class="inner_numbers" style="margin:0; "><span><sup>&#x20B9;</sup></span>{{netGain() | currency:""}} </p>
 
 						<p class="item-note left inner_numbersLabel leftLine" >Net Gains</p>
 
@@ -33,7 +33,7 @@
 
 					  <div class="front">
 
-						<p class="inner_numbers"><span style="font-size:28px;"><sup>&#x20B9;</sup></span>{{ investAmount()|currency:""}}</p>
+						<p class="inner_numbers"><span><sup>&#x20B9;</sup></span>{{ investAmount()|currency:""}}</p>
 
 						<p class="item-note left inner_numbersLabel leftLine" >Net Investment</p>
 
@@ -49,7 +49,7 @@
 
 				<div style="border-left: 3px solid #808080;">
 
-				    <p class="inner_numbers" style="margin:0; "><span style="font-size:28px"><sup>&#x20B9;</sup></span>{{gainToday() | currency:""}}</p>
+				    <p class="inner_numbers" style="margin:0; "><span><sup>&#x20B9;</sup></span>{{gainToday() | currency:""}}</p>
 
 					<p class="item-note left inner_numbersLabel leftLine">Net Gains Today</p>
 

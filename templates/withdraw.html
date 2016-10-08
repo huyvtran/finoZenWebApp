@@ -30,11 +30,11 @@
 		  <p class="title" ng-controller="withdrawCtrl"><span >CURRENT BALANCE</span> <span style="color:#18bb9c">{{ balance() |currency:"&#x20B9; "}}</span></p>
 		</div>
 		<div class="row invest_info">
-		<p>How much would you like to withdraw ?</p>
+			<br/><br/>
+			<p class="col-md-6" >How much would you like to withdraw ?</p>
 		</div>
-		<form name="withdrawForm" novalidate="" >
-
-	<div class="list">
+<form name="withdrawForm" novalidate="" >
+	<div class="list row col-md-6">
 		<label class="item item-input" ng-class="{ 'has-errors' : withdrawForm.amount.$touched && withdrawForm.amount.$invalid, 'no-errors' :  withdrawForm.amount.$touched && withdrawForm.amount.$valid}">
 			<input type="number" name="amount" ng-disabled="checked_withdraw" ng-model="amount" ng-pattern="/^[0-9]{1,9}$/" max="{{balance()}}" min="100">
 		</label>
@@ -56,17 +56,14 @@
 
 		</div><br/>
 		<label class="row withdraw_all">
-			<input ng-model="checked_withdraw" type="checkbox" id="withdraw_money" ng-change="amountClear()" placeholder="Enter Amount" style="margin: 4px;"><label for="withdraw_money" >withdraw my complete balance </label>
+			<input ng-model="checked_withdraw" type="checkbox" id="withdraw_money" ng-change="amountClear()" placeholder="Enter Amount" style="margin: 4px;"><label for="withdraw_money" >Withdraw my complete balance </label>
 		</label>
 	</div>
-	<button ion-track-tap="withdraw confirm" class="button button-full button-positive" type="submit" ng-click="Withdrawl(withdrawForm)">WITHDRAW
-
-	</button>
-	<p class="scheduled_text" ></p>
-	<div class="row deposit_table" >
-	</div>
-
+	<div class="row col-md-12" ><br/><br/>
+		<button ion-track-tap="withdraw confirm" class="button button-positive" type="submit" ng-click="Withdrawl(withdrawForm)">WITHDRAW</button>
+		<br/><br/>
 		<p class="small_text" >Working days Mon-Fri. If the day of deposit is a Bank Holiday, money will be deposited the next working day.</p>
+	</div>
 </form>
 </div>
 </ion-view>

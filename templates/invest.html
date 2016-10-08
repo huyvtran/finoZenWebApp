@@ -24,7 +24,7 @@
     </nav>
 
   </div>
-	<div class="row bar bar-subheader invest_subheader">
+	<div class="row bar bar-subheader invest_subheader text-center" >
 	  <h2 class="title" >CURRENT BALANCE <span style="color:#18bb9c" ng-controller="withdrawCtrl">{{balance() | currency:"&#8377;" }}</span></h2>
 	</div>
 	<div class="list invest_info"  ng-controller="sampleCtrl">
@@ -59,10 +59,7 @@
 			<div class="" >
 				<p><br>Scheme :<br/><a href="#/mutualFund"><span class="suggestedScheme">{{schemePlan}}</span> </a>  </p>
 			</div>
+			<p><sup >*<sup>Based on scheme performance last year</sup></sup></p>
 		</form>		
-	</div>
-	
-	<div class="button-bar " style="padding-top:30px;padding-left:20px;" >
-		<sup >*<sup>Based on scheme performance last year</sup></sup>
 	</div>
 </div>

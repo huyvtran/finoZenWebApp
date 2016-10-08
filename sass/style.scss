@@ -22,6 +22,24 @@
   src: local('Montserrat-Bold'), url(http://fonts.gstatic.com/s/montserrat/v6/IQHow_FEYlDC4Gzy_m8fcoWiMMZ7xLd792ULpGE4W_Y.woff2) format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
 }
+@font-face {
+    font-family: 'open_sansregular';
+    src: url('../fonts/opensans-regular-webfont.woff2') format('woff2'),
+         url('../fonts/opensans-regular-webfont.woff') format('woff'),
+         url('../fonts/opensans-regular-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'open_sanssemibold';
+    src: url('../fonts/opensans-semibold-webfont.woff2') format('woff2'),
+         url('../fonts/opensans-semibold-webfont.woff') format('woff'),
+         url('../fonts/opensans-semibold-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
 .finoApp{
 	padding-top: 59px;
 	height: 100vh;
@@ -31,10 +49,25 @@
 		margin: 1em auto 0em;
 	}
 	.table{
+		&.loginTable {
+		    width: 60%;
+		    margin: auto;
+		}
+		&.forgetTable{
+			width:60%;
+		}
 		td,tr{border:none;font-size:18px;}
 
 	}
-	body, p{font-size:18px;}
+	body, p, a{font-size:18px; font-family: open_sansregular;}
+}
+
+.screen_account .account_img {
+	margin:auto;
+	img{
+		width: 130px;
+		height: 130px;
+	}
 }
 .zero_padding{padding:o;}
 .summaryTab{
@@ -101,16 +134,36 @@ box-shadow: 1px 1px 12px 13px #ddd !important;
 	text-align: center;
 	margin:0px 10px;
 }
+.aboutus{
+	
+	.fa-2x{color: #18bb9c;}
+	padding: 0 40px;
+	padding-top:30px;
+
+	.aboutus_icon_block{
+		padding: 0 4px;
+		.social_icon{padding: 0;}
+		.icon{ font-size:20px;}
+		.row{padding:0 5px;}
+	}
+	.aboutus_item{
+		.item_role{padding:3px; margin:0;}
+		.aboutus_icon_block{padding:2px; margin:0; }
+	}
+}
 .screen_invest{
 .button{background:#18bb9c;border:#18bb9c;color:white; &:hover{opacity:0.9; background:#18bb9c;} }
 	.invest_subheader {
     top: 10px;
     background: #ebebeb;
-	.title{font-size:14px;}
+	.title{font-size:14px;margin: 16px;}
 	}
-	
+	.withdraw_all {
+	    padding: 8px;
+	}
 	.invest_info{
-		padding-top:60px; margin:auto 10px; 
+		width: 56%;
+		margin: auto;
 		&.list{
 			padding-top:0px; 
 			input{max-width: 98%;}
@@ -163,7 +216,6 @@ box-shadow: 1px 1px 12px 13px #ddd !important;
 	.inner_numbers{
 		margin:0;  
 		.leftLine{border-left: 3px solid #808080;}
-		span{font-size:28px}
 	}
 	.inner_numbersLabel{
 		margin:0; 
@@ -250,7 +302,6 @@ box-shadow: 1px 1px 12px 13px #ddd !important;
 		    .panel-title a{text-decoration:none;}
 		}	
 }
-.fa-lg{color: #18bb9c;}
 .flip-container {
   -webkit-perspective: 1000;
   -moz-perspective: 1000;
@@ -441,20 +492,24 @@ box-shadow: 1px 1px 12px 13px #ddd !important;
   height:100%;
   .secure_lock{padding-right: 10px; color: white;}
   .forgot_pin{
-		padding: 10px 10px 5px 0;
+		line-height: 4;
 		min-width: 125px;
-		display: inline-block;
-		float: right;
-		color:#18bb9c; 
+	    text-align: right;
+	    color: #18bb9c;
+	    width: 70%;
+	    cursor: pointer;
 		&.activated{opacity:0.5;}
 		}
 	.rememberme{
-	min-width: 150px;
-	#remember_me_label{line-height:1.82857; min-width: 160px;} }
+	min-width: 180px;
+	float: right;
+	line-height: 4;
+	padding: 0;
+	#remember_me_label{line-height:1.82857; min-width: 130px;cursor: pointer;} }
 }  
 .signin_background, .sign_up{ 
 	.agree_terms {
-    display: block;
+    display: block;text-align: center;
     margin: 14px 2px 70px 0px;
 }
   .button{
@@ -593,6 +648,7 @@ box-shadow: 1px 1px 12px 13px #ddd !important;
 		border:#18bb9c;
 		margin: 3px;
 		&.activated{background:#18bb9c; opacity:0.8;}
+		span{padding:0 5px;}
 	}
 }
 

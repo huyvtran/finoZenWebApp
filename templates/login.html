@@ -8,7 +8,7 @@
 				<div ng-show="serverError">  Entered Credentials did not validate </div>
 				<div ng-show="passwordError"> Entered PIN didn't match</div>
 			</div>			
-			<table class="table">
+			<table class="table loginTable">
 			    <tbody>
 			        <tr class="text-center">
 			            <td colspan="2" class="row logo zero_padding"><img src="img/logo_priv.png"></td>
@@ -41,11 +41,17 @@
 			     	</tr>
 			     
 			        <tr>
-				        <td class="text-right col-md-6 col-xs-6 col-lg-6 col-sm-6">4-Digit PIN</td>
+				        <td class="text-right col-md-6 col-xs-6 col-lg-6 col-sm-6">
+				        	4-Digit PIN<br/>
+				        	<label class="rememberme col-md-6 col-sm-6">
+								<input ng-model="rememberMe" type="checkbox" ng-init="rememberMe=true" id="remember_me" style="margin: 4px;"><label id="remember_me_label" for="remember_me" >Remember Me</label>
+							</label>
+				        </td>
 				        <td text-left col-md-6 col-xs-6 col-lg-6 col-sm-6>
 				        	<label class="item item-input" ng-class="{ 'has-errors' : authorizationForm.password.$invalid && authorizationForm.$submitted, 'no-errors' : authorizationForm.password.$valid  && authorizationForm.$submitted}">
 								<input type="password" name="password" ng-pattern="/^[0-9]{1,4}$/" ng-model="digitPin" maxlength="4" ng-minlength="4" ng-maxlength="4" required placeholder="Enter 4 digit PIN" >
-							</label>
+							</label><br/>
+				        	<p class="forgot_pin" ng-click="forgotPin(authorizationForm.mobile)">Forgot Pin?</p>
 							<div class="error-container last-error-container" ng-show="authorizationForm.password.$error && authorizationForm.$submitted" ng-messages="authorizationForm.password.$error">
 								<div  class="error" >
 									<div ng-message="required">You did not enter a field</div>
@@ -53,15 +59,6 @@
 									<div ng-message="pattern">Enter digits only</div>
 								</div>
 							</div>
-				        </td>
-			     	</tr>
-			     
-			        <tr>
-				        <td  colspan="2" >
-							<p class="text-right col-md-6 col-sm-6 forgot_pin" ng-click="forgotPin(authorizationForm.mobile)">Forgot Pin?</p>
-				        	<label class="rememberme col-md-6 col-sm-6">
-								<input ng-model="rememberMe" type="checkbox" ng-init="rememberMe=true" id="remember_me" style="margin: 4px;"><label id="remember_me_label" for="remember_me" >Remember Me</label>
-							</label>
 				        </td>
 			     	</tr>
 			        <tr class="text-center">

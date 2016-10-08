@@ -23,46 +23,44 @@
     </nav>
 
   </div>
-<div class="screen_account">
+<div class="screen_account" ng-controller="withdrawCtrl">
     <div class="row account_img"><img src="img/account-image.png" alt=""></div>
-    <div class="row account_info" ng-controller="withdrawCtrl">
-      <h2></h2>
-      <p class=""> </p>
+ <ul class="list-group">
+  <li class="list-group-item row">
+    <div class="col-md-3" >
+        <p>Name</p>
     </div>
-		<div class="list">
-		<a class="row item item-icon-right" style="padding:12px;">
-			<div class="col ">
-				<p style="color: rgb(66, 66, 66);font-size:18px"></p>
-			</div>
-			<div class="col">
-				<p class="text-right" style="color: rgb(66, 66, 66);font-size:18px"><span></span></p>
-			</div>
-		</a>
-		
-		  <a class="item item-icon-right" href="#/change_pin"><i class="icon ion-ios-arrow-right"></i>Change PIN</a>
-		  <a class="item item-icon-right"></a>
-		</div>
-<table class="table" ng-controller="withdrawCtrl">
-  <tr>
-    <td class="col-md-3">Name</td>
-    <td class="col-md-3">{{clientName}} </td>
-  </tr>
-  <tr>
-    <td>Mobile Number</td>
-    <td>{{clientMobile}}</td>
-  </tr>
-  <tr>
-    <td>Account Type</td>
-    <td>{{schemeNamep}}</td>
-  </tr>
-  <tr>
-    <td>Change PIN</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td ng-controller="summaryPageCtrl" ng-click="signout()" >Sign Out</td>
-    <td></td>
-  </tr>
-</table>
+    <div class="col-md-3" >
+        <p>{{clientName}}</p>
+    </div>
+  </li>
+  <li class="list-group-item row">
+    <div class="col-md-3" >
+        <p>Mobile Number</p>
+    </div>
+    <div class="col-md-3" >
+        <p>{{clientMobile}}</p>
+    </div>
+  </li>
+  <li class="list-group-item row">
+    <div class="col-md-3" >
+        <p>Account Type</p>
+    </div>
+    <div class="col-md-3" >
+        <p>{{schemeNamep}}</p>
+    </div>
+  </li>
+  <li class="list-group-item row">
+    <div class="col-md-3" >
+        <a class="changePin" href="#/change_password">Change PIN</a>
+    </div>
+  </li>
+  <li class="list-group-item row">
+    <div class="col-md-3" >
+        <button class="btn"  ng-controller="summaryPageCtrl" ng-click="signout()" >Sign Out</button>
+    </div>
+  </li>
+</ul>
+
 
 </div>

@@ -16,6 +16,16 @@
   font-weight: 700;
   src: local("Montserrat-Bold"), url(http://fonts.gstatic.com/s/montserrat/v6/IQHow_FEYlDC4Gzy_m8fcoWiMMZ7xLd792ULpGE4W_Y.woff2) format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000; }
+@font-face {
+  font-family: 'open_sansregular';
+  src: url("../fonts/opensans-regular-webfont.woff2") format("woff2"), url("../fonts/opensans-regular-webfont.woff") format("woff"), url("../fonts/opensans-regular-webfont.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+@font-face {
+  font-family: 'open_sanssemibold';
+  src: url("../fonts/opensans-semibold-webfont.woff2") format("woff2"), url("../fonts/opensans-semibold-webfont.woff") format("woff"), url("../fonts/opensans-semibold-webfont.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
 .finoApp {
   padding-top: 59px;
   height: 100vh;
@@ -23,11 +33,23 @@
   .finoApp .logo img {
     width: 250px;
     margin: 1em auto 0em; }
+  .finoApp .table.loginTable {
+    width: 60%;
+    margin: auto; }
+  .finoApp .table.forgetTable {
+    width: 60%; }
   .finoApp .table td, .finoApp .table tr {
     border: none;
     font-size: 18px; }
-  .finoApp body, .finoApp p {
-    font-size: 18px; }
+  .finoApp body, .finoApp p, .finoApp a {
+    font-size: 18px;
+    font-family: open_sansregular; }
+
+.screen_account .account_img {
+  margin: auto; }
+  .screen_account .account_img img {
+    width: 130px;
+    height: 130px; }
 
 .zero_padding {
   padding: o; }
@@ -95,6 +117,26 @@
   text-align: center;
   margin: 0px 10px; }
 
+.aboutus {
+  padding: 0 40px;
+  padding-top: 30px; }
+  .aboutus .fa-2x {
+    color: #18bb9c; }
+  .aboutus .aboutus_icon_block {
+    padding: 0 4px; }
+    .aboutus .aboutus_icon_block .social_icon {
+      padding: 0; }
+    .aboutus .aboutus_icon_block .icon {
+      font-size: 20px; }
+    .aboutus .aboutus_icon_block .row {
+      padding: 0 5px; }
+  .aboutus .aboutus_item .item_role {
+    padding: 3px;
+    margin: 0; }
+  .aboutus .aboutus_item .aboutus_icon_block {
+    padding: 2px;
+    margin: 0; }
+
 .screen_invest .button {
   background: #18bb9c;
   border: #18bb9c;
@@ -106,10 +148,13 @@
   top: 10px;
   background: #ebebeb; }
   .screen_invest .invest_subheader .title {
-    font-size: 14px; }
+    font-size: 14px;
+    margin: 16px; }
+.screen_invest .withdraw_all {
+  padding: 8px; }
 .screen_invest .invest_info {
-  padding-top: 60px;
-  margin: auto 10px; }
+  width: 56%;
+  margin: auto; }
   .screen_invest .invest_info.list {
     padding-top: 0px; }
     .screen_invest .invest_info.list input {
@@ -178,8 +223,6 @@
     margin: 0; }
     .summary .inner_numbers .leftLine {
       border-left: 3px solid #808080; }
-    .summary .inner_numbers span {
-      font-size: 28px; }
   .summary .inner_numbersLabel {
     margin: 0; }
   .summary .circle {
@@ -263,9 +306,6 @@
   color: white; }
   .panel-default.panel-open .panel-heading .panel-title a {
     text-decoration: none; }
-
-.fa-lg {
-  color: #18bb9c; }
 
 .flip-container {
   -webkit-perspective: 1000;
@@ -436,21 +476,27 @@
     padding-right: 10px;
     color: white; }
   .signin_background .forgot_pin {
-    padding: 10px 10px 5px 0;
+    line-height: 4;
     min-width: 125px;
-    display: inline-block;
-    float: right;
-    color: #18bb9c; }
+    text-align: right;
+    color: #18bb9c;
+    width: 70%;
+    cursor: pointer; }
     .signin_background .forgot_pin.activated {
       opacity: 0.5; }
   .signin_background .rememberme {
-    min-width: 150px; }
+    min-width: 180px;
+    float: right;
+    line-height: 4;
+    padding: 0; }
     .signin_background .rememberme #remember_me_label {
       line-height: 1.82857;
-      min-width: 160px; }
+      min-width: 130px;
+      cursor: pointer; }
 
 .signin_background .agree_terms, .sign_up .agree_terms {
   display: block;
+  text-align: center;
   margin: 14px 2px 70px 0px; }
 .signin_background .button, .sign_up .button {
   background: #18bb9c;
@@ -579,5 +625,7 @@
     .button.button-positive.activated {
       background: #18bb9c;
       opacity: 0.8; }
+    .button.button-positive span {
+      padding: 0 5px; }
 
 /*# sourceMappingURL=style.css.map */

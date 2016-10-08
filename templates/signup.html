@@ -1,4 +1,14 @@
+<div ng-controller="navTabsCtrl">
+<nav class="navbar navbar-default navbar-fixed-top"  >
+  <div class="container">
+    <div class="navbar-header page-scroll">
+      <a class="navbar-brand" href="#/home"><img src="img/logo_priv.png" ></a>
+    </div>
+  </div>
+</nav>
+</div>
 <div class="sign_up" ng-controller="AuthSignUpCtrl">
+<br/>
 <form name="signupForm" novalidate="" ng-submit="signUp(signupForm,confirmPassword,authorization)" >
 
 	<div class="list table-responsive">
@@ -119,8 +129,10 @@
 		  </tr>
 		  <tr>
 		  	<td colspan="2" class="text-center">	  		
-				<button class="button button-full button-positive" type="submit" >signUpTitle
-				</button>
+				<button class="button button-full button-positive" type="submit" >SIGN UP
+				</button>  		
+				<a class="button button-full button-positive" href="#/bank" >skip
+				</a>
 		  	</td>
 		  </tr>
 		</tbody>

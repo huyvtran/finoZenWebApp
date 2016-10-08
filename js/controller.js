@@ -942,33 +942,33 @@ $timeout(function() {
   }*/
 })
 
-    .controller('changeCtrl', function(changePinService,$scope,$sessionStorage,$state){
+.controller('changeCtrl', function(changePinService,$scope,$sessionStorage,$state){
 
-        $scope.resetPin=function(changePinForm){
-
-            changePinForm.clientCode=$sessionStorage.SessionClientCode;
-            changePinForm=JSON.stringify(changePinForm);
-            console.log(changePinForm + " form data");
+$scope.resetPinFn=function(changePinForm,pin,confirm){
+    if(changePinForm.$valid){
+      pin.clientCode=$sessionStorage.SessionClientCode;
+      pin=JSON.stringify(pin);
+      console.log(pin + " form data");
 //changePinService.changePin(changePinForm);
-            changePinService.save(changePinForm,function(data){
-                console.log(data);
-                if(data.responseCode == "Cali_SUC_1030") {
+      changePinService.save(pin,function(data){
+          console.log(data);
+          if(data.responseCode == "Cali_SUC_1030") {
 
 
-                    console.log('PIN Changed Successfully');
-                   
-                }
-                else {
-                    console.log('PIN Changed unSuccessfully');
-                }
-            },function(error){
-                console.log("eror");
+              console.log('PIN Changed Successfully');
+             
+          }
+          else {
+              console.log('PIN Changed unSuccessfully');
+          }
+      },function(error){
+          console.log("eror");
 
-            });
+      });
 
-        }
-
-    })
+    }
+  }
+})
 
 
     .controller('AuthWithdrawlCtrl', function($scope, $state,mfSellUrlService,dateService,$sessionStorage,relianceUserBank,relianceInstantAmount) {
