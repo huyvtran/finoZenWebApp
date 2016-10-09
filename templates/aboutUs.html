@@ -1,4 +1,4 @@
-
+<div ng-controller="loginChech">
 <div class="aboutus"> 
    <div ng-controller="navTabsCtrl" class="col-md-12">
     <nav class="navbar navbar-default navbar-fixed-top"  >
@@ -16,7 +16,9 @@
           <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
               <li ><a index="0" ng-click="defaultTab()"> Home</a></li>
-              <li ng-repeat="liTab in navTabs" ><a index="$index + 1" ng-click="onClickTab(liTab)">{{liTab.title}}</a></li>
+              <li ><a index="1" href="#/account"> Profile</a></li>
+              <li><a class="active-now" index="2" href="#/aboutUs"> About Us</a></li>
+              <li ><a index="3" href="#/faq"> FAQ</a></li>
               <li index="4" ><a ng-controller="summaryPageCtrl" ng-click="signout()"> Sign Out</a></li>
             </ul>
           </div>
@@ -113,3 +115,4 @@
 
 		</div>
 	</div>
+</div>

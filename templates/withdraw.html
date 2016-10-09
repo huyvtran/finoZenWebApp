@@ -1,69 +1,69 @@
+<div ng-controller="loginChech">
+	<div class="screen_invest" ng-controller="AuthWithdrawlCtrl">
+	    <div ng-controller="navTabsCtrl" class="col-md-12">
+	    <nav class="navbar navbar-default navbar-fixed-top"  >
+	      <div class="container">
+	        <div class="navbar-header page-scroll">
+	          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+	            <span class="sr-only">Toggle navigation</span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	          </button>
+	          <a class="navbar-brand" href="#/summary"><img src="img/logo_priv.png" ></a>
+	        </div>
 
-<div class="screen_invest" ng-controller="AuthWithdrawlCtrl">
-    <div ng-controller="navTabsCtrl" class="col-md-12">
-    <nav class="navbar navbar-default navbar-fixed-top"  >
-      <div class="container">
-        <div class="navbar-header page-scroll">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#/summary"><img src="img/logo_priv.png" ></a>
-        </div>
+	          <div class="collapse navbar-collapse" id="myNavbar">
+	            <ul class="nav navbar-nav navbar-right">
+	              <li ><a index="0" ng-click="defaultTab()"> Home</a></li>
+	              <li ng-repeat="liTab in navTabs" ><a index="$index + 1" ng-click="onClickTab(liTab)">{{liTab.title}}</a></li>
+	              <li index="4" ><a ng-controller="summaryPageCtrl" ng-click="signout()"> Sign Out</a></li>
+	            </ul>
+	          </div>
+	      </div>
 
-          <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav navbar-right">
-              <li ><a index="0" ng-click="defaultTab()"> Home</a></li>
-              <li ng-repeat="liTab in navTabs" ><a index="$index + 1" ng-click="onClickTab(liTab)">{{liTab.title}}</a></li>
-              <li index="4" ><a ng-controller="summaryPageCtrl" ng-click="signout()"> Sign Out</a></li>
-            </ul>
-          </div>
-      </div>
+	    </nav>
 
-    </nav>
-
-  </div>
-  <br/>
-		<div class="row bar bar-subheader invest_subheader">
-		  <p class="title" ng-controller="withdrawCtrl"><span >CURRENT BALANCE</span> <span style="color:#18bb9c">{{ balance() |currency:"&#x20B9; "}}</span></p>
-		</div>
-		<div class="row invest_info">
-			<br/><br/>
-			<p class="col-md-6" >How much would you like to withdraw ?</p>
-		</div>
-<form name="withdrawForm" novalidate="" >
-	<div class="list row col-md-6">
-		<label class="item item-input" ng-class="{ 'has-errors' : withdrawForm.amount.$touched && withdrawForm.amount.$invalid, 'no-errors' :  withdrawForm.amount.$touched && withdrawForm.amount.$valid}">
-			<input type="number" name="amount" ng-disabled="checked_withdraw" ng-model="amount" ng-pattern="/^[0-9]{1,9}$/" max="{{balance()}}" min="100">
-		</label>
-		<div class="error-container" ng-show="withdrawForm.amount.$error && withdrawForm.$submitted" ng-messages="withdrawForm.amount.$error">
-			<div  class="error" >
-				<div  ng-message="max" ng-hide="checked_withdraw" >
-					Enter valid amount
-				</div>
-				<div  ng-message="min" ng-hide="checked_withdraw" >
-					 Minimum withdrawal amount is <span>&#x20B9;</span> 100
-				</div>
-				<div  ng-message="pattern" ng-hide="checked_withdraw" >
-					Enter valid Integer
-				</div>
-				<div ng-hide="checked_withdraw">{{withdraw_error}} </div>
-				<div>{{withdraw_Networkerror}} </div>
+	  </div>
+	  <br/>
+			<div class="row bar bar-subheader invest_subheader">
+			  <p class="title" ng-controller="withdrawCtrl"><span >CURRENT BALANCE</span> <span style="color:#18bb9c">{{ balance() |currency:"&#x20B9; "}}</span></p>
 			</div>
+			<div class="row invest_info">
+				<br/><br/>
+				<p class="col-md-6" >How much would you like to withdraw ?</p>
+			</div>
+	<form name="withdrawForm" novalidate="" >
+		<div class="list row col-md-6">
+			<label class="item item-input" ng-class="{ 'has-errors' : withdrawForm.amount.$touched && withdrawForm.amount.$invalid, 'no-errors' :  withdrawForm.amount.$touched && withdrawForm.amount.$valid}">
+				<input type="number" name="amount" ng-disabled="checked_withdraw" ng-model="amount" ng-pattern="/^[0-9]{1,9}$/" max="{{balance()}}" min="100">
+			</label>
+			<div class="error-container" ng-show="withdrawForm.amount.$error && withdrawForm.$submitted" ng-messages="withdrawForm.amount.$error">
+				<div  class="error" >
+					<div  ng-message="max" ng-hide="checked_withdraw" >
+						Enter valid amount
+					</div>
+					<div  ng-message="min" ng-hide="checked_withdraw" >
+						 Minimum withdrawal amount is <span>&#x20B9;</span> 100
+					</div>
+					<div  ng-message="pattern" ng-hide="checked_withdraw" >
+						Enter valid Integer
+					</div>
+					<div ng-hide="checked_withdraw">{{withdraw_error}} </div>
+					<div>{{withdraw_Networkerror}} </div>
+				</div>
 
 
-		</div><br/>
-		<label class="row withdraw_all">
-			<input ng-model="checked_withdraw" type="checkbox" id="withdraw_money" ng-change="amountClear()" placeholder="Enter Amount" style="margin: 4px;"><label for="withdraw_money" >Withdraw my complete balance </label>
-		</label>
+			</div><br/>
+			<label class="row withdraw_all">
+				<input ng-model="checked_withdraw" type="checkbox" id="withdraw_money" ng-change="amountClear()" placeholder="Enter Amount" style="margin: 4px;"><label for="withdraw_money" >Withdraw my complete balance </label>
+			</label>
+		</div>
+		<div class="row col-md-12" ><br/><br/>
+			<button ion-track-tap="withdraw confirm" class="button button-positive" type="submit" ng-click="Withdrawl(withdrawForm)">WITHDRAW</button>
+			<br/><br/>
+			<p class="small_text" >Working days Mon-Fri. If the day of deposit is a Bank Holiday, money will be deposited the next working day.</p>
+		</div>
+	</form>
 	</div>
-	<div class="row col-md-12" ><br/><br/>
-		<button ion-track-tap="withdraw confirm" class="button button-positive" type="submit" ng-click="Withdrawl(withdrawForm)">WITHDRAW</button>
-		<br/><br/>
-		<p class="small_text" >Working days Mon-Fri. If the day of deposit is a Bank Holiday, money will be deposited the next working day.</p>
-	</div>
-</form>
 </div>
-</ion-view>

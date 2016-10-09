@@ -1,3 +1,4 @@
+<div ng-controller="loginChech">
 <div ng-controller="navTabsCtrl">
 <nav class="navbar navbar-default navbar-fixed-top"  >
   <div class="container">
@@ -7,18 +8,18 @@
   </div>
 </nav>
 </div>
-<div class="verification"  ng-controller="verifySuccessCtrl">
+<div class="verification bankPage"  ng-controller="verifySuccessCtrl">
 		<div class="">
-			<div class=""><img ng-src={{statusImage}} class="steps" /></div>
 			<div class=" padding">		
-				<h5 class="text-center" ng-hide="disbledSkip" style="font-weight:600; text-transform:uppercase;color:#18bb9c;">Congratulations!</h5>
+				<h3 class="text-center" ng-hide="disbledSkip" style="font-weight:600; text-transform:uppercase;color:#18bb9c;">Congratulations!</h3>
 				<p class="padding">Your FinoZen account is currently inactive. Do you wish to start saving and growing your money everyday?</p>
-				<p class="padding">If yes, please click on “Activate Now” and submit your PAN Number and Bank Details. We will activate your account instantaneously!</p>
+				<p >Please send us your PAN Number and Bank Details to <b>support@finozen.com</b> or by WhatsApp @<b>7899825545</b></p>
 			</div>
+		</div><br><br>
+	<div class="text-center">
+		<div class="button-bar " style="padding:0;">
+			<button class="button button-positive" ng-click="investNowFunction()">{{startInvesting}}</button>
 		</div>
-
-	<div class="button-bar " style="padding:0;">
-		<button class="button button-positive" ng-click="notnowFunction()">{{notNow}}</button>
-		<button class="button button-positive" ng-click="investNowFunction()">{{startInvesting}}</button>
 	</div>
+</div>
 </div>

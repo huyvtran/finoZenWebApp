@@ -1,3 +1,4 @@
+<div ng-controller="loginChech">
 <div ng-controller="navTabsCtrl">
 <nav class="navbar navbar-default navbar-fixed-top"  >
   <div class="container">
@@ -7,7 +8,7 @@
   </div>
 </nav>
 </div>
-<div class="has-header" ng-controller="bankDetailsCTRL">
+<div class="bankPage" ng-controller="bankDetailsCTRL">
 		
 	<form name="bankDetailsTest" novalidate="" >
 		<div class="list">
@@ -40,7 +41,7 @@
 			            </td>
 			        </tr>
 			        <tr>
-			            <td class=" col-md-2 col-xs-2 col-lg-2 col-sm-2">Enter IFSC Code</td>
+			            <td class=" col-md-3 col-xs-3 col-lg-3 col-sm-3">Enter IFSC Code</td>
 			            <td class="text-left col-md-6 col-xs-6 col-lg-6 col-sm-6">
 			            	<label class="item item-input" >
 								<input type="text" name="ifsc" placeholder="Enter IFSC Code"  uppercase-only ng-model="IFSC_code" minlength="11" required maxlength="11" />
@@ -90,4 +91,5 @@
 							
 		</div>
 	</form>
+</div>
 </div>

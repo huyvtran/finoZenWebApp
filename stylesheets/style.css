@@ -28,8 +28,7 @@
   font-style: normal; }
 .finoApp {
   padding-top: 59px;
-  height: 100vh;
-  background: #F7F7F7; }
+  height: 100vh; }
   .finoApp .logo img {
     width: 250px;
     margin: 1em auto 0em; }
@@ -63,7 +62,7 @@
       min-height: 64vh; }
   .summaryTab .sideTabs {
     padding-top: 5%;
-    background: #F5F5F5;
+    background: #e7e7e7;
     height: 100%; }
     .summaryTab .sideTabs .nav-stacked {
       border: none;
@@ -76,8 +75,8 @@
       .summaryTab .sideTabs .nav-stacked li.active > a, .summaryTab .sideTabs .nav-stacked li.active > a:focus, .summaryTab .sideTabs .nav-stacked li.active > a:hover, .summaryTab .sideTabs .nav-stacked li a:hover {
         border: none;
         border-radius: 4px;
-        background: #2C3E51;
-        color: white;
+        background: transparent;
+        color: #18bb9c;
         margin-bottom: 0px; }
   @media (max-width: 768px) {
     .summaryTab .sideTabs {
@@ -245,7 +244,8 @@
   border: 1px solid transparent;
   border-radius: 0; }
   .navbar.navbar-default {
-    background-color: #2C3E51;
+    border-bottom: 2px solid #e7e7e7;
+    box-shadow: 0px 10px 10px #e7e7e7;
     text-transform: uppercase;
     padding-top: 4px; }
     .navbar.navbar-default #sign-up {
@@ -261,7 +261,8 @@
       font-family: Montserrat;
       color: white;
       font-weight: 700;
-      font-size: 14px; }
+      font-size: 14px;
+      color: rgba(51, 51, 51, 0.5); }
       .navbar.navbar-default .navbar-nav > li a.active-now {
         color: #18bb9c; }
     .navbar.navbar-default .navbar-nav > li a:hover {
@@ -469,9 +470,11 @@
 .signin_background {
   background-image: url("../img/sign.jpg");
   background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-position: center center;
-  height: 100%; }
+  background-size: contain;
+  height: 100%;
+  background-attachment: fixed;
+  background-position: center;
+  background-color: #fafafa; }
   .signin_background .secure_lock {
     padding-right: 10px;
     color: white; }
@@ -532,19 +535,26 @@
     color: transparent;
     text-shadow: 0 0 0 #000; }
 
-.sign_up .list .item:last-child {
-  border-radius: 0 !important; }
-.sign_up .row {
-  padding: 0; }
-.sign_up .col {
-  padding: 0; }
-.sign_up .signup_icons {
-  margin-right: 10px; }
-.sign_up .button, .sign_up .button:hover {
-  color: white; }
-  .sign_up .button.activated, .sign_up .button:hover.activated {
-    background: #18bb9c;
-    opacity: 0.8 !important; }
+.sign_up {
+  padding: 0 15%;
+  margin: auto; }
+  .sign_up .list .item:last-child {
+    border-radius: 0 !important; }
+  .sign_up .row {
+    padding: 0; }
+  .sign_up .col {
+    padding: 0; }
+  .sign_up .signup_icons {
+    margin-right: 10px; }
+  .sign_up .button, .sign_up .button:hover {
+    color: white; }
+    .sign_up .button.activated, .sign_up .button:hover.activated {
+      background: #18bb9c;
+      opacity: 0.8 !important; }
+
+.bankPage {
+  padding: 2% 15%;
+  margin: auto; }
 
 .slides .carousel-caption {
   position: initial; }
@@ -574,10 +584,12 @@
   color: #B83E2C;
   vertical-align: middle; }
 
-.recent_transactions .Sell {
-  color: red; }
-.recent_transactions .Buy {
-  color: green; }
+.recent_transactions {
+  padding: 0 10%; }
+  .recent_transactions .Sell {
+    color: red; }
+  .recent_transactions .Buy {
+    color: green; }
 
 .payment_success {
   width: 50%;

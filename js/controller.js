@@ -1,9 +1,9 @@
 
 angular.module('myApp.controllers', [])
-    .controller('summaryPageCtrl', function($scope,$state,$timeout) {
+    .controller('summaryPageCtrl', function($scope,$state,$timeout,$sessionStorage) {
 		$scope.signout=function(){
       //location.reload();
-      sessionStorage.clear();
+      $sessionStorage.SessionClientCode="none";
       $timeout(function() {location.reload();}, 10);
       $state.go('home');
     }
@@ -42,7 +42,7 @@ angular.module('myApp.controllers', [])
             title: 'Calculator',
             url: 'templates/calculator.html'
         }, {
-            title: 'Recent Transactions',
+            title: 'Transactions',
             url: 'templates/recentTransactions.html'
     }];
 
@@ -140,13 +140,14 @@ $scope.xirrRate= function(){
     })
 
 
-    .controller('popOverController',function($scope ){
-
+    .controller('loginChech',function($scope,$sessionStorage,$state){
+      console.log("$sessionStorage.SessionClientCode   "+ $sessionStorage.SessionClientCode);
+      if($sessionStorage.SessionClientCode=="none" || $sessionStorage.SessionClientCode==undefined){$state.go('home');}
     })
 .controller('popupController', function($scope,$window) {
-     // Triggered on a button click, or some other target
+// Triggered on a button click, or some other target
 
-    })
+})
 
 	.controller('calculatorCtrl', function($scope,$timeout,$sessionStorage) {
 		$scope.returnsAmount=0;
@@ -361,7 +362,9 @@ $scope.terms = function()
                   $sessionStorage.SessionStatus=data.jsonStr.activeStatus;
                   console.log($sessionStorage.SessionStatus+ "   bank submit $sessionStorage.SessionStatus");
                   console.log($sessionStorage.docStatus+ "   bank submit $sessionStorage.docStatus");
-                  $state.go('questions');
+                    if($sessionStorage.SessionStatus=="T"){$state.go('activeClientStatus');}
+                    else if($sessionStorage.SessionStatus=="I" || $sessionStorage.SessionStatus==null || $sessionStorage.SessionStatus=="null" || $sessionStorage.SessionStatus==undefined ){$state.go('inactiveClient');}
+                    else{$state.go('verifySuccess');}
                  }
 
                  else {
@@ -392,7 +395,7 @@ $scope.terms = function()
           else if($sessionStorage.SessionStatus=="I" || $sessionStorage.SessionStatus==null || $sessionStorage.SessionStatus=="null" || $sessionStorage.SessionStatus==undefined ){$state.go('inactiveClient');}
           else{$state.go('verifySuccess');}
            }
-    })
+  })
 
 
     .controller('languageCtrl', function($scope,$state,$localStorage) {
@@ -438,9 +441,9 @@ $scope.diasbleSkip=$sessionStorage.disbledSkip;
 
 
     $scope.question=function(){
-      if($sessionStorage.SessionStatus=="T"){$state.go('activeClientStatus');}
-      else if($sessionStorage.SessionStatus=="I" || $sessionStorage.SessionStatus==null || $sessionStorage.SessionStatus==undefined ){$state.go('inactiveClient');}
-      else{$state.go('verifySuccess');}
+      if($sessionStorage.SessionStatus=="T"){$state.go('bank');}
+      else if($sessionStorage.SessionStatus=="I" || $sessionStorage.SessionStatus==null || $sessionStorage.SessionStatus==undefined ){$state.go('bank');}
+      else{$state.go('bank');}
     }
       $scope.questionUpload = function(form){
         if(form.$valid){
@@ -457,16 +460,16 @@ $scope.diasbleSkip=$sessionStorage.disbledSkip;
           console.log(questUpload + " questUpload");
 
               questionsService.save(questUpload,function(data){
-              if($sessionStorage.SessionStatus=="T"){$state.go('activeClientStatus');}
-              else if($sessionStorage.SessionStatus=="I" || $sessionStorage.SessionStatus==null || $sessionStorage.SessionStatus==undefined ){$state.go('inactiveClient');}
-              else{$state.go('verifySuccess');}
+              if($sessionStorage.SessionStatus=="T"){$state.go('bank');}
+              else if($sessionStorage.SessionStatus=="I" || $sessionStorage.SessionStatus==null || $sessionStorage.SessionStatus==undefined ){$state.go('bank');}
+              else{$state.go('bank');}
                          
             //}
             },function(error){
               //$state.go('signature');     //comment this line if api is working
-              if($sessionStorage.SessionStatus=="T"){$state.go('activeClientStatus');}
-              else if($sessionStorage.SessionStatus=="I" || $sessionStorage.SessionStatus==null || $sessionStorage.SessionStatus==undefined ){$state.go('inactiveClient');}
-              else{$state.go('verifySuccess');}
+              if($sessionStorage.SessionStatus=="T"){$state.go('bank');}
+              else if($sessionStorage.SessionStatus=="I" || $sessionStorage.SessionStatus==null || $sessionStorage.SessionStatus==undefined ){$state.go('bank');}
+              else{$state.go('bank');}
                 });
           }
         }
@@ -716,7 +719,7 @@ $timeout(function() {
 
 })
 
-.controller('statusPageCtrl', function($scope ,$sessionStorage,$state,proofRedirectFactory,myService){
+.controller('statusPageCtrl', function($scope ,$sessionStorage,$state,proofRedirectFactory,myService,$window){
 
 
 
@@ -737,11 +740,15 @@ $timeout(function() {
     $scope.investNowFunction= function(){$state.go('invest');}
     $scope.withdrawNowFunction= function(){$state.go('withdraw');}
     $scope.notnowFunction= function(){
-      var nextStepsUrl=proofRedirectFactory.name;
+    /*  var nextStepsUrl=proofRedirectFactory.name;
       var totalSteps=myService.myFunction($sessionStorage.docStatus).length;
   //    var nextSteps=myService.myFunction($sessionStorage.docStatus);
       $sessionStorage.stepCount=0;
-      $state.go(nextStepsUrl[$scope.nextSteps[$sessionStorage.stepCount]]);
+      $state.go(nextStepsUrl[$scope.nextSteps[$sessionStorage.stepCount]]);*/
+        if ($window.confirm("Please Submit your documents to support@finozen.com"))
+        $state.go("tabsController");
+        else
+        $scope.result = "No";
     }
     $scope.docsToSubmit=['Photo of your PAN card ', 'Your selfie with PAN Card', 'Photo of your Address Proof Front', 'Photo of your Address Proof back', 'Your Signature'];
     $scope.nextSteps=myService.myFunction($sessionStorage.docStatus);
@@ -751,11 +758,10 @@ $timeout(function() {
     $scope.investNowFunction= function(){$state.go('invest');}
     $scope.withdrawNowFunction= function(){$state.go('withdraw');}
     $scope.notnowFunction= function(){
-      var nextStepsUrl=proofRedirectFactory.name;
-      var totalSteps=myService.myFunction($sessionStorage.docStatus).length;
-  //    var nextSteps=myService.myFunction($sessionStorage.docStatus);
-      $sessionStorage.stepCount=0;
-      $state.go(nextStepsUrl[$scope.nextSteps[$sessionStorage.stepCount]]);
+        if ($window.confirm("Please Submit your documents to support@finozen.com"))
+        $state.go("tabsController");
+        else
+        $scope.result = "No";
     }
     $scope.docsToSubmit=['Photo of your PAN card ', 'Your selfie with PAN Card', 'Photo of your Address Proof Front', 'Photo of your Address Proof Back', 'Your Signature'];
     $scope.nextSteps=myService.myFunction($sessionStorage.docStatus);
@@ -1181,8 +1187,6 @@ console.log(($scope.amount!=undefined || $scope.checked_withdraw) );
   for (var i = 0; i < 4; i++) {
     $scope.addSlide();
   }
-
-
 })
 
 
@@ -1203,22 +1207,10 @@ console.log($sessionStorage.SessionStatus+"   $sessionStorage.SessionStatus veri
     }
     else if ($sessionStorage.SessionStatus=='P' || $sessionStorage.SessionStatus=='Q' ){
       if($sessionStorage.docStatus !="11111"){
-        $sessionStorage.disbledSkip=true;
-        console.log($sessionStorage.docStatus + " I am here")
-        var nextStepsUrl=proofRedirectFactory.name;
-        var totalSteps=myService.myFunction($sessionStorage.docStatus).length;
-        $sessionStorage.stepCount=-1;  var nextSteps=myService.myFunction($sessionStorage.docStatus);
-        $sessionStorage.stepCount=$sessionStorage.stepCount+1;
-        console.log($sessionStorage.stepCount + "step count");
-        console.log(nextSteps + "next step");
-        console.log(nextStepsUrl[1] + "next step url");
-        console.log(nextStepsUrl[nextSteps[$sessionStorage.stepCount]] + "next state");
-        if(nextSteps[$sessionStorage.stepCount]==2 && nextSteps[$sessionStorage.stepCount+1]==3){$sessionStorage.stepCount=$sessionStorage.stepCount+1; $state.go('imageSelection');}
-        else if(nextSteps[$sessionStorage.stepCount]==2 || nextSteps[$sessionStorage.stepCount]==3){$state.go('imageSelection');}
-        else{
-        if(totalSteps==$sessionStorage.stepCount){confirmation=1; console.log("iam going");  $state.go('feedback');}
-          else{$state.go(nextStepsUrl[nextSteps[$sessionStorage.stepCount]]);}
-        }
+        if ($window.confirm("Please Submit your documents to support@finozen.com"))
+        $state.go("tabsController");
+        else
+        $scope.result = "No";
       }
     }
   }

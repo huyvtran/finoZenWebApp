@@ -1,3 +1,4 @@
+<div ng-controller="loginChech">
 	<div ng-controller="navTabsCtrl" class="col-md-12">
 		<nav class="navbar navbar-default navbar-fixed-top"  >
 			<div class="container">
@@ -10,18 +11,17 @@
 					</button>
 					<a class="navbar-brand" href="#/summary"><img src="img/logo_priv.png" ></a>
 				</div>
-
 			    <div class="collapse navbar-collapse" id="myNavbar">
-			      <ul class="nav navbar-nav navbar-right">
-			        <li ><a index="0" ng-click="defaultTab()"> Home</a></li>
-			        <li ng-repeat="liTab in navTabs" ><a index="$index + 1" ng-click="onClickTab(liTab)">{{liTab.title}}</a></li>
-			        <li index="4" ><a ng-controller="summaryPageCtrl" ng-click="signout()"> Sign Out</a></li>
-			      </ul>
+		            <ul class="nav navbar-nav navbar-right">
+		              <li ><a class="active-now" index="0" ng-click="defaultTab()"> Home</a></li>
+		              <li ><a index="1" href="#/account"> Profile</a></li>
+		              <li><a index="2" href="#/aboutUs"> About Us</a></li>
+		              <li ><a index="3" href="#/faq"> FAQ</a></li>
+		              <li index="4" ><a ng-controller="summaryPageCtrl" ng-click="signout()"> Sign Out</a></li>
+		            </ul>
 			    </div>
 			</div>
-
 		</nav>
-
 	</div>
 <div ng-controller="TabsCtrl"  class="row summaryTab">
 <span ng-controller="transListController as listControl"></span>
@@ -38,4 +38,5 @@
 			  <div ion-track-tap="invest" class="col-md-6 col-sm-6 col-xs-6 col-lg-6  invest_button"><span ng-click="investCheck()" class="button button-clear button-positive  glyphicon glyphicon-plus invest_btn green" ></span><br /><span class="invest_bottom_button green" >ADD MONEY</span></div>
 			</div>
 		</div>
+</div>
 </div>

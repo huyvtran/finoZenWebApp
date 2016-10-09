@@ -1,3 +1,4 @@
+<div ng-controller="loginChech">
 <div ng-controller="navTabsCtrl">
 <nav class="navbar navbar-default navbar-fixed-top"  >
   <div class="container">
@@ -8,9 +9,8 @@
 </nav>
 </div>
 
-<div class="verification"  ng-controller="verifySuccessCtrl">
-		<div class="container">
-			<div class="rows"><img ng-src={{statusImage}} class="steps" /></div>
+<div class="verification bankPage"  ng-controller="verifySuccessCtrl">
+		<div class="">
 			<div class="rows padding">
 			<h5 class="text-center" style="font-weight:600; text-transform:uppercase;color:#18bb9c;">Congratulations!</h5>
 				<p class="padding">{{para1}}</p>
@@ -23,9 +23,11 @@
 					<li><span style="color: rgb(24, 187, 156); padding: 11px;" class="ion-checkmark-circled"></span>24X7 Customer Support</li>
 				</ol>
 			</div>
+		</div><br><br>
+	<div class="text-center">
+		<div class="btn-group text-center" role="group" aria-label="...">
+			<button type="button" class="btn btn-default button button-positive"  ng-click="investNowFunction()">{{startInvesting}}</button>
 		</div>
-	<div class="btn-group text-center" role="group" aria-label="...">
-		<button type="button" class="btn btn-default button button-positive" ng-click="notnowFunction()" ng-disabled="true">{{notNow}}</button>
-		<button type="button" class="btn btn-default button button-positive"  ng-click="investNowFunction()">{{startInvesting}}</button>
 	</div>
+</div>
 </div>

@@ -1,3 +1,4 @@
+<div ng-controller="loginChech">
 <div ng-controller="navTabsCtrl">
 <nav class="navbar navbar-default navbar-fixed-top"  >
   <div class="container">
@@ -7,11 +8,12 @@
   </div>
 </nav>
 </div>
-<div class="verification" ng-controller="statusPageCtrl">
-		<div class="container statusPage" >
-			<div class="rows"><img src="img/step1.jpg" class="steps"></div>
+<div class="verification bankPage" ng-controller="statusPageCtrl">
+		<div class=" statusPage" >
 			<div class="rows padding">
 				<p>{{para1}}</p>
+
+				<p >Please send us your PAN Number and Bank Details to <b>support@finozen.com</b> or by WhatsApp @<b>7899825545</b></p>
 			</div>
 			<div ng-hide="docstatus">
 				<hr/>
@@ -28,8 +30,8 @@
 			</div>
 		</div>
 
-	<div class="button-bar " style="padding:0;">
+	<div class="button-bar text-center" style="padding:0;">
 		<button class="button button-positive" ng-click="investNowFunction()" >Invest Now</button>
 	</div>
-
+	</div>
 </div>
