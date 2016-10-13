@@ -11,17 +11,16 @@
 			<table class="table loginTable">
 			    <tbody>
 			        <tr class="text-center">
-			            <td colspan="2" class="row logo zero_padding"><img src="img/logo_priv.png"></td>
+			            <td class="row logo zero_padding"><img src="img/logo_priv.png"></td>
 			        </tr>
 			        <tr class="text-center">
-			        	<td colspan="2" class="">Watch Your Money Grow</td>
+			        	<td  class="">Watch Your Money Grow</td>
 			        </tr>
 			        <tr class="text-center">
-			        	<td colspan="2" class=""></td>
+			        	<td class=""></td>
 			        </tr>
 			        <tr>
-				        <td class="text-right col-md-6 col-xs-6 col-lg-6 col-sm-6">Mobile Number</td>
-				        <td  class="text-left col-md-6 col-xs-6 col-lg-6 col-sm-6">
+				        <td  class="text-left">
 				        	<label class="item item-input" ng-class="{ 'has-errors' : authorizationForm.mobile.$touched && authorizationForm.mobile.$invalid, 'no-errors' :  authorizationForm.mobile.$touched && authorizationForm.mobile.$valid}">
 								<input type="number" name="mobile" ng-model="mobileNumber"  maxlength="10" ng-minlength="10" ng-maxlength="10" ng-pattern="/^[0-9]{1,10}$/" required placeholder="Mobile Number" step="1">
 							</label>
@@ -41,17 +40,10 @@
 			     	</tr>
 			     
 			        <tr>
-				        <td class="text-right col-md-6 col-xs-6 col-lg-6 col-sm-6">
-				        	4-Digit PIN<br/>
-				        	<label class="rememberme col-md-6 col-sm-6">
-								<input ng-model="rememberMe" type="checkbox" ng-init="rememberMe=true" id="remember_me" style="margin: 4px;"><label id="remember_me_label" for="remember_me" >Remember Me</label>
-							</label>
-				        </td>
-				        <td text-left col-md-6 col-xs-6 col-lg-6 col-sm-6>
+				        <td text-left >
 				        	<label class="item item-input" ng-class="{ 'has-errors' : authorizationForm.password.$invalid && authorizationForm.$submitted, 'no-errors' : authorizationForm.password.$valid  && authorizationForm.$submitted}">
 								<input type="password" name="password" ng-pattern="/^[0-9]{1,4}$/" ng-model="digitPin" maxlength="4" ng-minlength="4" ng-maxlength="4" required placeholder="Enter 4 digit PIN" >
-							</label><br/>
-				        	<p class="forgot_pin" ng-click="forgotPin(authorizationForm.mobile)">Forgot Pin?</p>
+							</label>
 							<div class="error-container last-error-container" ng-show="authorizationForm.password.$error && authorizationForm.$submitted" ng-messages="authorizationForm.password.$error">
 								<div  class="error" >
 									<div ng-message="required">You did not enter a field</div>
@@ -61,8 +53,21 @@
 							</div>
 				        </td>
 			     	</tr>
+			        <tr>
+				        <td class=""  >
+				        	<label class="rememberme col-md-4 col-sm-3 col-xs-4 col-lg-6">
+								<input ng-model="rememberMe" type="checkbox" ng-init="rememberMe=true" id="remember_me" style="margin: 4px;"><span id="remember_me_label" for="remember_me" >Remember Me</span>
+							</label>
+				        	<span class="text-left col-md-4 col-sm-3 col-xs-4 col-lg-6 forgot_pin" ng-click="forgotPin(authorizationForm.mobile)">Forgot Pin?</span>
+				        </td>
+			     	</tr>
+
+
+
+
+			     	
 			        <tr class="text-center">
-			            <td colspan="3" class="row">
+			            <td  class="row">
 							<button ion-track-tap="login" class="button button-full button-positive" type="submit">
 								<span class="glyphicon glyphicon-lock"></span><span>Secure Login</span>
 								<a class='clear' data-ng-click="authorization.password = ''"></a>
@@ -70,7 +75,7 @@
 			            </td>
 			        </tr>
 			        <tr class="text-center">
-			        	<td colspan="3" class=""><a href="#page8" class="button button-positive button-clear button-block create_acc_btn ">or create an account</a></td>
+			        	<td class=""><a href="#page8" class="button button-positive button-clear button-block create_acc_btn ">or create an account</a></td>
 			        </tr>
 			     
 			    </tbody>

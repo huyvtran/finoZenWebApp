@@ -774,12 +774,12 @@ $timeout(function() {
     if($sessionStorage.clientType=="GO"){
     console.log($sessionStorage.clientType+ "  gold")
     $scope.schemePlan="RELIANCE LIQUID FUND-CASH PLAN-GROWTH";
-    $scope.averageRate=7.0;
+    $scope.averageRate=7;
   }
     else if($sessionStorage.clientType=="PL") {
     console.log($sessionStorage.clientType+ "  platinum")
       $scope.schemePlan="RELIANCE LIQUID FUND - TREASURY PLAN - IP - Growth";
-    $scope.averageRate=8.0;
+    $scope.averageRate=8;
     }
   var dayNow = new Date().getDay();
   console.log(dayNow);
@@ -792,6 +792,7 @@ $timeout(function() {
   // till here
 
     $scope.final=function(initial,nav,suggest){
+      console.log($scope.averageRate + "    averageRate");
     console.log($scope.nav + "nav");
     var theory=initial/nav ;
     var rounded= Math.round(theory * 1000)/1000;
@@ -1169,7 +1170,7 @@ console.log(($scope.amount!=undefined || $scope.checked_withdraw) );
         }
     })
 .controller('CarouselDemoCtrl', function ($scope) {
-  $scope.myInterval = 1000;
+  $scope.myInterval = 4000;
   $scope.noWrapSlides = false;
   $scope.active = 0;
   var slides = $scope.slides = [];
@@ -1179,7 +1180,11 @@ console.log(($scope.amount!=undefined || $scope.checked_withdraw) );
     var newWidth = 600 + slides.length + 1;
     slides.push({
       image: ['img/1.png', 'img/2.png', 'img/3.png', 'img/4.png'],
-      text: ['Nice image','Awesome photograph','That is so cool','I love that'][slides.length % 4],
+      headding: ['Watch your money grow', 'Invest & withdraw @ One Click', 'Your money is safe', "We're only a call away"],
+      text: ['Your money is expected to grow at an annualized rate of 7.0 - 8.5%, you can see it growing everyday and withdraw anytime you want!',
+             'At FinoZen, we have made the entire process of investing extremely simple, now you can invest and withdraw almost instantaneously in One Click!',
+             "At FinoZen, you'll be investing in Fino selected liquid mutual fund which has extremely low risk - almost as safe as your savings bank deposit or fixed deposits. You can invest as low as Rs. 100!",
+             "You can chat with us or call us anytime from Monday to Saturday between 10 am to 9 pm, we'll resolve all your queries within minutes!"][slides.length % 4],
       id: currIndex++
     });
   };

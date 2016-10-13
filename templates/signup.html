@@ -11,67 +11,62 @@
 <br/>
 <form name="signupForm" novalidate="" ng-submit="signUp(signupForm,confirmPassword,authorization)" >
 
-	<div class="list table-responsive">
-		<table class="table">
+	<div class="list">
+		<table class="table loginTable">
 		<tbody>
 		  <tr>
-		    <td>First Name</td>
 		    <td>
 		        <label class="item item-input" ng-class="{ 'has-errors' : signupForm.$submitted && signupForm.Fname.$invalid, 'no-errors' :  signupForm.Fname.$touched && signupForm.Fname.$valid}">
 					<input type="text" name="Fname" ng-pattern ="/^[a-zA-Z\s]*$/" ng-model="authorization.fName" minlength="2"  required placeholder="First Name">
 				</label>
 
 				<div class="error-container" ng-show="signupForm.Fname.$error && signupForm.$submitted" ng-messages="signupForm.Fname.$error">
-					<div class="error"  ng-message="required">'fieldEmpty' | translate</div>
+					<div class="error"  ng-message="required">You did not enter a field</div>
 					<div class="error"  ng-message="pattern">Enter Alphabets only</div>
 					<div class="error"  ng-message="minlength">Enter your full name</div>
 				</div>
 			</td>
 		  </tr>
 		  <tr>
-		    <td>Last Name</td>
 		    <td>
 				<label class="item item-input" ng-class="{ 'has-errors' : signupForm.$submitted && signupForm.Lname.$invalid, 'no-errors' :  signupForm.Lname.$touched && signupForm.Lname.$valid}">
 					<input type="text" name="Lname" ng-pattern ="/^[a-zA-Z\s]*$/"  ng-model="authorization.lName"  placeholder="Last Name" required>
 				</label>
 				<div class="error-container" ng-show="signupForm.Lname.$error && signupForm.$submitted" ng-messages="signupForm.Lname.$error">
-					<div class="error"  ng-message="required">'fieldEmpty' | translate</div>
+					<div class="error"  ng-message="required">You did not enter a field</div>
 					<div class="error"  ng-message="pattern">Enter Alphabets only</div>
 				</div>
 		    </td>
 		  </tr>
 		  <tr>
-		    <td>Mobile Number</td>
 		    <td>
 				<label class="item item-input" ng-class="{ 'has-errors' : signupForm.$submitted && signupForm.mobile.$invalid, 'no-errors' :  signupForm.mobile.$touched && signupForm.mobile.$valid}">
 					<input type="number" name="mobile" ng-model="authorization.mobileNumber" maxlength="10" ng-minlength="10" ng-maxlength="10" required placeholder="Mobile Number" >
 				</label>
 				<div class="error-container" ng-show="signupForm.mobile.$error && signupForm.$submitted" ng-messages="signupForm.mobile.$error">
-					<div class="error"  ng-message="required">'fieldEmpty' | translate</div>
+					<div class="error"  ng-message="required">You did not enter a field</div>
 					<div class="error"  ng-message="minlength, maxlength">
-						mobileLength | translate
+						Mobile number must be 10 digits.
 					<div class="error"  ng-message="min, max, step">
-						mobileInvalid | translate
+						Enter valid mobile number
 					</div>
 					</div>
 				</div>
 		    </td>
 		  </tr>
 		  <tr>
-		    <td>E-Mail ID</td>
 		    <td>
 				<label class="item item-input" ng-class="{ 'has-errors' : signupForm.$submitted && signupForm.email.$invalid, 'no-errors' :  signupForm.email.$touched && signupForm.email.$valid}">
 					<input type="email" name="email" ng-model="authorization.email" required placeholder="Email Id" >
 				</label>
 				<div class="error-container" ng-if="signupForm.email.$error && signupForm.$submitted" ng-messages="signupForm.email.$error">
-					<div class="error"  ng-message="required">'fieldEmpty' | translate</div>
+					<div class="error"  ng-message="required">You did not enter a field</div>
 					<div class="error" ng-message="email">Enter a valid email!</div>
 				</div>
 
 		    </td>
 		  </tr>
 		  <tr>
-		    <td>Enter 4-Digit PIN</td>
 		    <td>
 		    	<label class="item item-input" ng-class="{ 'has-errors' : signupForm.password.$invalid && signupForm.$submitted, 'no-errors' : signupForm.password.$valid  && signupForm.$submitted}">
 				<input type="password" name="password" ng-model="authorization.pin" maxlength="4" ng-minlength="4" ng-maxlength="4" required placeholder="Enter 4-Digit PIN" ng-pattern="/^[0-9]{1,4}$/">
@@ -79,19 +74,18 @@
 				<div class="error-container last-error-container" ng-show="signupForm.password.$error && signupForm.$submitted" ng-messages="signupForm.password.$error">
 					<div  class="error" >
 						<div ng-message="required">
-							'fieldEmpty' | translate
+							You did not enter a field
 						</div>
 						<div ng-message="minlength, maxlength">
-						'passwordLength' | translate
+							Enter 4 digit PIN
 						</div>
 						<div ng-message="pattern">
-						'digitsOnly' | translate</div>
+						Enter digits only</div>
 					</div>
 				</div>
 		    </td>
 		  </tr>
 		  <tr>
-		    <td>Confirm 4-Digit PIN</td>
 		    <td>
 		    	<label class="item item-input" ng-class="{ 'has-errors' : signupForm.confirm.$invalid && signupForm.$submitted, 'no-errors' : signupForm.confirm.$valid  && signupForm.$submitted}">
 					<input type="password" name="confirm" ng-model="confirmPassword" maxlength="4" ng-minlength="4" ng-maxlength="4" required placeholder="Confirm 4-Digit PIN" ng-pattern="/^[0-9]{1,4}$/">
@@ -99,7 +93,7 @@
 				<div class="error-container last-error-container" ng-show="signupForm.confirm.$error && signupForm.$submitted" ng-messages="signupForm.confirm.$error">
 					<div  class="error" >
 						<div ng-message="required">
-							'fieldEmpty' | translate
+							You did not enter a field
 						</div>
 						<div ng-message="minlength, maxlength">
 							Enter 4 digit PIN
@@ -111,7 +105,6 @@
 		    </td>
 		  </tr>
 		  <tr>
-		    <td class="col-md-3">Referral Code</td>
 		    <td>
 		    	<label class="item item-input" ng-class="{ 'has-errors' : signupForm.referral.$invalid && signupForm.$submitted, 'no-errors' : signupForm.referral.$valid  && signupForm.$submitted}">
 					<input type="text" name="referral" ng-model="authorization.referral"  placeholder="Referral code(Optional)">
@@ -130,9 +123,7 @@
 		  <tr>
 		  	<td colspan="2" class="text-center">	  		
 				<button class="button button-full button-positive" type="submit" >SIGN UP
-				</button>  		
-				<a class="button button-full button-positive" href="#/questions" >skip
-				</a>
+				</button>
 		  	</td>
 		  </tr>
 		</tbody>

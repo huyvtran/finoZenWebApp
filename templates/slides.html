@@ -14,14 +14,16 @@
       <div uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
         <img ng-src="{{slide.image[slide.id]}}" style="margin:auto;"><br/>
         <div class="carousel-caption">
-          <h4>Slide {{slide.id+1}}</h4>
-          <p>{{slide.text}}</p>
+          <h4>{{slide.headding[slide.id]}}</h4>
+          <p style="padding:  0 10%;">{{slide.text}}</p>
         </div>
       </div>
     </div>
   </div>
-    <div class="btn-group text-center" role="group" aria-label="...">
+  <div class="text-center"><br/><br/><br/>
+    <div class="btn-group " role="group" aria-label="...">
       <a type="button" class="btn btn-default button button-positive"  href="#/questions">SKIP</a>
+    </div>
   </div>
 </div>
 

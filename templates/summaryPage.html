@@ -2,22 +2,27 @@
 <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12 ">
 
 	<div class="summary " id="viewOne" >
-		<div class="row circle col-md-12 col-xs-12 col-lg-12 col-sm-12 ">
-			<div class="flip-container2 flip-container">
-		        <div class="flipper clearfix">
-		          <div class="front">
-						<p class="total_value" ><span><img class="flipImage"	 src="img/left.png"style="float: left;" /><sup>&#x20B9;</sup></span>{{ balance()|currency:""}}
-						<img class="flipImage" src="img/right.png"style="float: right;"/></p>
-						<p class="total_value_label" ><span class="current_bal item-note">CURRENT BALANCE</span></p>
-		          </div>
-		          <div class="back success">  	
-						<p class="total_value"><img class="flipImage" src="img/left.png"style="float: left;" />{{xirrRate()}}%<img class="flipImage" src="img/right.png"style="float: right;"/></p>
-						<p class="total_value_label" ><span class="current_bal item-note">GROWTH RATE</span></p>
-		          </div>
-		        </div>
-		    </div>
+		<div class="row">
+			<div class="col-xs-1 col-sm-1 hidden-md hidden-lg"></div>
+			<div class="circle col-md-12 col-xs-10 col-lg-12 col-sm-10 ">
+				<div class="flip-container2 flip-container">
+			        <div class="flipper clearfix">
+			          <div class="front">
+							<p class="total_value" ><span><img class="flipImage"	 src="img/left.png"style="float: left;" /></span><span class="rupeeSymbol">&#x20B9;</span>{{ balance()|currency:""}}
+							<img class="flipImage" src="img/right.png"style="float: right;"/></p>
+							<p class="total_value_label" ><span class="current_bal item-note">CURRENT BALANCE</span></p>
+			          </div>
+			          <div class="back success">  	
+							<p class="total_value"><img class="flipImage" src="img/left.png"style="float: left;" />{{xirrRate()}}%<img class="flipImage" src="img/right.png"style="float: right;"/></p>
+							<p class="total_value_label" ><span class="current_bal item-note">GROWTH RATE</span></p>
+			          </div>
+			        </div>
+			    </div>
+			</div>
+			<div class="col-xs-1 col-sm-1 hidden-md hidden-lg"></div>
 		</div>
-		<div  class="row col-md-12 col-xs-12 col-lg-12 col-sm-12 summary_values">
+		<div class="row">
+		<div  class="col-md-12 col-xs-12 col-lg-12 col-sm-12 summary_values">
 			<div class="col-md-6 col-xs-6 col-sm-6 col-lg-6 " style="text-align:center; font-size:18px;">
 				<div class="flip-container1 flip-container">
 
@@ -25,7 +30,7 @@
 
 					  <div class="back success ">
 
-						<p class="inner_numbers" style="margin:0; "><span><sup>&#x20B9;</sup></span>{{netGain() | currency:""}} </p>
+						<p class="inner_numbers" style="margin:0; "><span class="rupeeSymbol">&#x20B9;</span>{{netGain() | currency:""}} </p>
 
 						<p class="item-note left inner_numbersLabel leftLine" >Net Gains</p>
 
@@ -33,7 +38,7 @@
 
 					  <div class="front">
 
-						<p class="inner_numbers"><span><sup>&#x20B9;</sup></span>{{ investAmount()|currency:""}}</p>
+						<p class="inner_numbers"><span class="rupeeSymbol">&#x20B9;</span>{{ investAmount()|currency:""}}</p>
 
 						<p class="item-note left inner_numbersLabel leftLine" >Net Investment</p>
 
@@ -49,7 +54,7 @@
 
 				<div style="border-left: 3px solid #808080;">
 
-				    <p class="inner_numbers" style="margin:0; "><span><sup>&#x20B9;</sup></span>{{gainToday() | currency:""}}</p>
+				    <p class="inner_numbers" style="margin:0; "><span class="rupeeSymbol">&#x20B9;</span>{{gainToday() | currency:""}}</p>
 
 					<p class="item-note left inner_numbersLabel leftLine">Net Gains Today</p>
 
@@ -60,7 +65,7 @@
 			</div>
 
 
-
+		</div>
 		</div>
 	</div>
 </div>

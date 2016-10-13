@@ -35,8 +35,8 @@
 			</p>
 		<form name="investForm" novalidate="" ng-submit="Invest(investForm)">
 
-			<label class="item item-input" ng-class="{ 'has-errors' : investForm.amount.$touched && investForm.amount.$invalid, 'no-errors' :  investForm.amount.$touched && investForm.amount.$valid}">
-				<input type="number" placeholder="Enter Amount"  name="amount"  ng-model="initial" ng-pattern="/^[0-9]{1,20}$/"  min="100"  ng-keyup="apprxVal=initial+((initial*averageRate)/100)" required>
+			<label class="item item-input investAmount" ng-class="{ 'has-errors' : investForm.amount.$touched && investForm.amount.$invalid, 'no-errors' :  investForm.amount.$touched && investForm.amount.$valid}">
+				<input type="number"  placeholder="Enter Amount"  name="amount"  ng-model="initial" ng-pattern="/^[0-9]{1,20}$/"  min="100"  ng-keyup="apprxVal=initial+((initial*averageRate)/100)" required>
 			</label>
 			<div class="error-container add_money" ng-show="investForm.amount.$error && investForm.$submitted" ng-messages="investForm.amount.$error">
 				<div  class="error" >
@@ -44,22 +44,26 @@
 					<div  ng-message="min">
 						Add minimum amount of <span>&#x20B9;</span> 100
 					</div>
+				</div>
+			</div>
+			<div class="error-container add_money" ng-show="investForm.amount.$error && investForm.$dirty" ng-messages="investForm.amount.$error">
+				<div  class="error" >
 					<div  ng-message="pattern">
-						Enter valid Integer
+						Enter valid Amount
 					</div>
 				</div>
 			</div>
 			<div class="" >
 			<p><br><span >To optimize returns, we will add </span> <span class="suggested"> {{ final(initial,nav,0) | currency:"&#8377;" }} </span> <span>to your investments</span><br> </p>
 			</div>
-
+<br/>
 			<div class="text-center">
-				<button ion-track-tap="add money" type="submit" class="button button-positive bar-footer invest_button_footer" >ADD MONEY</button>
+				<button ion-track-tap="add money" type="submit" class="button button-positive bar-footer invest_button_footer" >ADD MONEY</button><br/><br/><br/><br/>
+			</div>
+			<div class="" >
+				<p><br>Scheme :<a href="#/mutualFund"><span class="suggestedScheme">{{schemePlan}}</span> </a>  </p>
 			</div>
 			<p class="item_checkbox"><span >By clicking ADD MONEY you agree to have read</span> <a href="#" onclick="window.open('https://www.reliancemutual.com/InvestorServices/SIDDebt/Reliance-Liquid-TP-CP-SID.pdf', '_system', 'location=yes'); return false;">Scheme Information Document</a>, <a href="#" onclick="window.open('http://finozen.com/t&c.html', '_self', 'location=yes'); return false;">T&C </a><span >before making the investment</span></p>
-			<div class="" >
-				<p><br>Scheme :<br/><a href="#/mutualFund"><span class="suggestedScheme">{{schemePlan}}</span> </a>  </p>
-			</div>
 			<p><sup >*<sup>Based on scheme performance last year</sup></sup></p>
 		</form>		
 	</div>
