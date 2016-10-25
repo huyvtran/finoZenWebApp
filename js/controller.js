@@ -247,6 +247,19 @@ $scope.xirrRate= function(){
 		$sessionStorage.docStatus=data.jsonStr[0].docStatus;
 		console.log($sessionStorage.docStatus + "docStatus");
 
+
+          //clevertap integration for user login
+          clevertap.onUserLogin.push({
+              "Site": {
+                  "Name": $sessionStorage.SessionClientName,            // String
+                  "ClientStatus": $sessionStorage.clientActive,        // string(char)
+                  "Phone":$sessionStorage.SessionMobNo,               // Phone
+                  "DocStatus":$sessionStorage.docStatus,             //string
+                  "ActiveStatus":$sessionStorage.SessionStatus,     //string
+                  "ClientType":$sessionStorage.clientType,         // string(char)
+              }
+          });
+
  
         $state.go('tabsController');
         }
@@ -287,13 +300,13 @@ $scope.xirrRate= function(){
     isFirstOpen: true,
     isFirstDisabled: false
   };
-        $scope.message = "In FinoZen, we have ensured that there is minimal risk to your investments with high returns and almost instantaneous liquidity. Your investments directly go to a pre-selected liquid mutual fund. FinoZen selection algorithm is based on following parameters –";
+        $scope.message = "In FinoZen, we have ensured that there is minimal risk to your investments with high returns and almost instantaneous liquidity. Your investments directly go to a pre-selected liquid mutual fund. FinoZen selection algorithm is based on following parameters ï¿½";
         $scope.groups = [];
         $scope.groups["0"] = {name: "A. Net Assets of Liquid Fund", items: ["We give high weightage to the Net Amount Invested in a fund, and only those funds with greater than Rs. 2,000 Cr. in net assets are considered. This ensures that there is no liquidity crunch."] };
         $scope.groups["1"] = {name: "B. Size of Asset Management Company" , items: ["Size of Asset Management Company is given due importance and only top 10 fund houses are selected by us."] };
         //$scope.groups["2"] = {name: "C. Expense Ratio" , items: ["The expense ratio of a stock or asset fund is the total percentage of fund assets used for administrative, management, advertising and all other expenses. We select only the funds with very low expense ratio to ensure higher returns."] };
         $scope.groups["2"] = {name: "C. Average Credit Quality" , items: ["To ensure safety of investments, we select only those funds which invest in short term AAA or AA rated securities, ensuring that funds are extremely low risk."] };
-        $scope.groups["3"] = {name: "D. Technical Indicators" , items: ["Our algorithm takes into factors 5 important technical indicators – Standard Deviation, Sharpe Ratio, Alpha, Beta and R-Squared to benchmark liquid funds. This ensures high returns with lowest risk."] };
+        $scope.groups["3"] = {name: "D. Technical Indicators" , items: ["Our algorithm takes into factors 5 important technical indicators ï¿½ Standard Deviation, Sharpe Ratio, Alpha, Beta and R-Squared to benchmark liquid funds. This ensures high returns with lowest risk."] };
 
 
         /*
@@ -477,7 +490,7 @@ $scope.diasbleSkip=$sessionStorage.disbledSkip;
     )
     .controller('AccountfaqCtrl', function($scope) {
         $scope.groups = [];
-        $scope.groups["0"] = {name: "What is FinoZen?",items: ["FinoZen is a mobile app where you can watch your money grow, literally! It enables you to invest and withdraw in just a click while your money grows at an expected rate of 7.0 – 8.5% p.a."] };
+        $scope.groups["0"] = {name: "What is FinoZen?",items: ["FinoZen is a mobile app where you can watch your money grow, literally! It enables you to invest and withdraw in just a click while your money grows at an expected rate of 7.0 ï¿½ 8.5% p.a."] };
         $scope.groups["1"] = {name: "How does FinoZen work?" , items: ["FinoZen channels your money to the selected liquid mutual fund which gives the best return at lowest risk. You will have full visibility and control of your money at all times. You can choose to Add or withdraw money anytime, anywhere with no penalties applicable. "] };
         $scope.groups["2"] = {name: "Who is FinoZen meant for?" , items: ["FinoZen is meant for anyone who has excess money parked in their bank account. If you wish to make your money work for you and earn you interest to the tune of 7.0-8.5% p.a. in just a click, then FinoZen is meant for you.  You should be an Indian National investing in individual capacity.FinoZen is not available for NRIs, companies, firms, trusts etc."] };
         $scope.groups["3"] = {name: "Why should I use Finozen over other options like savings accounts, fixed deposits?" , items: ["If your money is in Savings account, you get low returns at best quarterly.  Fixed Deposits  and other saving instruments will have higher returns but have a lock in period. With FinoZen, your returns are usually 7.0-8.5%, returns get credited in your account everyday, and you can add or withdraw any time!"] };
@@ -518,8 +531,8 @@ $scope.diasbleSkip=$sessionStorage.disbledSkip;
         $scope.groups = [];
         $scope.groups["0"] = {name: "I have signed up, what happens next?",items: ["Congratulations and welcome to Finozen! Here are the next steps:",
             "  1) Welcome Call: We will call you shortly (during office hours) and introduce FinoZen to you. Our executive will answer all your queries and will request you to proceed for Account Activation.",
-            "  2) Account Activation: It’s a 6 step process which takes around 3 mins to complete. After you have submitted the necessary details, It will take us 5 mins. to activate your account (during office hours).  We will get in touch with you to inform you about the activation. ",
-            "  3) Start Investing: Post activation of account, you can click on “Add Money” and start investing through netbanking.",
+            "  2) Account Activation: Itï¿½s a 6 step process which takes around 3 mins to complete. After you have submitted the necessary details, It will take us 5 mins. to activate your account (during office hours).  We will get in touch with you to inform you about the activation. ",
+            "  3) Start Investing: Post activation of account, you can click on ï¿½Add Moneyï¿½ and start investing through netbanking.",
             "  4) Welcome to FinoZen family, now you can watch your money grow! "
         ] };
         $scope.groups["1"] = {name: "Why are these documents required?",items: ["  These requirements are specified by SEBI (Securities and Exchange Board of India) and other regulatore bodies. We submit these documents to the Mutual fund for account creation."] };
@@ -919,10 +932,10 @@ $timeout(function() {
     $scope.currentAUM=" Rs. 3,775 Crores";
     $scope.TaxBenifits=" Unlike FD, there is no TDS for investments in this fund. Also, for investments more than 3 years, tax payout becomes negligible as there is indexation benefits. However for investments less than 3 years, you will have to declare the returns from this investment at the time of tax filing and pay tax as per your salary bracket.";
     $scope.schemeLink="http://www.moneycontrol.com/mutual-funds/nav/reliance-liquid-fund-cash-plan/MRC014";
-    $scope.schemeLinkText=" to read more about Reliance Liquid Fund Cash Plan – Growth on moneycontrol.";
+    $scope.schemeLinkText=" to read more about Reliance Liquid Fund Cash Plan ï¿½ Growth on moneycontrol.";
   }
   else{
-    $scope.schemeName="Reliance Liquid Fund Treasury Plan (IP) – G";
+    $scope.schemeName="Reliance Liquid Fund Treasury Plan (IP) ï¿½ G";
     $scope.schemeBody="Reliance Liquid Fund ensure that your investments are very low risk, no-lock in on withdrawl and generate stable returns. This fund primarily invests in money market instruments of public sector banks and undertakings such as HUDCO, L&T and Tata Steel  making it ultra-safe (almost as safe as your savings bank deposits) to invest your money.";
     $scope.returnsOneM="9.48%";
     $scope.returnsThreeM="8.2%";
@@ -932,10 +945,10 @@ $timeout(function() {
     $scope.currentAUM=" Rs. 14,469 Crores";
     $scope.TaxBenifits=" Unlike FD, there is no TDS for investments in this fund. Also, for investments more than 3 years, tax payout becomes negligible as there is indexation benefits. However for investments less than 3 years, you will have to declare the returns from this investment at the time of tax filing and pay tax as per your salary bracket.";
     $scope.schemeLink="http://www.moneycontrol.com/mutual-funds/nav/reliance-liquid-fund-treasury-plan-ip/MRC046";
-    $scope.schemeLinkText=" to read more about Reliance Liquid Fund Treasury Plan (IP) – G on moneycontrol.";
+    $scope.schemeLinkText=" to read more about Reliance Liquid Fund Treasury Plan (IP) ï¿½ G on moneycontrol.";
   }
   /*else{
-    $scope.schemeName="Reliance Money Manager Fund – Growth Plan";
+    $scope.schemeName="Reliance Money Manager Fund ï¿½ Growth Plan";
     $scope.schemeBody="Reliance Money Manager Fund ensures that your investments are at low risk, no lock-in on withdrawal and generate stable returns. This fund primarily invests in money market instruments and NCDs of public sector banks and AAA rated companies like Axis Bank, ICICI Bank, HDFC Ltd. etc. making it a safe option to park your surplus bank balance.";
     $scope.returnsOneM="7.80%";
     $scope.returnsThreeM="9.04%";
@@ -945,7 +958,7 @@ $timeout(function() {
     $scope.currentAUM=" Rs. 14,469 Crores";
     $scope.TaxBenifits=" Unlike FD, there is no TDS for investments in this fund. Also, for investments more than 3 years, tax payout becomes negligible as there is indexation benefits. However for investments less than 3 years, you will have to declare the returns from this investment at the time of tax filing and pay tax as per your salary bracket.";
     $scope.schemeLink="http://www.moneycontrol.com/mutual-funds/nav/reliance-liquid-fund-treasury-plan-ip/MRC046";
-    $scope.schemeLinkText=" to read more about Reliance Liquid Fund Treasury Plan (IP) – G on moneycontrol.";
+    $scope.schemeLinkText=" to read more about Reliance Liquid Fund Treasury Plan (IP) ï¿½ G on moneycontrol.";
   }*/
 })
 
@@ -1157,6 +1170,12 @@ console.log(($scope.amount!=undefined || $scope.checked_withdraw) );
           $sessionStorage.clientType=(JSON.parse(data.jsonStr)).clientType;
           $sessionStorage.stepCount=0;
           $sessionStorage.disbledSkip=false;
+
+                    //clevertap integration for user signup
+                    
+
+
+
                     $state.go('sliders');    // new sign upflow
           //$state.go('reference');
          // $ionicLoading.hide();
@@ -1249,7 +1268,7 @@ console.log($sessionStorage.SessionStatus+"   $sessionStorage.SessionStatus veri
         $scope.disbledSkip=true;
         $scope.statusImage="img/step1.jpg";
         $scope.para1="Your FinoZen account is currently inactive. Do you wish to start saving and growing your money everyday?";
-        $scope.para2="If yes, please click on “Activate Now” and submit your PAN Number and Bank Details. We will activate your account instantaneously!";
+        $scope.para2="If yes, please click on ï¿½Activate Nowï¿½ and submit your PAN Number and Bank Details. We will activate your account instantaneously!";
         $scope.notNow ="Not Now";
         $scope.startInvesting="Activate Now";
       }
