@@ -3,6 +3,7 @@ angular.module('myApp.controllers', [])
     .controller('summaryPageCtrl', function($scope,$state,$timeout,$sessionStorage) {
 		$scope.signout=function(){
       //location.reload();
+            clevertap.logout();
       $sessionStorage.SessionClientCode="none";
       $timeout(function() {location.reload();}, 10);
       $state.go('home');
@@ -183,8 +184,15 @@ $scope.xirrRate= function(){
 				$scope.errorInputs="";
 
 					returnsAmount=(Math.ceil(investAmount*constant*totalDays*100))/100;
-					console.log("calculate returns amount");$scope.returnsAmount=returnsAmount;
-				console.log( $scope.investmentAmount + "  " + $scope.returnsAmount+ "  " + $scope.totalDays);
+
+                //clevertap calculator information for that client
+                clevertap.event.push("calculator", {
+                    "name":$sessionStorage.name,
+                    "portofiolioNo":$sessionStorage.SessionPortfolio,
+                    "amount tried":$scope.investmentAmount,
+                    "No of Days":$scope.totalDays,
+                    "Final Amount":returnsAmount,
+                });
 			}
 		}
 
@@ -879,6 +887,13 @@ $timeout(function() {
                 if(data.responseCode=="Cali_SUC_1030"){
             var ref =  window.open('https://finotrust.com/WealthWeb/ws/pymt/pymtView?mfOrderId='+data.id,'_self');
           ref.addEventListener('loadstop', function(event) { if( event.url.match('pymt/bdesk') ){
+              //clevertap charging notification
+              clevertap.event.push("Charged", {
+                  "Amount": finalComputedVal, //amount entered
+                  "Fund Name": $sessionStorage.rtaCode, //reliance code
+                  "Charged ID":data.id ,  // important to avoid duplicate transactions due to network failure
+
+              });
             console.log("hereeeee");
             $timeout(function () {
               location.replace("file:///Users/apple/Documents/finoZenWebApp/index.html#/summary");
@@ -904,8 +919,15 @@ $timeout(function() {
     var date=dateService.getDate();
     mfOrderUrlService.save({"portfolioCode": $sessionStorage.SessionPortfolio,"amcCode": $sessionStorage.amcCode,"rtaCode":$sessionStorage.rtaCode,"orderTxnDate": date,"amount": finalComputedVal,"folioNo":$sessionStorage.folioNums,"paymentMode" : "a"},function(data){
       if(data.responseCode=="Cali_SUC_1030"){
-        //$ionicLoading.hide();
 
+
+          //clevertap charging notification
+          clevertap.event.push("Charged", {
+              "Amount": finalComputedVal, //amount entered
+              "Fund Name": $sessionStorage.rtaCode, //reliance code
+              "Charged ID":data.id ,  // important to avoid duplicate transactions due to network failure
+
+          });
        $state.go('invest_success');
       }
       else{
@@ -1003,6 +1025,14 @@ console.log(($scope.amount!=undefined || $scope.checked_withdraw) );
             mfSellUrlService.save({"portfolioCode": $sessionStorage.SessionPortfolio,"amcCode": $sessionStorage.amcCode,"rtaCode":$sessionStorage.rtaCode,"orderTxnDate": date,"allUnits":"Y","folioNo":$sessionStorage.folioNums},function(data){
                         console.log(data.responseCode);
             if(data.responseCode=="Cali_SUC_1030") {
+                //clevertap integration for withdraw
+                clevertap.event.push({
+                    "withdraw": {
+                        "Name": $sessionStorage.name, // User's name
+                        "amount":$scope.checked_withdraw,
+                        "date":date
+                    }
+                });
                             $state.go('successPage');
                         }
             else
@@ -1025,6 +1055,14 @@ console.log(($scope.amount!=undefined || $scope.checked_withdraw) );
               else
               {
                 console.log("success");
+                  //clevertap integration for withdraw
+                  clevertap.event.push({
+                      "withdraw": {
+                          "Name": $sessionStorage.name, // User's name
+                          "amount":$scope.amount,
+                          "date":date
+                      }
+                  });
                 $state.go('successPage');
               }
             },function(error){
@@ -1172,7 +1210,14 @@ console.log(($scope.amount!=undefined || $scope.checked_withdraw) );
           $sessionStorage.disbledSkip=false;
 
                     //clevertap integration for user signup
-                    
+                    //clevertap integration for withdraw
+                    clevertap.profile.push({
+                        "SignUp": {
+                            "Name": $sessionStorage.name, // User's name
+                            "amount":$scope.amount,
+                            "date":date
+                        }
+                    });
 
 
 
