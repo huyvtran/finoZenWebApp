@@ -17,7 +17,7 @@
 		  <tr>
 		    <td>
 		        <label class="item item-input" ng-class="{ 'has-errors' : signupForm.$submitted && signupForm.Fname.$invalid, 'no-errors' :  signupForm.Fname.$touched && signupForm.Fname.$valid}">
-					<input type="text" name="Fname" ng-pattern ="/^[a-zA-Z\s]*$/" ng-model="authorization.fName" minlength="2"  required placeholder="First Name">
+					<input type="text" name="Fname" ng-pattern ="/^[a-zA-Z\s]*$/" ng-model="authorization.fName" minlength="2"  required placeholder="Full Name(As on PAN Card)">
 				</label>
 
 				<div class="error-container" ng-show="signupForm.Fname.$error && signupForm.$submitted" ng-messages="signupForm.Fname.$error">
@@ -26,17 +26,6 @@
 					<div class="error"  ng-message="minlength">Enter your full name</div>
 				</div>
 			</td>
-		  </tr>
-		  <tr>
-		    <td>
-				<label class="item item-input" ng-class="{ 'has-errors' : signupForm.$submitted && signupForm.Lname.$invalid, 'no-errors' :  signupForm.Lname.$touched && signupForm.Lname.$valid}">
-					<input type="text" name="Lname" ng-pattern ="/^[a-zA-Z\s]*$/"  ng-model="authorization.lName"  placeholder="Last Name" required>
-				</label>
-				<div class="error-container" ng-show="signupForm.Lname.$error && signupForm.$submitted" ng-messages="signupForm.Lname.$error">
-					<div class="error"  ng-message="required">You did not enter a field</div>
-					<div class="error"  ng-message="pattern">Enter Alphabets only</div>
-				</div>
-		    </td>
 		  </tr>
 		  <tr>
 		    <td>

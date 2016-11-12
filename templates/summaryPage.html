@@ -23,7 +23,7 @@
 		</div>
 		<div class="row">
 		<div  class="col-md-12 col-xs-12 col-lg-12 col-sm-12 summary_values">
-			<div class="col-md-6 col-xs-6 col-sm-6 col-lg-6 " style="text-align:center; font-size:18px;">
+<!--			<div class="col-md-6 col-xs-6 col-sm-6 col-lg-6 " style="text-align:center; font-size:18px;">
 				<div class="flip-container1 flip-container">
 
 					<div class="flipper clearfix">
@@ -49,15 +49,26 @@
 				</div>
 
 			</div>
+-->
+			<div class="col-md-6 col-xs-6 col-sm-6 col-lg-6 text-center" style="font-size:18px;">
 
+				<div>
+
+						<p class="inner_numbers"><span class="rupeeSymbol">&#x20B9;</span>{{ investAmount()|currency:""}}</p>
+
+						<p class="item-note left inner_numbersLabel leftLine" >Net Investment</p>
+
+				</div>
+
+
+
+			</div>
 			<div class="col-md-6 col-xs-6 col-sm-6 col-lg-6 text-center" style="font-size:18px;">
 
 				<div style="border-left: 3px solid #808080;">
+						<p class="inner_numbers" style="margin:0; "><span class="rupeeSymbol">&#x20B9;</span>{{netGain() | currency:""}} </p>
 
-				    <p class="inner_numbers" style="margin:0; "><span class="rupeeSymbol">&#x20B9;</span>{{gainToday() | currency:""}}</p>
-
-					<p class="item-note left inner_numbersLabel leftLine">Net Gains Today</p>
-
+						<p class="item-note left inner_numbersLabel leftLine" >Net Gains</p>
 				</div>
 
 
@@ -70,3 +81,8 @@
 	</div>
 </div>
 <div class="col-md-2 col-lg-2 hidden-xs hidden-sm"></div>
+<div  ng-controller="transListController">
+  <div ng-class="{testSpin: spinneractive}"></div>
+  <span us-spinner spinner-key="spinner-1"></span>
+</div>
+</div>

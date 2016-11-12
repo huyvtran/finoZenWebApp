@@ -27,13 +27,13 @@
   font-weight: normal;
   font-style: normal; }
 .finoApp {
-  padding-top: 59px;
+  padding: 59px 16% 0;
   height: 100vh; }
   .finoApp .logo img {
     width: 250px;
     margin: 1em auto 0em; }
   .finoApp .table.loginTable {
-    width: 35%;
+    width: 50%;
     margin: auto; }
   .finoApp .table.withdrawTable {
     border: 1px solid #ccc; }
@@ -48,7 +48,8 @@
     font-size: 18px; }
   .finoApp body, .finoApp p, .finoApp a {
     font-size: 18px;
-    font-family: open_sansregular; }
+    font-family: open_sansregular;
+    text-decoration: none; }
   .finoApp .inappLinks {
     color: #18bb9c;
     text-decoration: underline;
@@ -122,15 +123,16 @@
   .invest_button_footer .button.button-clear.button-positive.red {
     color: red; }
   .invest_button_footer .button.button-clear.button-positive.invest_btn {
-    font-size: 32px;
-    margin: 9px auto;
-    max-height: 100px !important;
+    margin: 18px auto 9px;
+    padding: 9px;
     display: block;
-    width: 90px;
+    width: 87px;
     background: whitesmoke;
     border-radius: 60%;
-    padding: 26px; }
-    .invest_button_footer .button.button-clear.button-positive.invest_btn.activated {
+    height: 86px;
+    cursor: pointer;
+    min-width: 86px; }
+    .invest_button_footer .button.button-clear.button-positive.invest_btn:hover {
       opacity: 0.6 !important;
       box-shadow: 1px 1px 12px 13px #ddd !important; }
 
@@ -174,12 +176,24 @@
     background: #18bb9c; }
 .screen_invest .invest_subheader {
   top: 10px;
-  background: #ebebeb; }
+  background: #e5ecf4; }
+  .screen_invest .invest_subheader .subText {
+    min-width: 178px;
+    display: inline-block; }
   .screen_invest .invest_subheader .title {
-    font-size: 14px;
-    margin: 16px; }
+    font-size: 14px; }
 .screen_invest .withdraw_all {
   padding: 8px; }
+.screen_invest .instaRefresh {
+  border: none;
+  padding: 20px 5px;
+  font-size: 14px;
+  text-transform: uppercase; }
+  .screen_invest .instaRefresh .button {
+    background: transparent; }
+    .screen_invest .instaRefresh .button .icon::before {
+      font-size: 20px;
+      padding-top: 5px; }
 .screen_invest .invest_info {
   width: 56%;
   margin: auto; }
@@ -533,21 +547,24 @@
     padding-right: 10px;
     color: white; }
   .signin_background .forgot_pin {
-    min-width: 125px;
+    min-width: 110px;
     text-align: right;
     color: #18bb9c;
-    cursor: pointer; }
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 30px; }
     .signin_background .forgot_pin.activated {
       opacity: 0.5; }
   .signin_background .rememberme {
-    min-width: 180px;
+    min-width: 120px;
     float: left;
     padding: 0; }
     .signin_background .rememberme #remember_me_label {
       line-height: 1.82857;
       min-width: 130px;
       cursor: pointer;
-      font-weight: 400; }
+      font-weight: 400;
+      font-size: 14px; }
 
 .signin_background .agree_terms, .sign_up .agree_terms {
   display: block;
@@ -604,6 +621,10 @@
       background: #18bb9c;
       opacity: 0.8 !important; }
 
+.bankPage {
+  padding: 2% 15%;
+  margin: auto; }
+
 @media (max-width: 786px) {
   .sign_up {
     padding: 0; }
@@ -611,12 +632,13 @@
   .bankPage {
     padding: 2% 5%; }
 
-  .finoApp .table.loginTable {
-    width: 80%; } }
-.bankPage {
-  padding: 2% 15%;
-  margin: auto; }
+  .finoApp {
+    padding: 59px 1% 0; }
+    .finoApp .table.loginTable {
+      width: 80%; }
 
+  .bankPage {
+    padding: 2% 1%; } }
 .slides .carousel-caption {
   position: initial; }
 .slides .carousel-indicators {
@@ -646,14 +668,14 @@
   vertical-align: middle; }
 
 .recent_transactions {
-  padding: 0 10%; }
+  padding: 0 0 0 2%; }
   .recent_transactions .Sell {
     color: red; }
   .recent_transactions .Buy {
     color: green; }
 
 .payment_success {
-  width: 50%;
+  width: 450;
   margin: auto; }
   .payment_success .payment {
     margin: 10px; }
@@ -690,16 +712,30 @@
   display: inline-block; }
   .button:hover, .button:active {
     text-decoration: none; }
-  .button.button-positive {
+  .button.button-positive, .button .ngdialog-button.button-positive {
     background: #18bb9c;
     color: white;
     border: #18bb9c;
-    margin: 3px; }
-    .button.button-positive.activated {
+    margin: 3px;
+    min-width: 120px;
+    font-size: 15px; }
+    .button.button-positive.activated, .button .ngdialog-button.button-positive.activated {
       background: #18bb9c;
       opacity: 0.8; }
-    .button.button-positive span {
+    .button.button-positive span, .button .ngdialog-button.button-positive span {
       padding: 0 5px; }
+
+.btn-group {
+  width: 100%; }
+  .btn-group .button-positive {
+    width: 45%; }
+
+.selectedFund table {
+  margin: 20px auto; }
+  .selectedFund table td, .selectedFund table tr, .selectedFund table th {
+    padding: 5px;
+    border: 1px solid #adadad;
+    text-align: center; }
 
 .rupeeSymbol {
   font-size: 16px;
@@ -710,5 +746,51 @@
   color: #272727;
   text-align: center;
   text-shadow: none; }
+
+.testSpin {
+  position: fixed;
+  background: whitesmoke;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.4; }
+
+.loadingText {
+  text-align: center;
+  padding-top: 1.5em; }
+  .loadingText .spinner {
+    position: fixed;
+    left: 48%; }
+    .loadingText .spinner div div {
+      backgroung: red; }
+
+.ngdialog.ngdialog-theme-default .ngdialog-content {
+  position: absolute !important;
+  left: 33%;
+  padding: 0 !important;
+  text-align: center; }
+  .ngdialog.ngdialog-theme-default .ngdialog-content .popupHead {
+    background: #18bb9c;
+    padding: 15px;
+    margin: 0;
+    color: white;
+    text-align: center;
+    min-height: 50px; }
+.ngdialog.ngdialog-theme-default .ngdialog-buttons {
+  padding: 0 0 1em 0; }
+  .ngdialog.ngdialog-theme-default .ngdialog-buttons .ngdialog-button {
+    float: none; }
+    .ngdialog.ngdialog-theme-default .ngdialog-buttons .ngdialog-button.ngdialog-button-primary {
+      background: #18bb9c;
+      color: white;
+      border: #18bb9c;
+      margin: 3px;
+      min-width: 180px; }
+      .ngdialog.ngdialog-theme-default .ngdialog-buttons .ngdialog-button.ngdialog-button-primary.activated {
+        background: #18bb9c;
+        opacity: 0.8; }
+      .ngdialog.ngdialog-theme-default .ngdialog-buttons .ngdialog-button.ngdialog-button-primary span {
+        padding: 0 5px; }
 
 /*# sourceMappingURL=style.css.map */

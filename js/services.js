@@ -27,19 +27,50 @@ angular.module('myApp.services', [])
 
   /*For fetching the transaction webservices*/
   .factory('getReportService', ['$resource','$sessionStorage',function($resource,$sessionStorage){
-    return $resource('https://finotrust.com/WealthWeb/ws/clientRepos/getOrders?pfolioCode='+$sessionStorage.SessionPortfolio+'&noOfOrders=30');
+    return $resource('https://finotrust.com/WealthWeb/ws/clientRepos/getOrders?pfolioCode='+$sessionStorage.SessionPortfolio+'&noOfOrders=100');
   }])
 
-/*For reliance api instant redemption and getting the bank details*/
-  .factory('relianceInstantAmount',['$resource','$sessionStorage',function($resource,$sessionStorage){
-    //arn code needs to be added as per the we get from the back-end
-    //return('https://220.226.201.234/rmfuat/mowblyserver/wsapi/rmf/prod/wsapi/RedInvbankDetails_V1?acno=499155246676&scheme=LP&plan=IG&arncode=ARN-107100&deviceid=PARTNERAPI&appVersion=1.0.1&appName=FINOTRUST&apikey=0fe4fcca-63c2-453d-b4f0-06adb516923c');
-    return $resource('https://online.reliancemf.com/rmf/mowblyserver/wsapi/rmf/prod/wsapi/RedemptionSchemeDetails?acno='+$sessionStorage.folioNums+'&scheme=LP&plan=IG&arncode=ARN-107100&branch=FP99&proxybranch=&deviceid=PARTNERAPI&appVersion=1.0.1&appName=FINOTRUST&apikey=c3d2f2f3-7d23-4f48-9fe6-82db5449a562') ;
+  /*Reliance ZBF page service*/
+   .factory('getZBFService', ['$resource','$sessionStorage',function($resource,$sessionStorage){
+	   console.log($sessionStorage.portfolioCode+"portfolioCode");
+    return $resource('https://finotrust.com/WealthWeb/ws/clientOrders/zbf?portfolioCode=CRN26946E20018&rtaCode=RMFLPIG');
+  }])
+
+  /*Reliance folio number sending it to backend */
+   .factory('relianceInstantZBF',['$resource','$sessionStorage',function($resource,$sessionStorage){
+       var relianceZBF = $resource('https://finotrust.com//ealthweb/ws/clientorders/createfolio',{},{
+          save:{
+              method:'POST',
+              headers:{
+                  'Content-Type' :'application/json'
+              }
+          }
+      });
+
+      return relianceZBF;
+  }])
+
+  // Referral Factory
+
+
+ .factory('getReferalStat', ['$resource','$sessionStorage',function($resource,$sessionStorage){
+	console.log($sessionStorage.SessionMobNo);
+	return $resource('hhttps://finotrust.com/WealthWeb/ws/login/getMyReferrals?mobile='+$sessionStorage.SessionMobNo);
+
 }])
-  .factory('relianceUserBank',['$resource','$sessionStorage',function($resource,$sessionStorage){
-    //arn code needs to be added as per the we get from the back-end
-    return $resource('https://online.reliancemf.com/rmf/mowblyserver/wsapi/rmf/prod/wsapi/RedInvbankDetails_V1?arncode=ARN-107100&acno='+$sessionStorage.folioNums+'&scheme=LP&plan=IG&deviceid=PARTNERAPI&appVersion=1.0.1&appName=FINOTRUST&apikey=c3d2f2f3-7d23-4f48-9fe6-82db5449a562');
-      }])
+/*For reliance api instant redemption and getting the bank details*/
+  .factory('relianceInstantAmountAPI',['$resource','$sessionStorage',function($resource,$sessionStorage){
+       var relianceIntsaAmount = $resource('https://finotrust.com/WealthWeb/ws/pymt/wrapperWS',{},{
+          save:{
+              method:'POST',
+              headers:{
+                  'Content-Type' :'application/json'
+              }
+          }
+      });
+
+      return relianceIntsaAmount;
+  }])
 
 
 .factory('proofRedirectFactory', function() {
@@ -51,6 +82,33 @@ angular.module('myApp.services', [])
 .factory('myService', function() {
  return {
  myFunction: function(proofStatus){
+	 /*
+	 console.log(proofStatus)
+	 var proofStatusValue=(proofStatus+100000).toString();
+var fromIndex=0;
+var totalIndex = [];
+var keepGoing= true;
+angular.forEach([1,2,3,4,5,6], function(value) {
+     if(keepGoing) {
+     var currentIndex = proofStatusValue.indexOf("0",fromIndex);
+    if(currentIndex == -1){
+      keepGoing = false;
+    }
+    else{
+		this.push(currentIndex);
+    }
+  }
+  fromIndex=currentIndex+1;
+
+}, totalIndex);
+console.log(totalIndex +"     in service");
+return totalIndex;
+
+
+
+
+*/
+
 var values = [1,2,3,4,5];
 //var xx=(proofStatus+100000).toString();
 xx=proofStatus;
@@ -58,6 +116,7 @@ var ss=0;
 var totalIndex = [];
 var keepGoing= true;
 angular.forEach(values, function(value) {
+  //this.push(': xzczx ' + value);
      if(keepGoing) {
      var a = xx.indexOf("0",ss);
     if(a == -1){
@@ -140,7 +199,7 @@ return totalIndex;
 
       /*Questions factory*/
   .factory('questionsService',['$resource',function($resource){
-    var bankUpload = $resource('https://finotrust.com/WealthWeb/ws/kycs/addlKyc',{},{
+    var bankUpload = $resource('https://finotrust.com/WealthWeb/ws/kycs/addlKyc',{},{ //in final build change it to finotrust.com
       save:{
         method:'POST',
         headers:{
@@ -175,6 +234,7 @@ return totalIndex;
 		},
 	});
 	return mfOrderRequest;
+	//https://finotrust.com/WealthWeb/ws/clientOrders/clientOrderMfBuy
 }])
 
 /*send MF sell order*/
@@ -209,7 +269,19 @@ return totalIndex;
 //https://finotrust.com
 
 
-
-
+.service('loadSpin', ['usSpinnerService', function (usSpinnerService) {
+    this.showSpin = function(spinneractive) {
+      console.log(spinneractive+"  in service")
+      if (!spinneractive) {
+        usSpinnerService.spin('spinner-1');
+      }
+    }
+    this.stopSpin = function(spinneractive) {
+      console.log(spinneractive+"  in service")
+      if (spinneractive) {
+        usSpinnerService.stop('spinner-1');
+      }
+    };
+}])
 
 

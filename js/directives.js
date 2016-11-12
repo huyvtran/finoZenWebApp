@@ -72,5 +72,29 @@ angular.module('myApp.directives', [])
       }
     };
   }
-]);
-
+])
+.directive('flipContainer2', function() {
+  return {
+    restrict: 'C',
+    link: function($scope, $elem, $attrs) {
+      $scope.flip1 = function() {
+        $elem.toggleClass('flip');
+      }
+      $scope.$on('flip',function(event, data){
+             $scope.flip1()
+         });
+     
+    }
+  };
+ })
+.directive('iframeOnload', [function(){
+return {
+    scope: {
+        callBack: '&iframeOnload'
+    },
+    link: function(scope, element, attrs){
+        element.on('load', function(){
+            return scope.callBack();
+        })
+    }
+}}])

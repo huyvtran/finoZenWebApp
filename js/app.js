@@ -1,7 +1,7 @@
 
 
 var confirmation=0;
-angular.module('myApp', ['ngRoute','myApp.services','myApp.directives','myApp.controllers','ngMessages','ngIdle','ngResource','ngStorage','ui.router','ui.bootstrap','ngDialog'])
+angular.module('myApp', ['ngRoute','myApp.services','myApp.directives','myApp.controllers','ngMessages','ngIdle','ngResource','ngStorage','ui.router','ui.bootstrap','ngDialog','angularSpinner'])
 
 .config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/home');
@@ -34,7 +34,7 @@ angular.module('myApp', ['ngRoute','myApp.services','myApp.directives','myApp.co
     })
     
     .state('signup', {
-      url: '/page8',
+      url: '/signup',
       templateUrl: 'templates/signup.html'
     })
      .state('forgot_pin', {

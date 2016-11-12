@@ -57,8 +57,10 @@ angular.module('myApp.controllers', [])
     }
 }])
 
-	.controller('withdrawCtrl', function($scope,$sessionStorage,getReportService,$state,$interval,$rootScope,$timeout) {
-	if($sessionStorage.clientType=="GO"){
+	.controller('withdrawCtrl', function($scope,$sessionStorage,getReportService,$state,$interval,$rootScope,$timeout,loadSpin,ngDialog) {
+  if($sessionStorage.instaAmount>=0){$scope.insta=$sessionStorage.instaAmount;}
+else{$scope.insta=0;}
+  	if($sessionStorage.clientType=="GO"){
 		$scope.schemeNamep = "GOLD";
 	}
 	else if($sessionStorage.clientType=="PL") {
@@ -137,6 +139,16 @@ $scope.xirrRate= function(){
       },4000)
       
     },5000);
+
+      $scope.spinneractive = false;
+
+    $rootScope.$on('us-spinner:spin', function(event, key) {
+      $scope.spinneractive = true;
+    });
+
+    $rootScope.$on('us-spinner:stop', function(event, key) {
+      $scope.spinneractive = false;
+    });
     })
 
 
@@ -192,13 +204,15 @@ $scope.xirrRate= function(){
 	
 	
 	
-.controller('AuthSigninCtrl', function($scope,$state,$sessionStorage,$http,loginInfoService,$localStorage,$timeout) {
+.controller('AuthSigninCtrl', function($scope,$state,$sessionStorage,$http,ngDialog,loginInfoService,$localStorage,$timeout, $rootScope,loadSpin) {
+ $sessionStorage.SessionClientCode="none";
  $scope.mobileNumber=$localStorage.loginData;
 	$scope.signIn = function(form,loginForm) {
 		if(form.$valid) {
 			if($scope.rememberMe){ $localStorage.loginData=$scope.mobileNumber;}
 			else{$localStorage.loginData='';}
 			//$ionicLoading.show({templateUrl:"templates/loadingNormal.html"});
+      loadSpin.showSpin($scope.spinneractive );
 			$scope.loginDetails=JSON.parse(JSON.stringify({}));
 			$scope.loginDetails.login=$scope.mobileNumber;
 			$scope.loginDetails.password=$scope.digitPin;
@@ -207,7 +221,7 @@ $scope.xirrRate= function(){
 			console.log($localStorage.loginData);
 			$scope.sendSignIn();
 		}
-		else{$ionicLoading.hide();}
+		else{loadSpin.stopSpin($scope.spinneractive );}
 	}
 
 	  
@@ -246,17 +260,19 @@ $scope.xirrRate= function(){
         $sessionStorage.clientType= data.jsonStr[0].clientType;
 		$sessionStorage.docStatus=data.jsonStr[0].docStatus;
 		console.log($sessionStorage.docStatus + "docStatus");
-
+loadSpin.stopSpin($scope.spinneractive );
  
         $state.go('tabsController');
         }
         else if(data.responseCode=="Cali_ERR_9002") {
+          loadSpin.stopSpin($scope.spinneractive );
         $scope.passwordError="Password not valid";
 		$timeout(function(){
 		$scope.passwordError="";
 	},3000)
        }
         else if(data.responseCode=="Cali_ERR_1969") {
+          loadSpin.stopSpin($scope.spinneractive );
         $scope.passwordError="Password not valid";
 		$timeout(function(){
 		$scope.passwordError="";
@@ -264,6 +280,7 @@ $scope.xirrRate= function(){
        }
         else{
         $scope.passwordError="Signin failed, Please try again later";
+        loadSpin.stopSpin($scope.spinneractive );
 		$timeout(function(){
 		$scope.passwordError="";
 	},3000)
@@ -271,23 +288,33 @@ $scope.xirrRate= function(){
 
         },function(error){
         $scope.serverError = "Entered Credentials did not validate";
+        loadSpin.stopSpin($scope.spinneractive );
 		$timeout(function(){
 		$scope.serverError="";
 	},3000)
     });
 
   }
+    $scope.spinneractive = false;
+
+    $rootScope.$on('us-spinner:spin', function(event, key) {
+      $scope.spinneractive = true;
+    });
+
+    $rootScope.$on('us-spinner:stop', function(event, key) {
+      $scope.spinneractive = false;
+    });
     })
 
 //FAQ controllers START
     .controller('FundsMethodCtrl', function($scope) {
-              $scope.oneAtATime = true;
-  $scope.status = {
-    isCustomHeaderOpen: false,
-    isFirstOpen: true,
-    isFirstDisabled: false
-  };
-        $scope.message = "In FinoZen, we have ensured that there is minimal risk to your investments with high returns and almost instantaneous liquidity. Your investments directly go to a pre-selected liquid mutual fund. FinoZen selection algorithm is based on following parameters –";
+        $scope.oneAtATime = true;
+        $scope.status = {
+          isCustomHeaderOpen: false,
+          isFirstOpen: true,
+          isFirstDisabled: false
+        };
+        $scope.message = "In FinoZen, we have ensured that there is minimal risk to your investments with high returns and almost instantaneous liquidity. Your Investments directly go to a pre-selected liquid/ultra-short term debt fund. FinoZen selection algorithm is based on following parameters –";
         $scope.groups = [];
         $scope.groups["0"] = {name: "A. Net Assets of Liquid Fund", items: ["We give high weightage to the Net Amount Invested in a fund, and only those funds with greater than Rs. 2,000 Cr. in net assets are considered. This ensures that there is no liquidity crunch."] };
         $scope.groups["1"] = {name: "B. Size of Asset Management Company" , items: ["Size of Asset Management Company is given due importance and only top 10 fund houses are selected by us."] };
@@ -328,7 +355,7 @@ $scope.terms = function()
 
     })
 
-  .controller('bankDetailsCTRL',function($scope,$state,$sessionStorage,bankDetailsService,$window,proofRedirectFactory,myService){
+  .controller('bankDetailsCTRL',function($scope,$state,$sessionStorage,bankDetailsService,ngDialog,$window,proofRedirectFactory,myService, $rootScope,loadSpin){
     $scope.accountTypeOptions = [
     { name: 'Savings', value: 'SB_New' },
     { name: 'Current', value: 'CA_new' }
@@ -368,13 +395,54 @@ $scope.terms = function()
                  }
 
                  else {
-                     console.log('upload error') ;
+                  ngDialog.openConfirm({
+                    template: "<h4 class='popupHead'>Sorry for the inconvenience</h4><p style='padding:1em;'>Please check your internet and try again</p>"+
+                    '<div class="ngdialog-buttons text-center">' +
+                          '<button type="button"  class="ngdialog-button ngdialog-button-primary button-positive" ng-click="confirm(1)">OK' +
+                    '</button></div>',
+                  plain: true,
+                  className: 'ngdialog-theme-default',
+                  closeByEscape : false,
+                  closeByDocument: false,
+                  showClose:false,
+                  scope: $scope
+                  })
+                .then(function(value){
+                    console.log('resolved:' + value);
+                    location.reload();
+                    // Perform the save here
+                }, function(value){
+                    console.log('rejected:' + value);
+
+                });
+
                  }
 
                },function(error){
 
          if(error.data.responseCode == "Cali_ERR_2021"){
               console.log('IFSC Code invalid') ;
+                  ngDialog.openConfirm({
+                    template: "<h4 class='popupHead'>IFSC Code invalid</h4><p style='padding:1em;'>Please check your internet and try again</p>"+
+                    '<div class="ngdialog-buttons text-center">' +
+                          '<button type="button"  class="ngdialog-button ngdialog-button-primary button-positive" ng-click="confirm(1)">OK' +
+                    '</button></div>',
+                  plain: true,
+                  className: 'ngdialog-theme-default',
+                  closeByEscape : false,
+                  closeByDocument: false,
+                  showClose:false,
+                  scope: $scope
+                  })
+                .then(function(value){
+                    console.log('resolved:' + value);
+                    location.reload();
+                    // Perform the save here
+                }, function(value){
+                    console.log('rejected:' + value);
+
+                });
+
  
          }
          else if(error.data.responseCode == "Cali_ERR_2035"){
@@ -395,6 +463,15 @@ $scope.terms = function()
           else if($sessionStorage.SessionStatus=="I" || $sessionStorage.SessionStatus==null || $sessionStorage.SessionStatus=="null" || $sessionStorage.SessionStatus==undefined ){$state.go('inactiveClient');}
           else{$state.go('verifySuccess');}
            }
+      $scope.spinneractive = false;
+
+    $rootScope.$on('us-spinner:spin', function(event, key) {
+      $scope.spinneractive = true;
+    });
+
+    $rootScope.$on('us-spinner:stop', function(event, key) {
+      $scope.spinneractive = false;
+    });
   })
 
 
@@ -404,7 +481,7 @@ $scope.terms = function()
 
 	})
           /*for question's*/
-    .controller('questionsCTRL',function($scope,myService,proofRedirectFactory,questionsService,$sessionStorage,$state,$window){
+    .controller('questionsCTRL',function($scope,myService,proofRedirectFactory,questionsService,ngDialog,$sessionStorage,$state,$window, $rootScope,loadSpin){
 $scope.diasbleSkip=$sessionStorage.disbledSkip;
      $scope.clientIncomeOptions = [
     { name: 'Below 1 Lakh', value: '31' },
@@ -473,14 +550,23 @@ $scope.diasbleSkip=$sessionStorage.disbledSkip;
                 });
           }
         }
-      }
-    )
+          $scope.spinneractive = false;
+
+    $rootScope.$on('us-spinner:spin', function(event, key) {
+      $scope.spinneractive = true;
+    });
+
+    $rootScope.$on('us-spinner:stop', function(event, key) {
+      $scope.spinneractive = false;
+    });
+    })
     .controller('AccountfaqCtrl', function($scope) {
         $scope.groups = [];
         $scope.groups["0"] = {name: "What is FinoZen?",items: ["FinoZen is a mobile app where you can watch your money grow, literally! It enables you to invest and withdraw in just a click while your money grows at an expected rate of 7.0 – 8.5% p.a."] };
-        $scope.groups["1"] = {name: "How does FinoZen work?" , items: ["FinoZen channels your money to the selected liquid mutual fund which gives the best return at lowest risk. You will have full visibility and control of your money at all times. You can choose to Add or withdraw money anytime, anywhere with no penalties applicable. "] };
-        $scope.groups["2"] = {name: "Who is FinoZen meant for?" , items: ["FinoZen is meant for anyone who has excess money parked in their bank account. If you wish to make your money work for you and earn you interest to the tune of 7.0-8.5% p.a. in just a click, then FinoZen is meant for you.  You should be an Indian National investing in individual capacity.FinoZen is not available for NRIs, companies, firms, trusts etc."] };
-        $scope.groups["3"] = {name: "Why should I use Finozen over other options like savings accounts, fixed deposits?" , items: ["If your money is in Savings account, you get low returns at best quarterly.  Fixed Deposits  and other saving instruments will have higher returns but have a lock in period. With FinoZen, your returns are usually 7.0-8.5%, returns get credited in your account everyday, and you can add or withdraw any time!"] };
+        $scope.groups["1"] = {name: "How does FinoZen work?" , items: ["FinoZen channels your money to the selected liquid/ultra-short term debt mutual fund which gives the best return at lowest risk. You will have full visibility and control of your money at all times. You can choose to Add or withdraw money anytime, anywhere with no penalties applicable."] };
+        $scope.groups["2"] = {name: "Who is FinoZen meant for?" , items: ["FinoZen is meant for anyone who has excess money parked in their bank account. If you wish to make your money work for you and earn you interest to the tune of 7.0-8.5% p.a. in just a click, then FinoZen is meant for you.  You should be an Indian National, NRI or an Indian Company investing in person capacity. "] };
+        $scope.groups["4"] = {name: "Why should I use Finozen over other options like savings accounts, fixed deposits?" , items: ["If your money is in Savings account, you get low returns at best quarterly.  Fixed Deposits and other saving instruments will have higher returns but have a lock in period. With FinoZen, your returns are usually 7.0-8.5%, returns get credited in your account everyday, and you can add or withdraw any time!"] };
+        $scope.groups["3"] = {name: "How does FinoZen make money?",items: ["FinoZen earns 0.05% - 0.25% per annum for investments made through its app i.e. if you invest Rs. 10,000 through FinoZen and keep it for a year, FinoZen gets anywhere between Rs. 5 to Rs. 25. This commission is paid to FinoZen by the Mutual Fund company."] };
 
   $scope.oneAtATime = true;
 
@@ -517,12 +603,12 @@ $scope.diasbleSkip=$sessionStorage.disbledSkip;
 
         $scope.groups = [];
         $scope.groups["0"] = {name: "I have signed up, what happens next?",items: ["Congratulations and welcome to Finozen! Here are the next steps:",
-            "  1) Welcome Call: We will call you shortly (during office hours) and introduce FinoZen to you. Our executive will answer all your queries and will request you to proceed for Account Activation.",
-            "  2) Account Activation: It’s a 6 step process which takes around 3 mins to complete. After you have submitted the necessary details, It will take us 5 mins. to activate your account (during office hours).  We will get in touch with you to inform you about the activation. ",
-            "  3) Start Investing: Post activation of account, you can click on “Add Money” and start investing through netbanking.",
-            "  4) Welcome to FinoZen family, now you can watch your money grow! "
+            "  1) Account Activation: Please enter your PAN No. and Bank Account No. to instantly activate your account. ",
+            "  2) Account Activation: Additional Documents (Optional): Depending on your KYC Status we will request you for additional documents. If you are already KYC Verified, we don’t need any further information from you.",
+            "  3) Start Investing: Post activation of account, you can click on “Add Money” and start investing ",
+            "  4) Welcome to FinoZen family, now you can watch your money grow!"
         ] };
-        $scope.groups["1"] = {name: "Why are these documents required?",items: ["  These requirements are specified by SEBI (Securities and Exchange Board of India) and other regulatore bodies. We submit these documents to the Mutual fund for account creation."] };
+        $scope.groups["1"] = {name: "Why are these documents required?",items: [" These requirements are specified by SEBI (Securities and Exchange Board of India) and other regulatory bodies. We submit these documents to the Mutual fund for account creation."] };
 
 
     })
@@ -536,15 +622,15 @@ $scope.diasbleSkip=$sessionStorage.disbledSkip;
   };
 
         $scope.groups = [];
-        $scope.groups["0"] = {name: "Where does my money go?",items: ["FinoZen channels your money to the selected liquid mutual fund. You will have full visibility and control of your money at all times. You can choose to Add or withdraw money anytime, anywhere with no penalties applicable. "] };
-        $scope.groups["1"] = {name: "How soon can I start investing?",items: ["It will take us 5 mins to activate your account post you provide your documents to us. We will notify you once your account is activated. Once activated, you can start investing immediately."] };
+        $scope.groups["0"] = {name: "Where does my money go?",items: ["FinoZen channels your money to the selected liquid/ultra-short term debt mutual fund which gives the best return at lowest risk. You will have full visibility and control of your money at all times. You can choose to Add or withdraw money anytime, anywhere with no penalties applicable.  "] };
+        $scope.groups["1"] = {name: "How soon can I start investing?",items: ["Please enter your PAN No. and Bank Account No. to instantly activate your account, post which you can start investing."] };
         $scope.groups["2"] = {name: "How often can I invest/Add money or withdraw?",items: ["You can invest/add money or withdraw as often as you want. There are no restrictions on the frequency of your transactions. Also, there are no penalties or charges applicable when you withdraw your money."] };
-        $scope.groups["3"] = {name: "How soon will my investments reflect on FinoZen?",items: ["All Investments will be processed on next working day and will reflect in your FinoZen account at 11:30 am on next day of processing.","Working days are Monday to Friday except Bank Holidays.", "For example: An investment done on Sunday, will be processed on Monday and will reflect in your FinoZen account on 11:30 am Tuesday."] };
-        $scope.groups["4"] = {name: "Where does my money go once I withdraw?",items: ["Your money will be deposited back to the same bank account which you have registered with us at the time of account creation on FinoZen."] };
-        $scope.groups["5"] = {name: "How soon can I access my withdrawn money?",items: ["Mon - Thur, before 2 p.m. : Next day 10 a.m.","Mon - Thur, after 2 p.m. : Day after next 10 a.m.","Fri before 2 p.m. : Monday 10 a.m.","Fri after 2 p.m, Sat and Sun. : Tuesday 10 a.m."] };
-        $scope.groups["6"] = {name: "How much can I invest at a time? Is there a minimum or a maximum?",items: ["You can invest any amount from a minimum of INR 100."] };
-        $scope.groups["7"] = {name: "How long do I need to stay invested? Is there a lock-in period?",items: ["There is no minimum period or lock-in. You have the option to withdraw your money anytime. Your money will grow from the very next day that you have invested, irrespective. "] };
-        $scope.groups["8"] = {name: "Can I invest through cash/cheque?",items: ["No. You can invest only through app from the bank account that you have declared at the time of registration.  When you invest via the app, you will be automatically re-directed to the net-banking page of your chosen bank. "] };
+        $scope.groups["3"] = {name: "How soon will my investments reflect on FinoZen?",items: ["All Investments will be processed on next working day and will reflect in your FinoZen account at 11:30 am on next day of processing.","Working days are Monday to Friday except Bank Holidays.", "For ex: An investment done on Sunday, will be processed on Monday and will reflect in your FinoZen account on 11:30 am Tuesday."] };
+        $scope.groups["4"] = {name: "Where does my money go once I withdraw?",items: ["Your money will be deposited back to the bank account you registered with us at the time of your account opening."] };
+        $scope.groups["5"] = {name: "How soon can I access my withdrawn money?",items: ["If you bank is IMPS enabled, withdrawal will be processed and money will be deposited in your account in less than 30 mins. If your Bank is not IMPS enabled then following is the withdrawal schedule: (continue to show the current table)"] };
+        $scope.groups["6"] = {name: "How much can I invest at a time? Is there a minimum or a maximum?",items: ["You can invest any amount from a minimum of INR 500."] };
+        $scope.groups["7"] = {name: "How long do I need to stay invested? Is there a lock-in period?",items: ["There is no minimum period or lock-in. You have the option to withdraw your money anytime. "] };
+        $scope.groups["8"] = {name: "Can I invest through cash/cheque?",items: ["No. You can invest only through app or FinoZen website through Netbanking or Debit Card.  "] };
 
 
     })
@@ -552,6 +638,8 @@ $scope.diasbleSkip=$sessionStorage.disbledSkip;
     .controller('OthersCtrl', function($scope) {
         $scope.groups = [];
         $scope.groups["0"] = {name: "Where is your office?",items: ["Our office is located at:","25, 18th Cross,","9th Main, Behind McDonald,","HSR Layout,Sector 7, ","Bengaluru, 560102 Karnataka","Our business hours are Monday to Friday 10 am to 8 pm."] };
+        $scope.groups["1"] = {name: "How can I reach you in case of any questions?",items: ["You can call us Monday to Friday 10am to 8 pm by using the dialer icon on the top right corner on any page of the app. ","You can also reach us via email at support@finozen.com. We will respond to your queries within 1 business days. ","You can also send us your feedback by going to the “Contact Us” section on the left menu panel of the app."] };
+
   $scope.oneAtATime = true;
   $scope.status = {
     isCustomHeaderOpen: false,
@@ -562,12 +650,14 @@ $scope.diasbleSkip=$sessionStorage.disbledSkip;
     })
 
 
-    .controller('transListController',function($scope,$sessionStorage,getPerformanceService,getNAVService,getReportService,$timeout) {
+    .controller('transListController',function($scope,$sessionStorage,getPerformanceService,ngDialog,getNAVService,getReportService,$timeout, $rootScope,loadSpin) {
+
 var timeNow = new Date().getUTCHours();
 var reportDate = getPerformanceService.get();
 reportDate.$promise.then(function(data){
+  loadSpin.showSpin($scope.spinneractive );
  if (data.responseCode == "Cali_SUC_1030") {
-
+loadSpin.stopSpin($scope.spinneractive );
 $sessionStorage.gainMonth=data.jsonStr.gainMonth;
 $sessionStorage.gainToday=data.jsonStr.gainToday;
 $sessionStorage.gainTotal=data.jsonStr.gainTotal;
@@ -578,11 +668,13 @@ $sessionStorage.netInv=data.jsonStr.netInv;
 $sessionStorage.paymentMode=data.jsonStr.paymentMode;
 $sessionStorage.quantity=data.jsonStr.quantity;
 $sessionStorage.xirr=data.jsonStr.xirr;
+loadSpin.stopSpin($scope.spinneractive );
  }
 })
 
   var Report = getReportService.get();
   Report.$promise.then(function(data){
+    loadSpin.showSpin($scope.spinneractive );
     if(data.responseCode=="Cali_SUC_1030"){
 	$sessionStorage.allTransactions=(data.jsonStr).length ;
 	console.log($sessionStorage.allTransactions + "total number of transactions");
@@ -591,13 +683,16 @@ $sessionStorage.xirr=data.jsonStr.xirr;
 		console.log("no txn");
 		$scope.noTxnIcon="img/no_leaves.png";
     }
+    loadSpin.stopSpin($scope.spinneractive );
     }
   })
 
 
   var navDate = getNAVService.get();
   navDate.$promise.then(function(data){
+    loadSpin.showSpin($scope.spinneractive );
     if(data.responseCode=="Cali_SUC_1030"){
+
     for(var i = 0; i < (data.jsonStr).length; i++) {
       if(data.jsonStr[i].recco=="Accumulate"){
 		  console.log($sessionStorage.clientType+ "   client type");
@@ -627,40 +722,14 @@ $sessionStorage.xirr=data.jsonStr.xirr;
       }
 
     }
+    console.log("stop load");
+  //  $scope.spinneractive = false;
+    loadSpin.stopSpin($scope.spinneractive );
     }
   },function(error){
     console.log("error");
+     loadSpin.stopSpin($scope.spinneractive );
   })
-
-
-
-/*
-  $scope.doRefresh=function() {
-   $timeout(function(){
-   var Report = getReportService.get();
-   Report.$promise.then(function (data) {
-       if (data.responseCode == "Cali_SUC_1030") {
-           $scope.products = data.jsonStr;
-           for (var i = 0; i < (data.jsonStr).length; i++) {
-               if (data.jsonStr[i].txnTypeStr == "Buy") {
-                   $scope.txnStatusClass = "success";
-               }
-               else if (data.jsonStr[i].txnTypeStr == "Sell") {
-                   $scope.txnStatusClass = "failed";
-               }
-           }
-       }
-   })
-$scope.$broadcast("scroll.refreshComplete");
-},2000)
-}*/
-
-        /*var tList=this;
-         tList.products=[];
-
-         $http.get('data/transactiondata.json').success(function(data){
-         tList.products=data;
-         });*/
 
 
   //Client-side pagination example
@@ -690,9 +759,28 @@ $scope.$broadcast("scroll.refreshComplete");
 $timeout(function() {
    init();
 }, 00);
+
+    $scope.spinneractive = false;
+
+    $rootScope.$on('us-spinner:spin', function(event, key) {
+      $scope.spinneractive = true;
+    });
+
+    $rootScope.$on('us-spinner:stop', function(event, key) {
+      $scope.spinneractive = false;
+    });
 })
   /*add money page check*/
-.controller('transactionAccessCtrl', function($scope,$sessionStorage,$state){
+.controller('transactionAccessCtrl', function($scope,$sessionStorage,$state,relianceInstantAmountAPI, $rootScope,loadSpin){
+    $scope.spinneractive = false;
+
+    $rootScope.$on('us-spinner:spin', function(event, key) {
+      $scope.spinneractive = true;
+    });
+
+    $rootScope.$on('us-spinner:stop', function(event, key) {
+      $scope.spinneractive = false;
+    });
   $scope.investCheck=function(){
   if($sessionStorage.SessionStatus=="N" || $sessionStorage.SessionStatus=="I" || $sessionStorage.SessionStatus== 'null' ||$sessionStorage.SessionStatus==undefined ){
     $state.go("inactiveClient");
@@ -708,11 +796,40 @@ $timeout(function() {
 
   }
   $scope.withdrawCheck=function(){
+    //$ionicLoading.show({templateUrl:"templates/loadingNormal.html"});
+  //loadSpin.showSpin($scope.spinneractive );
   if($sessionStorage.SessionStatus=="N" || $sessionStorage.SessionStatus=="I" || $sessionStorage.SessionStatus== 'null' || $sessionStorage.SessionStatus==undefined ){
-    $state.go("verifySuccess");
+    //$ionicLoading.hide();
+    $sessionStorage.instaAmount=0;
+    $state.go("withdraw");
   }
   else{
-      $state.go("withdraw");
+      //for reliance instant amount
+      var bankcall={};
+        bankcall.gateWayType ="RG",
+        bankcall.gateWayPayLoad= "https://online.reliancemf.com/rmf/mowblyserver/wsapi/rmf/prod/wsapi/RedemptionSchemeDetails?acno="+$sessionStorage.folioNums+"&scheme=LP&plan=IG&arncode=ARN-107100&branch=FP99&proxybranch=&deviceid=PARTNERAPI&appVersion=1.0.1&appName=FINOTRUST&apikey=c3d2f2f3-7d23-4f48-9fe6-82db5449a562"
+        bankcall=JSON.stringify(bankcall);
+        console.log(bankcall+"bank call");
+        var bankedit;
+        loadSpin.showSpin($scope.spinneractive );
+        relianceInstantAmountAPI.save(bankcall,function(data){
+
+        console.log(data);
+
+        if(data.responseCode == "Cali_SUC_1030") {
+          console.log(data.jsonStr.rgResponse[0]);
+          //console.log(data.jsonStr.rgResponse.BankAccNo);
+          console.log((JSON.parse(data.jsonStr.rgResponse)).Insta_Amount+ "   Insta_Amount");
+          $sessionStorage.instaAmount=(JSON.parse(data.jsonStr.rgResponse)).Insta_Amount;
+          $scope.insta=$sessionStorage.instaAmount;
+        //  $ionicLoading.hide();
+          loadSpin.stopSpin($scope.spinneractive );
+         $state.go("withdraw");
+        }
+      })
+
+
+
   }
 
   }
@@ -731,7 +848,7 @@ $timeout(function() {
     $scope.notNow="Start Investing";
   }
   else{
-    $scope.para1="Congratulations you can start investing. However, we will need additional details to process your investments, Please click on 'Activate Now' to provide these details.";
+    $scope.para1="Congratulations you can start investing. However, we will need additional details to process your investments.";
     $scope.para2="We will update you once your account is ready for transactions. Happy Investing!";
     $scope.docstatus=false;
     $scope.notNow="Not Now";
@@ -768,18 +885,20 @@ $timeout(function() {
     console.log($scope.nextSteps);
   }
 })
-.controller('sampleCtrl', function ($scope,$state,mfOrderUrlService,$sessionStorage,dateService,$timeout) {
+.controller('sampleCtrl', function ($scope,$state,mfOrderUrlService,$sessionStorage,dateService,$timeout, $rootScope,loadSpin,ngDialog) {
 
   var finalComputedVal;
     if($sessionStorage.clientType=="GO"){
     console.log($sessionStorage.clientType+ "  gold")
-    $scope.schemePlan="RELIANCE LIQUID FUND-CASH PLAN-GROWTH";
-    $scope.averageRate=7;
+    $scope.schemePlan="RELIANCE LIQUID FUND - TREASURY PLAN - IP - Growth";
+    $scope.averageRate=7.5;
+    $scope.minInv=500;
   }
     else if($sessionStorage.clientType=="PL") {
     console.log($sessionStorage.clientType+ "  platinum")
-      $scope.schemePlan="RELIANCE LIQUID FUND - TREASURY PLAN - IP - Growth";
-    $scope.averageRate=8;
+    $scope.schemePlan="Reliance Money Manager Fund – Growth Plan"; //money managaer needs to come here
+    $scope.averageRate=8.3;
+    $scope.minInv=500;
     }
   var dayNow = new Date().getDay();
   console.log(dayNow);
@@ -789,7 +908,7 @@ $timeout(function() {
   else if(dayNow ==0) {$scope.nav=$sessionStorage.nav;}
 
   console.log($scope.nav);
-  // till here
+ // till here
 
     $scope.final=function(initial,nav,suggest){
       console.log($scope.averageRate + "    averageRate");
@@ -835,6 +954,7 @@ $timeout(function() {
 
         else if($sessionStorage.nachStatus !='A'){
                // $ionicLoading.show({templateUrl:"templates/loading.html"});
+               loadSpin.showSpin($scope.spinneractive );
               console.log('its entering the nach mandate');
               if($sessionStorage.SessionStatus=="P" ){
                 if($scope.initial<=1000){$scope.sendMfOrder();}
@@ -855,6 +975,7 @@ $timeout(function() {
             }
             else{
               //$ionicLoading.show({templateUrl:"templates/loading.html"});
+              loadSpin.showSpin($scope.spinneractive );
               $scope.nach();
             }
             }
@@ -863,21 +984,42 @@ $timeout(function() {
         $scope.sendMfOrder=function() {
             var date=dateService.getDate();
             mfOrderUrlService.save({"portfolioCode": $sessionStorage.SessionPortfolio,"amcCode": $sessionStorage.amcCode,"rtaCode":$sessionStorage.rtaCode,"orderTxnDate": date,"amount": finalComputedVal,"folioNo":$sessionStorage.folioNums},function(data){
-                if(data.responseCode=="Cali_SUC_1030"){
-            var ref =  window.open('https://finotrust.com/WealthWeb/ws/pymt/pymtView?mfOrderId='+data.id,'_self');
-          ref.addEventListener('loadstop', function(event) { if( event.url.match('pymt/bdesk') ){
-            console.log("hereeeee");
-            $timeout(function () {
-              location.replace("file:///Users/apple/Documents/finoZenWebApp/index.html#/summary");
-            },10000);
-          ;} });
-          $timeout(function () {
-              $state.go('tabsController.recentTransactions');
-            },1000);
+             if(data.responseCode=="Cali_SUC_1030"){
+                if(data.jsonStr==null){
+                    var ref = window.open('https://finotrust.com/WealthWeb/ws/pymt/pymtView?mfOrderId='+data.id,'_self', 'location=no');
+                $timeout(function () {
+                    $state.go('tabsController.recentTransactions');
+                  },1000);
+                  
+                }
+                else{
+                  console.log(data.jsonStr.ihno);
+                  var rel= window.open('https://investeasy.reliancemutual.com/online/CampaingLink/InvestorCampaign?IHNO='+data.jsonStr.ihno,'_self','location=no');
+                $timeout(function () {
+                    $state.go('tabsController.recentTransactions');
+                  },1000);
+                  
+                  
+                }
+                //clevertap charging notification
+                clevertap.event.push("Charged", {
+                  "Amount": finalComputedVal, //amount entered
+                  "Fund Name": $sessionStorage.rtaCode, //reliance code
+                  "Charged ID":data.id ,  // important to avoid duplicate transactions due to network failure
+
+                });
+                    
 
                 }
+
+
+
+
+
+
+
         else{
-          $ionicLoading.hide();
+          alert("$ionicLoading.hideälert");
         }
             },function(error){
         //$ionicLoading.hide();
@@ -905,10 +1047,19 @@ $timeout(function() {
     });
   };
         var mid=$sessionStorage.orderId;//dynamic id
-    })
+    $scope.spinneractive = false;
+
+    $rootScope.$on('us-spinner:spin', function(event, key) {
+      $scope.spinneractive = true;
+    });
+
+    $rootScope.$on('us-spinner:stop', function(event, key) {
+      $scope.spinneractive = false;
+    });
+})
 
 .controller('schemeText', function($scope,$sessionStorage) {
-  if($sessionStorage.clientType=='GO'){
+  /*{
     $scope.schemeName="Reliance Liquid Fund Cash Plan - Growth";
     $scope.schemeBody="Reliance Liquid Fund ensure that your investments are very low risk, no-lock in on withdrawl and generate stable returns. This fund primarily invests in money market instruments of public sector banks like Axis Bank, Kotak Mahindra Bank and undertakings such as Steel Authority of India, Idea Cellular, Tata Capital making it ultra-safe (almost as safe as your savings bank deposits) to invest your money. ";
     $scope.returnsOneM="7.2%";
@@ -920,36 +1071,40 @@ $timeout(function() {
     $scope.TaxBenifits=" Unlike FD, there is no TDS for investments in this fund. Also, for investments more than 3 years, tax payout becomes negligible as there is indexation benefits. However for investments less than 3 years, you will have to declare the returns from this investment at the time of tax filing and pay tax as per your salary bracket.";
     $scope.schemeLink="http://www.moneycontrol.com/mutual-funds/nav/reliance-liquid-fund-cash-plan/MRC014";
     $scope.schemeLinkText=" to read more about Reliance Liquid Fund Cash Plan – Growth on moneycontrol.";
+  }*/
+  if($sessionStorage.clientType=='GO'){
+    $scope.schemeName="Reliance Liquid Fund Treasury Plan (IP) - G";
+    $scope.schemeBody="Reliance Liquid Fund ensure that your investments are very low risk, no-lock in on withdrawl and generate stable returns. This fund primarily invests in money market instruments of public sector banks and undertakings such as HUDCO, L&T and Tata Steel  making it ultra-safe (almost as safe as your savings bank deposits) to invest your money.";
+    $scope.returnsOneM="7.1%";
+    $scope.returnsThreeM="7.1%";
+    $scope.returnsSixM="7.46%";
+    $scope.returnsNineM="7.65%";
+    $scope.returnsOneY="7.84%";
+    $scope.returnsThreeY="8.56%";
+    $scope.currentAUM=" INR 20,722 Crores";
+    $scope.TaxBenifits=" Unlike FD, there is no TDS for investments in this fund. Also, for investments more than 3 years, tax payout becomes negligible as there is indexation benefits. However for investments less than 3 years, you will have to declare the returns from this investment at the time of tax filing and pay tax as per your salary bracket.";
+    $scope.schemeLink="https://www.valueresearchonline.com/funds/newsnapshot.asp?schemecode=519";
+    $scope.schemeLinkText=" to read more about Reliance Liquid Fund Treasury Plan (IP) - G on moneycontrol.";
+    $scope.starText="Sep 2016";
   }
   else{
-    $scope.schemeName="Reliance Liquid Fund Treasury Plan (IP) – G";
-    $scope.schemeBody="Reliance Liquid Fund ensure that your investments are very low risk, no-lock in on withdrawl and generate stable returns. This fund primarily invests in money market instruments of public sector banks and undertakings such as HUDCO, L&T and Tata Steel  making it ultra-safe (almost as safe as your savings bank deposits) to invest your money.";
-    $scope.returnsOneM="9.48%";
-    $scope.returnsThreeM="8.2%";
-    $scope.returnsOneY="8.2%";
-    $scope.returnsThreeY="8.84%";
-    $scope.returnsFiveY="9.06%";
-    $scope.currentAUM=" Rs. 14,469 Crores";
-    $scope.TaxBenifits=" Unlike FD, there is no TDS for investments in this fund. Also, for investments more than 3 years, tax payout becomes negligible as there is indexation benefits. However for investments less than 3 years, you will have to declare the returns from this investment at the time of tax filing and pay tax as per your salary bracket.";
-    $scope.schemeLink="http://www.moneycontrol.com/mutual-funds/nav/reliance-liquid-fund-treasury-plan-ip/MRC046";
-    $scope.schemeLinkText=" to read more about Reliance Liquid Fund Treasury Plan (IP) – G on moneycontrol.";
-  }
-  /*else{
-    $scope.schemeName="Reliance Money Manager Fund – Growth Plan";
+    $scope.schemeName="Reliance Money Manager Fund - Growth Plan";
     $scope.schemeBody="Reliance Money Manager Fund ensures that your investments are at low risk, no lock-in on withdrawal and generate stable returns. This fund primarily invests in money market instruments and NCDs of public sector banks and AAA rated companies like Axis Bank, ICICI Bank, HDFC Ltd. etc. making it a safe option to park your surplus bank balance.";
     $scope.returnsOneM="7.80%";
     $scope.returnsThreeM="9.04%";
-    $scope.returnsOneY="9.26%";
-    $scope.returnsThreeY="8.77%";
-    $scope.returnsFiveY="8.63%";
-    $scope.currentAUM=" Rs. 14,469 Crores";
-    $scope.TaxBenifits=" Unlike FD, there is no TDS for investments in this fund. Also, for investments more than 3 years, tax payout becomes negligible as there is indexation benefits. However for investments less than 3 years, you will have to declare the returns from this investment at the time of tax filing and pay tax as per your salary bracket.";
-    $scope.schemeLink="http://www.moneycontrol.com/mutual-funds/nav/reliance-liquid-fund-treasury-plan-ip/MRC046";
-    $scope.schemeLinkText=" to read more about Reliance Liquid Fund Treasury Plan (IP) – G on moneycontrol.";
-  }*/
+    $scope.returnsSixM="9.26%";
+    $scope.returnsNineM="8.77%";
+    $scope.returnsOneY="8.63%";
+    $scope.returnsThreeY="8.88%";
+    $scope.currentAUM=" INR 17,024 Crores";
+    $scope.TaxBenifits=" Unlike FD, there is no TDS for investments in this fund. Also, for investments more than 3 years, tax payout becomes negligible as there is indexation benefit. However, for investments less than 3 years, you will have to declare the interest accrued from this investment at the time of tax filing and pay tax as per your salary bracket.";
+    $scope.schemeLink="https://www.valueresearchonline.com/funds/newsnapshot.asp?schemecode=4547";
+    $scope.schemeLinkText=" to read more about Reliance Money Manager Fund - Growth Plan";
+    $scope.starText="Sep 2016";
+  }
 })
 
-.controller('changeCtrl', function(changePinService,$scope,$sessionStorage,$state){
+.controller('changeCtrl', function(changePinService,$scope,$sessionStorage,$state, $rootScope,loadSpin,ngDialog){
 
 $scope.resetPinFn=function(changePinForm,pin,confirm){
     if(changePinForm.$valid){
@@ -963,78 +1118,416 @@ $scope.resetPinFn=function(changePinForm,pin,confirm){
 
 
               console.log('PIN Changed Successfully');
-             
+  
           }
           else {
               console.log('PIN Changed unSuccessfully');
           }
       },function(error){
           console.log("eror");
+          ngDialog.openConfirm({
+            template: "<h4 class='popupHead'>Sorry for the inconvenience</h4><p style='padding:1em;'>Please Login again</p>"+
+            '<div class="ngdialog-buttons text-center">' +
+                  '<button type="button"  class="ngdialog-button ngdialog-button-primary button-positive" ng-click="confirm(1)">OK' +
+            '</button></div>',
+          plain: true,
+          className: 'ngdialog-theme-default',
+          closeByEscape : false,
+          closeByDocument: false,
+          showClose:false,
+          scope: $scope
+          })
+        .then(function(value){
+            console.log('resolved:' + value);
+              $sessionStorage.SessionClientCode="none";
+              location.reload();
+              $state.go('home');
+            // Perform the save here
+        }, function(value){
+            console.log('rejected:' + value);
+
+        });
+
 
       });
 
     }
   }
+    $scope.spinneractive = false;
+
+    $rootScope.$on('us-spinner:spin', function(event, key) {
+      $scope.spinneractive = true;
+    });
+
+    $rootScope.$on('us-spinner:stop', function(event, key) {
+      $scope.spinneractive = false;
+    });
 })
 
 
-    .controller('AuthWithdrawlCtrl', function($scope, $state,mfSellUrlService,dateService,$sessionStorage,relianceUserBank,relianceInstantAmount) {
+    .controller('AuthWithdrawlCtrl', function($scope, $state,mfSellUrlService,dateService,$sessionStorage,relianceInstantAmountAPI, $rootScope,loadSpin,ngDialog) {
+        if($sessionStorage.instaAmount>=0){$scope.insta=$sessionStorage.instaAmount;}
+        else{$scope.insta=0;}
+
         $scope.Withdrawl = function(form) {
-console.log($scope.amount);
-console.log($scope.checked_withdraw );
-console.log(($scope.amount!=undefined || $scope.checked_withdraw) );
+        console.log($scope.amount);
+        console.log($scope.checked_withdraw );
+        console.log(($scope.amount!=undefined || $scope.checked_withdraw) );
             var date=dateService.getDate();
             if(form.$valid) {
             if(($scope.amount!=undefined || $scope.checked_withdraw) && ($scope.amount>0 || $scope.checked_withdraw)) {
-      if($scope.checked_withdraw == true){
-            mfSellUrlService.save({"portfolioCode": $sessionStorage.SessionPortfolio,"amcCode": $sessionStorage.amcCode,"rtaCode":$sessionStorage.rtaCode,"orderTxnDate": date,"allUnits":"Y","folioNo":$sessionStorage.folioNums},function(data){
-                        console.log(data.responseCode);
-            if(data.responseCode=="Cali_SUC_1030") {
-                            $state.go('successPage');
-                        }
-            else
-            {
-              $scope.withdraw_Networkerror="Please try again";
+          if($scope.checked_withdraw == true){
+/*
+ngDialog.openConfirm({
+    template:
+      '<p>Are you sure you want to close the parent dialog?</p>' +
+      '<div class="ngdialog-buttons text-center">' +
+          '<button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog(0)">No' +
+          '<button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm(1)">Confirm' +
+      '</button></div>',
+    plain: true,
+    className: 'ngdialog-theme-default',
+    closeByEscape : false,
+    closeByDocument: false,
+    showClose:false,
+    scope: $scope
+})
+.then(function(value){
+    console.log('resolved:' + value);
+    // Perform the save here
+}, function(value){
+    console.log('rejected:' + value);
+
+});
+
+
+
+*/
+
+            if($sessionStorage.clientType ==="PL"){
+               var confirmPopup = ngDialog.openConfirm({
+                template: "<p>Your amount will be credited to </br>" +"Account No:"+$sessionStorage.bankName+"<br/> Bank Name: "+$sessionStorage.bankAccNo + "</p>"+"<p><br/>Amount not eligible for instant withdrawal</p>"+
+                  '<div class="ngdialog-buttons text-center">' +
+                      '<button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog(0)">CANCEL' +
+                      '<button type="button" class="ngdialog-button ngdialog-button-primary button-positive" ng-click="confirm(1)">OK' +
+                  '</button></div>',
+                  plain: true,
+                  className: 'ngdialog-theme-default',
+                  closeByEscape : false,
+                  closeByDocument: false,
+                  showClose:false,
+                  scope: $scope
+              });
             }
-                    },function(error){
+            else{
+               var confirmPopup = ngDialog.openConfirm({
+                template: "<h4 class='popupHead'>Withdraw complete balance?</h4><p style='padding:1em;'>Your amount will be credited to </br>" +"Account No:"+$sessionStorage.bankName+"<br/> Bank Name: "+$sessionStorage.bankAccNo+"</p>"+
+                '<div class="ngdialog-buttons text-center">' +
+                    '<button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog(0)">CANCEL' +
+                      '<button type="button" class="ngdialog-button ngdialog-button-primary button-positive" ng-click="confirm(1)">OK' +
+                '</button></div>',
+            plain: true,
+            className: 'ngdialog-theme-default',
+            closeByEscape : false,
+            closeByDocument: false,
+            showClose:false,
+            scope: $scope
+              });
+            }
+            confirmPopup.then(function(result) {
+              if(result) {
+                loadSpin.showSpin($scope.spinneractive );
+                mfSellUrlService.save({"portfolioCode": $sessionStorage.SessionPortfolio,"amcCode": $sessionStorage.amcCode,"rtaCode":$sessionStorage.rtaCode,"orderTxnDate": date,"allUnits":"Y","folioNo":$sessionStorage.folioNums},function(data){
+                            console.log(data.responseCode);
 
-            $scope.withdraw_Networkerror="Please try again";
-                    });
-      }
-      else{
-          mfSellUrlService.save({"portfolioCode": $sessionStorage.SessionPortfolio,"amcCode":$sessionStorage.amcCode,"rtaCode":$sessionStorage.rtaCode,"orderTxnDate": date,"amount":$scope.amount,"folioNo":$sessionStorage.folioNums},function(data){
-              console.log(data.responseCode);
-              if(data.responseCode!="Cali_SUC_1030") {
-                console.log("failed");
-                $scope.withdraw_Networkerror="Unable to accept request. Please re-login and try again";
+                if(data.responseCode=="Cali_SUC_1030") {
+                  loadSpin.stopSpin($scope.spinneractive );
+                  $state.go('successPage');
+                }
+                else
+                {
+                  $scope.withdraw_Networkerror="Please try again";
+                }
+                        },function(error){
 
+                $scope.withdraw_Networkerror="Please try again";
+                        });
               }
-              else
-              {
-                console.log("success");
-                $state.go('successPage');
-              }
-            },function(error){
-              $scope.withdraw_Networkerror="Unable to accept request. Please re-login and try again";
             });
-      }
+          }
+          else{
+  /*          
+              mfSellUrlService.save({"portfolioCode": $sessionStorage.SessionPortfolio,"amcCode":$sessionStorage.amcCode,"rtaCode":$sessionStorage.rtaCode,"orderTxnDate": date,"amount":$scope.amount,"folioNo":$sessionStorage.folioNums},function(data){
+                  console.log(data.responseCode);
+                  if(data.responseCode!="Cali_SUC_1030") {
+                    console.log("failed");
+                    $scope.withdraw_Networkerror="Unable to accept request. Please re-login and try again";
+
+                  }
+                  else
+                  {
+                    console.log("success");
+                    $state.go('successPage');
+                  }
+                },function(error){
+                  $scope.withdraw_Networkerror="Unable to accept request. Please re-login and try again";
+                });
+
+
+
+
+*/
+
+
+
+        if($sessionStorage.bankAccNo==undefined || $sessionStorage.bankName==null ){
+           var confirmPopup =ngDialog.openConfirm({
+            template: "<h4 class='popupHead'>Confirm</h4>" + "<p style='padding:1em;'>Withdraw INR "+ $scope.amount +" ?</p>"+
+                  '<div class="ngdialog-buttons text-center">' +
+                      '<button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog(0)">CANCEL' +
+                      '<button type="button" class="ngdialog-button ngdialog-button-primary button-positive" ng-click="confirm(1)">OK' +
+                  '</button></div>',
+                  plain: true,
+                  className: 'ngdialog-theme-default',
+                  closeByEscape : false,
+                  closeByDocument: false,
+                  showClose:false,
+                  scope: $scope
+          });
+          confirmPopup.then(function(result) {
+            if(result) {
+            $ionicLoading.show({templateUrl:"templates/loadingNormal.html"});
+            mfSellUrlService.save({"portfolioCode": $sessionStorage.SessionPortfolio,"amcCode":$sessionStorage.amcCode,"rtaCode":$sessionStorage.rtaCode,"orderTxnDate": date,"amount":$scope.amount,"folioNo":$sessionStorage.folioNums},function(data){
+                console.log(data.responseCode);
+                if(data.responseCode!="Cali_SUC_1030") {
+                  $ionicLoading.hide();
+                  console.log("failed");
+                  $scope.withdraw_Networkerror="Unable to accept request. Please re-login and try again";
+                  var log=$ionicPopup.alert({
+                    title: 'Sorry for the inconvenience',
+                    template: 'Please Login again'
+                    });
+                  log.then(function(res) {
+                    ionic.Platform.exitApp();
+                    });
+                }
+                else
+                {
+                  $ionicLoading.hide();
+                  console.log("success");
+                  $state.go('successPage');
+                }
+              },function(error){
+                  console.log("eror");
+                  ngDialog.openConfirm({
+                    template: "<h4 class='popupHead'>Sorry for the inconvenience</h4><p style='padding:1em;'>Please Login again</p>"+
+                    '<div class="ngdialog-buttons text-center">' +
+                          '<button type="button"  class="ngdialog-button ngdialog-button-primary button-positive" ng-click="confirm(1)">OK' +
+                    '</button></div>',
+                  plain: true,
+                  className: 'ngdialog-theme-default',
+                  closeByEscape : false,
+                  closeByDocument: false,
+                  showClose:false,
+                  scope: $scope
+                  })
+                .then(function(value){
+                    console.log('resolved:' + value);
+                      $sessionStorage.SessionClientCode="none";
+                      location.reload();
+                      $state.go('home');
+                    // Perform the save here
+                }, function(value){
+                    console.log('rejected:' + value);
+
+                });
+
+              });
             }
-      else{
-        $scope.withdraw_error="Please enter a valid amount.";
-      }
-    }
+          });
+        }
+        else{
+          if($sessionStorage.clientType ==="PL"){
+            if($scope.amount >= 500 &&  $scope.amount<=$scope.insta ){
+               var confirmPopup =ngDialog.openConfirm({
+                template: "<h4 class='popupHead'>Withdraw INR"+ $scope.amount +" ?</h4>" + "<p style='padding:1em;'>Account No: "+$sessionStorage.bankName+"<br/> Bank Name: "+$sessionStorage.bankAccNo+ "<br/>Amount will be credited within 30 minutes.</p>" +
+                  '<div class="ngdialog-buttons text-center">' +
+                      '<button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog(0)">CANCEL' +
+                      '<button type="button" class="ngdialog-button ngdialog-button-primary button-positive" ng-click="confirm(1)">OK' +
+                  '</button></div>',
+                  plain: true,
+                  className: 'ngdialog-theme-default',
+                  closeByEscape : false,
+                  closeByDocument: false,
+                  showClose:false,
+                  scope: $scope
+              });
+            }
+            else {
+               var confirmPopup =ngDialog.openConfirm({
+                template: "<h4 class='popupHead'>Withdraw INR"+ $scope.amount +" ?</h4>" + "<p style='padding:1em;'>Your amount will be credited to " +"Account No:"+$sessionStorage.bankName+"<br/> Bank Name: "+$sessionStorage.bankAccNo + "<br/>Amount not eligible for instant withdrawal</p>" +
+                  '<div class="ngdialog-buttons text-center">' +
+                      '<button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog(0)">CANCEL' +
+                      '<button type="button" class="ngdialog-button ngdialog-button-primary button-positive" ng-click="confirm(1)">OK' +
+                  '</button></div>',
+                  plain: true,
+                  className: 'ngdialog-theme-default',
+                  closeByEscape : false,
+                  closeByDocument: false,
+                  showClose:false,
+                  scope: $scope
+              });
+            }
+          }
+          else{
+             var confirmPopup =ngDialog.openConfirm({
+              template: "<h4 class='popupHead'>Confirm</h4>" + "<p style='padding:1em;'>Your amount will be credited to<br/> Account No:"+$sessionStorage.bankName+"<br/> Bank Name: "+$sessionStorage.bankAccNo +"</p>"+
+                  '<div class="ngdialog-buttons text-center">' +
+                      '<button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog(0)">CANCEL' +
+                      '<button type="button" class="ngdialog-button ngdialog-button-primary button-positive" ng-click="confirm(1)">OK' +
+                  '</button></div>',
+                  plain: true,
+                  className: 'ngdialog-theme-default',
+                  closeByEscape : false,
+                  closeByDocument: false,
+                  showClose:false,
+                  scope: $scope
+            });
+          }
+          confirmPopup.then(function(result) {
+            if(result) {
+            $ionicLoading.show({templateUrl:"templates/loadingNormal.html"});
+            mfSellUrlService.save({"portfolioCode": $sessionStorage.SessionPortfolio,"amcCode":$sessionStorage.amcCode,"rtaCode":$sessionStorage.rtaCode,"orderTxnDate": date,"amount":$scope.amount,"folioNo":$sessionStorage.folioNums},function(data){
+                console.log(data.responseCode);
+                if(data.responseCode!="Cali_SUC_1030") {
+                  $ionicLoading.hide();
+                  console.log("failed");
+                  $scope.withdraw_Networkerror="Unable to accept request. Please re-login and try again";
+                  var log=$ionicPopup.alert({
+                    title: 'Sorry for the inconvenience',
+                    template: 'Please Login again'
+                    });
+                  log.then(function(res) {
+                    ionic.Platform.exitApp();
+                    });
+                }
+                else
+                {
+                  $ionicLoading.hide();
+                  console.log("success");
+                  $state.go('successPage');
+                }
+              },function(error){
+                $scope.withdraw_Networkerror="Unable to accept request. Please re-login and try again";
+                  console.log("eror");
+                  ngDialog.openConfirm({
+                    template: "<h4 class='popupHead'>Sorry for the inconvenience</h4><p style='padding:1em;'>Please Login again</p>"+
+                    '<div class="ngdialog-buttons text-center">' +
+                          '<button type="button"  class="ngdialog-button ngdialog-button-primary button-positive" ng-click="confirm(1)">OK' +
+                    '</button></div>',
+                  plain: true,
+                  className: 'ngdialog-theme-default',
+                  closeByEscape : false,
+                  closeByDocument: false,
+                  showClose:false,
+                  scope: $scope
+                  })
+                .then(function(value){
+                    console.log('resolved:' + value);
+                      $sessionStorage.SessionClientCode="none";
+                      location.reload();
+                      $state.go('home');
+                    // Perform the save here
+                }, function(value){
+                    console.log('rejected:' + value);
 
-        };
+                });
 
-        $scope.amountClear= function() {
-            $scope.amount='';
+              });
+            }
+          });
         }
 
 
 
+
+
+
+
+
+
+
+          }
+                }
+          else{
+            $scope.withdraw_error="Please enter a valid amount.";
+          }
+        }
+
+            };
+
+            $scope.amountClear= function() {
+                $scope.amount='';
+            }
+
+    //reliance bank api call
+
+        $scope.RelianceBank=function(){
+        var bankcall={};
+        bankcall.gateWayType ="RG",
+        bankcall.gateWayPayLoad= "https://online.reliancemf.com/rmf/mowblyserver/wsapi/rmf/prod/wsapi/RedInvbankDetails_V1?arncode=ARN-107100&acno="+$sessionStorage.folioNums+"+&scheme=LP&plan=IG&deviceid=PARTNERAPI&appVersion=1.0.1&appName=FINOTRUST&apikey=c3d2f2f3-7d23-4f48-9fe6-82db5449a562"
+        bankcall=JSON.stringify(bankcall);
+        console.log(bankcall+"bank call");
+        var bankedit;
+        relianceInstantAmountAPI.save(bankcall,function(data){
+
+        console.log(data);
+
+        if(data.responseCode == "Cali_SUC_1030") {
+          console.log(data.jsonStr.rgResponse);
+        //console.log(data.jsonStr.rgResponse.BankAccNo);
+        console.log((JSON.parse(data.jsonStr.rgResponse))[0].BankAccNo);
+        $sessionStorage.bankName=(JSON.parse(data.jsonStr.rgResponse))[0].BankAccNo;
+        $sessionStorage.bankAccNo=(JSON.parse(data.jsonStr.rgResponse))[0].BankName;
+
+              }
+      })
+    }
+    //reliance InstaAmount Api call
+    $scope.RelianceInstaAmount=function(){
+        var bankcall={};
+        bankcall.gateWayType ="RG",
+        bankcall.gateWayPayLoad= "https://online.reliancemf.com/rmf/mowblyserver/wsapi/rmf/prod/wsapi/RedemptionSchemeDetails?acno="+$sessionStorage.folioNums+"&scheme=LP&plan=IG&arncode=ARN-107100&branch=FP99&proxybranch=&deviceid=PARTNERAPI&appVersion=1.0.1&appName=FINOTRUST&apikey=c3d2f2f3-7d23-4f48-9fe6-82db5449a562"
+        bankcall=JSON.stringify(bankcall);
+        console.log(bankcall+"bank call");
+        var bankedit;
+        relianceInstantAmountAPI.save(bankcall,function(data){
+
+        console.log(data);
+
+        if(data.responseCode == "Cali_SUC_1030") {
+          console.log(data.jsonStr.rgResponse[0]);
+        //console.log(data.jsonStr.rgResponse.BankAccNo);
+        console.log((JSON.parse(data.jsonStr.rgResponse)).Insta_Amount);
+        $sessionStorage.instaAmount=(JSON.parse(data.jsonStr.rgResponse)).Insta_Amount;
+        if($sessionStorage.instaAmount==null || $sessionStorage.instaAmount == undefined){$scope.insta=0;}
+        else{$scope.insta=$sessionStorage.instaAmount;}
+              }
+      })
+    }
+    $scope.spinneractive = false;
+
+    $rootScope.$on('us-spinner:spin', function(event, key) {
+      $scope.spinneractive = true;
+    });
+
+    $rootScope.$on('us-spinner:stop', function(event, key) {
+      $scope.spinneractive = false;
+    });
+    $scope.RelianceBank();
     })
   /*forgot pin controller*/
-    .controller('forgotPinCtrl', function($scope,$sessionStorage,$http,$state,$timeout) {
+    .controller('forgotPinCtrl', function($scope,$sessionStorage,$http,$state,$timeout, $rootScope,loadSpin,ngDialog) {
       $scope.resetPinFn=function(form,change,newPIN) {
         if(form.$valid) {
           console.log("data match "+ newPIN, $scope.confirmPin);
@@ -1101,9 +1594,17 @@ console.log(($scope.amount!=undefined || $scope.checked_withdraw) );
         }
 
 
+    $scope.spinneractive = false;
 
+    $rootScope.$on('us-spinner:spin', function(event, key) {
+      $scope.spinneractive = true;
+    });
+
+    $rootScope.$on('us-spinner:stop', function(event, key) {
+      $scope.spinneractive = false;
+    });
 })
-    .controller('AuthSignUpCtrl', function($scope, $state,signUpService,$sessionStorage) {
+    .controller('AuthSignUpCtrl', function($scope, $state,signUpService,$sessionStorage, $rootScope,loadSpin,ngDialog) {
 
         $scope.signUp = function(form,searchText2,signupForm) {
             $sessionStorage.SessionClientName=signupForm.fName+' '+signupForm.lName;
@@ -1121,6 +1622,7 @@ console.log(($scope.amount!=undefined || $scope.checked_withdraw) );
           if(form.$valid) {
             console.log("not same number");
             //$ionicLoading.show({templateUrl:"templates/loadingNormal.html"});
+            loadSpin.showSpin($scope.spinneractive );
             $sessionStorage.signUpData = (signupForm);
             $scope.addUserInfo();
           }
@@ -1168,6 +1670,15 @@ console.log(($scope.amount!=undefined || $scope.checked_withdraw) );
 
             });
         }
+    $scope.spinneractive = false;
+
+    $rootScope.$on('us-spinner:spin', function(event, key) {
+      $scope.spinneractive = true;
+    });
+
+    $rootScope.$on('us-spinner:stop', function(event, key) {
+      $scope.spinneractive = false;
+    });
     })
 .controller('CarouselDemoCtrl', function ($scope) {
   $scope.myInterval = 4000;
@@ -1183,8 +1694,8 @@ console.log(($scope.amount!=undefined || $scope.checked_withdraw) );
       headding: ['Watch your money grow', 'Invest & withdraw @ One Click', 'Your money is safe', "We're only a call away"],
       text: ['Your money is expected to grow at an annualized rate of 7.0 - 8.5%, you can see it growing everyday and withdraw anytime you want!',
              'At FinoZen, we have made the entire process of investing extremely simple, now you can invest and withdraw almost instantaneously in One Click!',
-             "At FinoZen, you'll be investing in Fino selected liquid mutual fund which has extremely low risk - almost as safe as your savings bank deposit or fixed deposits. You can invest as low as Rs. 100!",
-             "You can chat with us or call us anytime from Monday to Saturday between 10 am to 9 pm, we'll resolve all your queries within minutes!"][slides.length % 4],
+             "At FinoZen, you'll be investing in Fino selected liquid mutual fund which has extremely low risk - almost as safe as your savings bank deposit or fixed deposits. You can invest as low as Rs. 500!",
+             "You can chat with us or call us anytime from Monday to Saturday between 9 am to 9 pm, we'll resolve all your queries within minutes!"][slides.length % 4],
       id: currIndex++
     });
   };
@@ -1249,7 +1760,7 @@ console.log($sessionStorage.SessionStatus+"   $sessionStorage.SessionStatus veri
         $scope.disbledSkip=true;
         $scope.statusImage="img/step1.jpg";
         $scope.para1="Your FinoZen account is currently inactive. Do you wish to start saving and growing your money everyday?";
-        $scope.para2="If yes, please click on “Activate Now” and submit your PAN Number and Bank Details. We will activate your account instantaneously!";
+        $scope.para2="If yes, please send your PAN Number and Bank Details to support@finozen.com. We will activate your account instantaneously!";
         $scope.notNow ="Not Now";
         $scope.startInvesting="Activate Now";
       }
@@ -1265,7 +1776,7 @@ console.log($sessionStorage.SessionStatus+"   $sessionStorage.SessionStatus veri
         $scope.disbledSkip=false;
         $scope.statusImage="img/step1.jpg";
         $scope.para1="We have received and verified your details and you can start investing.";
-        $scope.para2="However, we will need additional details to process your investments, Please click on 'Complete Activatation' to provide these details";
+        $scope.para2="However, we will need additional details to process your investments.";
         $scope.para3="Pan Card";
         $scope.para4="Address proof (Aadhar/ Driving Licence/ Voter ID/ Passport/ Ration Card)";
         //$scope.para2="We will update you within 12 hours on account activation. Happy Investing!";
@@ -1285,44 +1796,111 @@ console.log($sessionStorage.SessionStatus+"   $sessionStorage.SessionStatus veri
           $scope.disbledSkip=false;
           $scope.statusImage="img/step3.jpg";
           $scope.para1="One of your details is pending for account activation.";
-          $scope.para2="Please click on 'Activate Now' to provide that detail.";
+          $scope.para2="Please Submit your documents to support@finozen.com";
           $scope.notNow="Activate Now";
           $scope.startInvesting="Start Investing";
         }
       }
     }
   }
-
-$scope.initial();
-
 })
 
 
 
-.directive('flipContainer1', function() {
-  return {
-    restrict: 'C',
-    link: function($scope, $elem, $attrs) {
-      $scope.flip1 = function() {
-        $elem.toggleClass('flip');
-      }
-      $scope.$on('flip',function(event, data){
-             $scope.flip1()
-         });
-     
+.controller('testCtrl', function ($scope) {
+  $scope.test=function(){
+    console.log("test");
+  }
+})
+.controller('spinController', ['$scope', 'usSpinnerService', '$rootScope','loadSpin','ngDialog',
+  function($scope, usSpinnerService, $rootScope,loadSpin,ngDialog) {
+$scope.startSpin=function(){
+  loadSpin.showSpin($scope.spinneractive );
+}
+$scope.stopSpin=function(){
+  loadSpin.stopSpin($scope.spinneractive );
+}
+    $scope.spinneractive = false;
+
+    $rootScope.$on('us-spinner:spin', function(event, key) {
+      $scope.spinneractive = true;
+    });
+
+    $rootScope.$on('us-spinner:stop', function(event, key) {
+      $scope.spinneractive = false;
+    });
+
+  }
+])
+
+.controller('MainDialogCtrl', function ($scope, ngDialog) {
+    $scope.clickToOpen = function () {
+        var dialog= ngDialog.open({
+                    template: 'modalDialogId',
+                    className: 'ngdialog-theme-default',
+                    closeByEscape : false,
+                    closeByDocument: false
+                })
+    };
+    $scope.close=function(){
+      ngDialogData.closeAllNow();
     }
+
+    $scope.openConfirm = function () {
+      ngDialog.openConfirm({
+          template:
+            '<p>Are you sure you want to close the parent dialog?</p>' +
+            '<div class="ngdialog-buttons text-center">' +
+                '<button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog(0)">No' +
+                '<button type="button" class="ngdialog-button ngdialog-button-primary button-positive " ng-click="confirm(1)">Confirm' +
+            '</button></div>',
+          plain: true,
+          className: 'ngdialog-theme-default',
+          closeByEscape : false,
+          closeByDocument: false,
+          showClose:false,
+          scope: $scope
+      })
+      .then(function(value){
+          console.log('resolved:' + value);
+          // Perform the save here
+      }, function(value){
+          console.log('rejected:' + value);
+
+      });
   };
- })
-.directive('flipContainer2', function() {
-  return {
-    restrict: 'C',
-    link: function($scope, $elem, $attrs) {
-      $scope.flip2 = function() {
-        $elem.toggleClass('flip');
-      }
-      $scope.$on('flip',function(event, data){
-             $scope.flip2()
-         });
+
+
+})
+    .controller('quotesCtrl', function($scope,$timeout,$interval) {
+    $scope.headsUpData=[
+    "\"An investment in knowledge pays the best interest.' - Benjamin Franklin",
+    "\"The individual investor should act consistently as an investor and not as a speculator.\"",
+    "\"Know what you own, and know why you own it.\" - Peter Lynch",
+    "\"I would not pre-pay. I would invest instead and let the investments cover it.\"",
+    "\"We will only do with your money what we would do with our own\"",
+    "\"Do not save what is left after spending but spend what is left after saving\"",
+    "\"You will either tell your money what to do or the lack of it will always manage you\"",
+    "\"Never depend on a single income. Make investments to create a second source\"",
+    "\"Do not save what is left after spending but spend what is left after saving \""
+    ];
+    $scope.textt =$scope.headsUpData[Math.floor(Math.random() * 9)];
+    $scope.plzWait2=function(){
+      $interval(function () {
+        $scope.textt =$scope.headsUpData[Math.floor(Math.random() * 9)];
+            }, 5000);
     }
-  };
- })
+  $scope.plzWait2();
+
+  })
+
+.controller('Frames', function($scope,$location) {
+  $scope.iframeLoadedCallBack = function(loc){
+        var loc2= document.getElementById("iframe_id").contentWindow.location;
+        //var n = loc2.includes("finozen.com");
+        console.log(loc2.href);
+        if(loc2=="https://app.finozen.com/"){
+          console.log(loc2 + 'true')  ;
+        }
+    }
+});

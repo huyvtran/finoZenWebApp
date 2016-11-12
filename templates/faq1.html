@@ -27,7 +27,6 @@
   <uib-accordion close-others="oneAtATime">
 
     <div uib-accordion-group class="panel-default" heading="{{group.name}}" ng-repeat="group in groups">
-      {{group.name}}
       <p ng-repeat="item in group.items">{{item}}</p>
     </div>
   </uib-accordion>

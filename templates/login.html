@@ -2,6 +2,9 @@
 	<div class="row col text-center" >
 		<p class="padding"></p>
 	</div>
+	<div >
+		
+	</div>
 	<form name="authorizationForm" novalidate="" ng-submit="signIn(authorizationForm)">
 		<div class="list">
 			<div  class="error" >
@@ -75,15 +78,33 @@
 			            </td>
 			        </tr>
 			        <tr class="text-center">
-			        	<td class=""><a href="#page8" class="button button-positive button-clear button-block create_acc_btn ">or create an account</a></td>
+			        	<td class=""><a href="#signup" class="button button-positive button-clear button-block create_acc_btn ">or create an account</a></td>
 			        </tr>
 			     
 			    </tbody>
 			</table>
 		</div>
-		
 		<div  class="agree_terms" ng-controller="FundsMethodCtrl">
 			<span class="check_agree item-checkbox item_checkbox">By clicking Login, I agree to <span class="inappLinks" ng-click="terms()"> T & C</span> and <span  class="inappLinks" ng-click="policy()">Privacy Policy.</span> For queries please contact us at support@finozen.com</span>
 		</div>
 	</form>
+
 </div>
+<!--
+<div ng-controller="MainDialogCtrl">
+    
+    <button ng-click="openConfirm()">My Modal</button>
+    
+</div>
+<div ng-controller="spinController" >
+	  <h1>Hello Spinner!</h1>		  <div ng-class="{testSpin: spinneractive}"></div>
+		  <span us-spinner spinner-key="spinner-1"></span>
+	  <input type="button" ng-click="startSpin()" value="Start spinner" />
+	  <input type="button" ng-click="stopSpin()" value="Stop spinner" />
+</div>-->
+<div ng-controller='Frames'>
+<iframe id="iframe_id" iframe-onload="iframeLoadedCallBack(contentWindow.location)" height="600px" src="https://finozen.com"></iframe>
+
+</div>
+	
+
