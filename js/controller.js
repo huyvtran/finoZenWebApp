@@ -376,7 +376,6 @@ $scope.terms = function()
 
     })
 
-  .controller('bankDetailsCTRL',function($scope,$state,$sessionStorage,bankDetailsService,ngDialog,$window,proofRedirectFactory,myService, $rootScope,loadSpin){
   .controller('bankDetailsCTRL',function($scope,$state,$sessionStorage,bankDetailsService,$window,proofRedirectFactory,myService){
     $scope.accountTypeOptions = [
     { name: 'Savings', value: 'SB_New' },
@@ -582,8 +581,6 @@ $scope.diasbleSkip=$sessionStorage.disbledSkip;
       $scope.spinneractive = false;
     });
     })
-      }
-    )
     .controller('AccountfaqCtrl', function($scope) {
         $scope.groups = [];
         $scope.groups["0"] = {name: "What is FinoZen?",items: ["FinoZen is a mobile app where you can watch your money grow, literally! It enables you to invest and withdraw in just a click while your money grows at an expected rate of 7.0 ñ 8.5% p.a."] };
@@ -1013,37 +1010,10 @@ $timeout(function() {
             var date=dateService.getDate();
             mfOrderUrlService.save({"portfolioCode": $sessionStorage.SessionPortfolio,"amcCode": $sessionStorage.amcCode,"rtaCode":$sessionStorage.rtaCode,"orderTxnDate": date,"amount": finalComputedVal,"folioNo":$sessionStorage.folioNums},function(data){
                 if(data.responseCode=="Cali_SUC_1030"){
-            var ref =  window.open('https://finotrust.com/WealthWeb/ws/pymt/pymtView?mfOrderId='+data.id,'_self');
-          ref.addEventListener('loadstop', function(event) { if( event.url.match('pymt/bdesk') ){
-              //clevertap charging notification
-              clevertap.event.push("Charged", {
-                  "Amount": finalComputedVal, //amount entered
-                  "Fund Name": $sessionStorage.rtaCode, //reliance code
-                  "Charged ID":data.id ,  // important to avoid duplicate transactions due to network failure
-
-              });
-            console.log("hereeeee");
-            $timeout(function () {
-              location.replace("file:///Users/apple/Documents/finoZenWebApp/index.html#/summary");
-            },10000);
-          ;} });
-          $timeout(function () {
-              $state.go('tabsController.recentTransactions');
-            },1000);
-
-                });
-                    
-
+                  var ref =  window.open('https://finotrust.com/WealthWeb/ws/pymt/pymtView?mfOrderId='+data.id,'_self');
                 }
-
-
-
-
-
-
-
         else{
-          alert("$ionicLoading.hide‰lert");
+          alert("$ionicLoading.hidelert");
         }
             },function(error){
         //$ionicLoading.hide();
@@ -1204,23 +1174,49 @@ $scope.resetPinFn=function(changePinForm,pin,confirm){
             var date=dateService.getDate();
             if(form.$valid) {
             if(($scope.amount!=undefined || $scope.checked_withdraw) && ($scope.amount>0 || $scope.checked_withdraw)) {
-      if($scope.checked_withdraw == true){
-            mfSellUrlService.save({"portfolioCode": $sessionStorage.SessionPortfolio,"amcCode": $sessionStorage.amcCode,"rtaCode":$sessionStorage.rtaCode,"orderTxnDate": date,"allUnits":"Y","folioNo":$sessionStorage.folioNums},function(data){
-                        console.log(data.responseCode);
-            if(data.responseCode=="Cali_SUC_1030") {
-                //clevertap integration for withdraw
-                clevertap.event.push({
-                    "withdraw": {
-                        "Name": $sessionStorage.name, // User's name
-                        "amount":$scope.checked_withdraw,
-                        "date":date
-                    }
-                });
-                            $state.go('successPage');
-                        }
-            else
-            {
-              $scope.withdraw_Networkerror="Please try again";
+
+          if($scope.checked_withdraw == true){
+/*
+ngDialog.openConfirm({
+    template:
+      '<p>Are you sure you want to close the parent dialog?</p>' +
+      '<div class="ngdialog-buttons text-center">' +
+          '<button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog(0)">No' +
+          '<button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm(1)">Confirm' +
+      '</button></div>',
+    plain: true,
+    className: 'ngdialog-theme-default',
+    closeByEscape : false,
+    closeByDocument: false,
+    showClose:false,
+    scope: $scope
+})
+.then(function(value){
+    console.log('resolved:' + value);
+    // Perform the save here
+}, function(value){
+    console.log('rejected:' + value);
+
+});
+
+
+
+*/
+
+            if($sessionStorage.clientType ==="PL"){
+               var confirmPopup = ngDialog.openConfirm({
+                template: "<p>Your amount will be credited to </br>" +"Account No:"+$sessionStorage.bankName+"<br/> Bank Name: "+$sessionStorage.bankAccNo + "</p>"+"<p><br/>Amount not eligible for instant withdrawal</p>"+
+                  '<div class="ngdialog-buttons text-center">' +
+                      '<button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog(0)">CANCEL' +
+                      '<button type="button" class="ngdialog-button ngdialog-button-primary button-positive" ng-click="confirm(1)">OK' +
+                  '</button></div>',
+                  plain: true,
+                  className: 'ngdialog-theme-default',
+                  closeByEscape : false,
+                  closeByDocument: false,
+                  showClose:false,
+                  scope: $scope
+              });
             }
             else{
                var confirmPopup = ngDialog.openConfirm({
@@ -1256,21 +1252,6 @@ $scope.resetPinFn=function(changePinForm,pin,confirm){
                 $scope.withdraw_Networkerror="Please try again";
                         });
               }
-              else
-              {
-                console.log("success");
-                  //clevertap integration for withdraw
-                  clevertap.event.push({
-                      "withdraw": {
-                          "Name": $sessionStorage.name, // User's name
-                          "amount":$scope.amount,
-                          "date":date
-                      }
-                  });
-                $state.go('successPage');
-              }
-            },function(error){
-              $scope.withdraw_Networkerror="Unable to accept request. Please re-login and try again";
             });
           }
           else{
@@ -1357,7 +1338,6 @@ $scope.resetPinFn=function(changePinForm,pin,confirm){
                     // Perform the save here
                 }, function(value){
                     console.log('rejected:' + value);
-
                 });
 
               });
@@ -1411,7 +1391,7 @@ $scope.resetPinFn=function(changePinForm,pin,confirm){
                   showClose:false,
                   scope: $scope
             });
-          }
+            }
           confirmPopup.then(function(result) {
             if(result) {
             $ionicLoading.show({templateUrl:"templates/loadingNormal.html"});
@@ -1465,14 +1445,6 @@ $scope.resetPinFn=function(changePinForm,pin,confirm){
             }
           });
         }
-
-
-
-
-
-
-
-
 
 
           }
@@ -1544,6 +1516,8 @@ $scope.resetPinFn=function(changePinForm,pin,confirm){
     });
     $scope.RelianceBank();
     })
+
+
   /*forgot pin controller*/
     .controller('forgotPinCtrl', function($scope,$sessionStorage,$http,$state,$timeout, $rootScope,loadSpin,ngDialog) {
       $scope.resetPinFn=function(form,change,newPIN) {

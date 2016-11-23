@@ -1,0 +1,32 @@
+<html data-ng-app="myApp">
+
+  <head>
+      <title>content</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.min.js"></script>
+      <script type="text/javascript">
+
+          angular.module('myApp', [])
+            .controller('myController', function ($scope, $http) {
+                $scope.json = 'Cities not yet loaded.';
+                $http.get('readfile.json') //when I try to read cities.json error occurs
+                  .then(function (data) {
+                   
+                      $scope.json = data.data;
+                      $scope.test=$scope.json.cities[3];
+                      console.log($scope.json);
+                  }, function (error) {
+                      
+                      alert('error');
+                  });
+            })
+          ;
+    </script>
+  </head>
+
+  <body data-ng-controller="myController">
+    <p>JSON content should display below here:</p>
+    <pre>{{test}}</pre>
+  </body>
+
+</html>
