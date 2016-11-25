@@ -682,7 +682,7 @@ var reportDate = getPerformanceService.get();
 reportDate.$promise.then(function(data){
   loadSpin.showSpin($scope.spinneractive );
  if (data.responseCode == "Cali_SUC_1030") {
-loadSpin.stopSpin($scope.spinneractive );
+//loadSpin.stopSpin($scope.spinneractive );
 $sessionStorage.gainMonth=data.jsonStr.gainMonth;
 $sessionStorage.gainToday=data.jsonStr.gainToday;
 $sessionStorage.gainTotal=data.jsonStr.gainTotal;
@@ -693,29 +693,29 @@ $sessionStorage.netInv=data.jsonStr.netInv;
 $sessionStorage.paymentMode=data.jsonStr.paymentMode;
 $sessionStorage.quantity=data.jsonStr.quantity;
 $sessionStorage.xirr=data.jsonStr.xirr;
-loadSpin.stopSpin($scope.spinneractive );
+//loadSpin.stopSpin($scope.spinneractive );
  }
 })
 
   var Report = getReportService.get();
   Report.$promise.then(function(data){
-    loadSpin.showSpin($scope.spinneractive );
+ //   loadSpin.showSpin($scope.spinneractive );
     if(data.responseCode=="Cali_SUC_1030"){
-	$sessionStorage.allTransactions=(data.jsonStr).length ;
-	console.log($sessionStorage.allTransactions + "total number of transactions");
-    $scope.products=data.jsonStr;
-	if((data.jsonStr).length <= 0){
-		console.log("no txn");
-		$scope.noTxnIcon="img/no_leaves.png";
-    }
-    loadSpin.stopSpin($scope.spinneractive );
+      $sessionStorage.allTransactions=(data.jsonStr).length ;
+      console.log($sessionStorage.allTransactions + "total number of transactions");
+      $scope.products=data.jsonStr;
+      if((data.jsonStr).length <= 0){
+        console.log("no txn");
+        $scope.noTxnIcon="img/no_leaves.png";
+      }
+    //  loadSpin.stopSpin($scope.spinneractive );
     }
   })
 
 
   var navDate = getNAVService.get();
   navDate.$promise.then(function(data){
-    loadSpin.showSpin($scope.spinneractive );
+ //   loadSpin.showSpin($scope.spinneractive );
     if(data.responseCode=="Cali_SUC_1030"){
 
     for(var i = 0; i < (data.jsonStr).length; i++) {
@@ -749,7 +749,7 @@ loadSpin.stopSpin($scope.spinneractive );
     }
     console.log("stop load");
   //  $scope.spinneractive = false;
-    loadSpin.stopSpin($scope.spinneractive );
+   // loadSpin.stopSpin($scope.spinneractive );
     }
   },function(error){
     console.log("error");
@@ -771,19 +771,26 @@ loadSpin.stopSpin($scope.spinneractive );
     }
 
     $scope.paginate = function(nextPrevMultiplier) {
-      $scope.currentPage += (nextPrevMultiplier * 1);
-      $scope.pagedData =  $scope.products.slice($scope.currentPage*$scope.pageSize);
+      loadSpin.showSpin($scope.spinneractive );
+      $timeout(function() {
+        $scope.currentPage += (nextPrevMultiplier * 1);
+        $scope.pagedData =  $scope.products.slice($scope.currentPage*$scope.pageSize);
+        loadSpin.stopSpin($scope.spinneractive );
+      }, 500);
     }
 
     function init() {
       $scope.totalPages = Math.ceil( $scope.products.length/$scope.pageSize);
       $scope.pagedData =  $scope.products;
+      $timeout(function() {
+         loadSpin.stopSpin($scope.spinneractive );
+      }, 1000);
     }
 
    
 $timeout(function() {
    init();
-}, 00);
+}, 1000);
 
     $scope.spinneractive = false;
 
@@ -1820,6 +1827,7 @@ console.log($sessionStorage.SessionStatus+"   $sessionStorage.SessionStatus veri
 .controller('spinController', ['$scope', 'usSpinnerService', '$rootScope','loadSpin','ngDialog',
   function($scope, usSpinnerService, $rootScope,loadSpin,ngDialog) {
 $scope.startSpin=function(){
+  console.log("start");
   loadSpin.showSpin($scope.spinneractive );
 }
 $scope.stopSpin=function(){

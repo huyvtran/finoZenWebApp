@@ -104,7 +104,10 @@
     .summaryTab .sideTabs {
       height: auto;
       padding: 3px;
+      padding-left: 12px;
       background: white; }
+      .summaryTab .sideTabs .nav-stacked li > a {
+        font-size: 12px; }
       .summaryTab .sideTabs .nav-stacked li.active > a, .summaryTab .sideTabs .nav-stacked li.active > a:focus, .summaryTab .sideTabs .nav-stacked li.active > a:hover, .summaryTab .sideTabs .nav-stacked li a:hover {
         border-bottom: 2px solid #18bb9c;
         border-radius: 0px;
@@ -481,8 +484,8 @@
         font-size: 38px;
         color: #999; }
   .calculator .calDiv .labelDiv {
-    width: 60%;
-    margin: auto; }
+    margin: auto;
+    float: unset; }
   @media (max-width: 786px) {
     .calculator .calDiv .labelDiv {
       width: 90%; } }
@@ -634,11 +637,27 @@
 
   .finoApp {
     padding: 59px 1% 0; }
+    .finoApp p {
+      font-size: 14px; }
     .finoApp .table.loginTable {
       width: 80%; }
 
   .bankPage {
-    padding: 2% 1%; } }
+    padding: 2% 1%; }
+
+  .txnItem {
+    padding-right: 5px;
+    padding-left: 5px;
+    font-size: 13px; }
+
+  .summaryTab .sideBody .currentTabDiv {
+    min-height: 56vh; }
+
+  .recent_transactions .list-group {
+    margin-bottom: 8px; }
+
+  .summary {
+    min-height: 20em; } }
 .slides .carousel-caption {
   position: initial; }
 .slides .carousel-indicators {
@@ -754,7 +773,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  opacity: 0.4; }
+  opacity: 0.4;
+  z-index: 2000000000; }
 
 .loadingText {
   text-align: center;

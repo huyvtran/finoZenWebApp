@@ -123,7 +123,9 @@
 .sideTabs{
 	height:auto;
 	padding:3px;
+	padding-left: 12px;
 	background:white;
+	.nav-stacked  li > a{font-size:12px;}
     .nav-stacked  li.active > a,.nav-stacked  li.active > a:focus,.nav-stacked   li.active > a:hover,.nav-stacked  li a:hover{
     	border-bottom:2px solid #18bb9c;
     	border-radius: 0px;
@@ -132,7 +134,9 @@
     	margin-bottom: 0px;
     }
 
-}}
+}
+
+}
 .invest_button_footer {
 		bottom: 0px;
 		.invest_button{line-height: 40px;}
@@ -518,8 +522,8 @@
 	}
 	.calDiv{
 		.labelDiv{
-			width: 60%;			
 			margin: auto;
+			float: unset;
 		}
 		@media (max-width: 786px){
 			.labelDiv{
@@ -652,7 +656,9 @@
 		padding: 2% 5%;
 	}
 	.finoApp{
-
+		p{
+			font-size:14px;
+		}
 		.table.loginTable {
 		    width: 80%;
 	    }
@@ -660,6 +666,20 @@
 	}
 	.bankPage{
 		padding: 2% 1%;
+	}
+	.txnItem{
+		padding-right: 5px;
+		padding-left: 5px;
+		font-size: 13px;
+	}
+	.summaryTab .sideBody .currentTabDiv {
+    	min-height: 56vh;
+	}
+	.recent_transactions .list-group{
+	    margin-bottom: 8px;
+	}
+	.summary {
+	    min-height: 20em;
 	}
 }
 
@@ -796,6 +816,7 @@
 	right: 0;
 	bottom: 0;
 	opacity: 0.4;
+	z-index: 2000000000;
 }
 .loadingText{
 	text-align: center;

@@ -23,6 +23,10 @@
 			</div>
 		</nav>
 	</div>
+<div  ng-controller="transListController">
+  <div ng-class="{testSpin: spinneractive}"></div>
+  <span us-spinner spinner-key="spinner-1"></span>
+</div>
 <div ng-controller="TabsCtrl"  class="row summaryTab">
 <span ng-controller="transListController as listControl"></span>
 	  <uib-tabset active="active"  vertical="true" class="col-md-4 col-sm-4 col-lg-4 sideTabs">
