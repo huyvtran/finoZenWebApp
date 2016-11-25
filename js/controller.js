@@ -1907,6 +1907,35 @@ $scope.stopSpin=function(){
 
   })
 
+    //uploading images 
+    .controller('ImageUpload',function($scope,$timeout,panImageService,$window){
+       
+       $scope.onLoad = function (e, reader, file, fileList, fileOjects, fileObj) {
+              console.log(file.base64);
+           };
+                $scope.uploadPan.kyphCode = $sessionStorage.SessionClientCode;
+                $scope.uploadPan.imageData = $scope.pan;     //replace with session storage of pan
+                $scope.uploadPan.imageType = 'PA';          //replace if image is selfie or address
+                $scope.uploadPan.addressType = '';         //replace if address type is AF OR AB
+                $scope.uploadPan = JSON.stringify($scope.uploadPan);
+                panImageService.save($scope.uploadPan,function(data){
+                      
+                      //loader needs to be added here 
+                      
+
+                      if(data.responseCode=="Cali_SUC_1030"){
+                          //next page 
+                      }
+                      else{
+                            $window.location.reload(true);
+                      }
+
+                },function(error){
+                  //loader stop 
+                  $window.location.reload(true);
+                })
+    })
+
 .controller('Frames', function($scope,$location) {
   $scope.iframeLoadedCallBack = function(loc){
         var loc2= document.getElementById("iframe_id").contentWindow.location;
