@@ -3,7 +3,11 @@
 		<div class="list-group" ng-repeat="customer in pagedData | limitTo:pageSize" ng-class="{'lastItem': $last}">
             <p class="success list-group-item"><span class="col-md-3 col-xs-3 txnItem {{customer.txnTypeStr}}">&#x20B9;{{customer.amount|currency :"":2}}</span>
 			<span class="item-note right col-md-6 col-xs-5 txnItem">Transaction ID: {{ customer.orderId}}</span>
-			{{customer.txnDate}} <span class="badge"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span>
+			{{customer.txnDate}} 
+			<span class="badge">
+				<span ng-if="customer.orderMatchStatus==customer.orderId"  class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+				<span ng-if="customer.orderMatchStatus!=customer.orderId"  class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+			</span>
 			</p>
 		</div>
 		<div class="text-center" ng-hide="noTxnIcon">

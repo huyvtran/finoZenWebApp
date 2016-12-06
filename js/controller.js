@@ -220,7 +220,7 @@ $scope.xirrRate= function(){
 			if($scope.rememberMe){ $localStorage.loginData=$scope.mobileNumber;}
 			else{$localStorage.loginData='';}
 			//$ionicLoading.show({templateUrl:"templates/loadingNormal.html"});
-      loadSpin.showSpin($scope.spinneractive );
+      //loadSpin.showSpin($scope.spinneractive );
 			$scope.loginDetails=JSON.parse(JSON.stringify({}));
 			$scope.loginDetails.login=$scope.mobileNumber;
 			$scope.loginDetails.password=$scope.digitPin;
@@ -784,13 +784,13 @@ $sessionStorage.xirr=data.jsonStr.xirr;
       $scope.pagedData =  $scope.products;
       $timeout(function() {
          loadSpin.stopSpin($scope.spinneractive );
-      }, 1000);
+      }, 100);
     }
 
    
 $timeout(function() {
    init();
-}, 1000);
+}, 2000);
 
     $scope.spinneractive = false;
 
@@ -917,7 +917,7 @@ $timeout(function() {
     console.log($scope.nextSteps);
   }
 })
-.controller('sampleCtrl', function ($scope,$state,mfOrderUrlService,$sessionStorage,dateService,$timeout, $rootScope,loadSpin,ngDialog) {
+.controller('sampleCtrl', function ($scope,$sce,$location,$state,mfOrderUrlService,$sessionStorage,dateService,$timeout, $rootScope,loadSpin,ngDialog) {
 
   var finalComputedVal;
     if($sessionStorage.clientType=="GO"){
@@ -928,7 +928,7 @@ $timeout(function() {
   }
     else if($sessionStorage.clientType=="PL") {
     console.log($sessionStorage.clientType+ "  platinum")
-    $scope.schemePlan="Reliance Money Manager Fund ñ Growth Plan"; //money managaer needs to come here
+    $scope.schemePlan="Reliance Money Manager Fund - Growth Plan"; //money managaer needs to come here
     $scope.averageRate=8.3;
     $scope.minInv=500;
     }
@@ -1017,8 +1017,38 @@ $timeout(function() {
             var date=dateService.getDate();
             mfOrderUrlService.save({"portfolioCode": $sessionStorage.SessionPortfolio,"amcCode": $sessionStorage.amcCode,"rtaCode":$sessionStorage.rtaCode,"orderTxnDate": date,"amount": finalComputedVal,"folioNo":$sessionStorage.folioNums},function(data){
                 if(data.responseCode=="Cali_SUC_1030"){
-                  var ref =  window.open('https://finotrust.com/WealthWeb/ws/pymt/pymtView?mfOrderId='+data.id,'_self');
-                }
+                  loadSpin.stopSpin($scope.spinneractive );
+
+
+          if(data.jsonStr==null){
+              //var ref = window.open('https://finotrust.com/WealthWeb/ws/pymt/pymtView?mfOrderId='+data.id,'_blank', 'location=no');
+                  var url='https://finozen.com';  
+                  $scope.id=$sce.trustAsResourceUrl(url);
+                  console.log($scope.id+"   url for buy")
+                  // var ref =  window.open('https://finotrust.com/WealthWeb/ws/pymt/pymtView?mfOrderId='+data.id,'_self');
+                  var dialog= ngDialog.open({
+                    template: '<iframe iframe-onload="iframeLoadedCallBack()" ng-src={{id}} id="iframe_id"></iframe>',
+                    closeByEscape : false,
+                    closeByDocument: false
+                });
+            
+          }
+          else{
+            console.log(data.jsonStr.ihno);
+            //var rel= window.open('https://investeasy.reliancemutual.com/online/CampaingLink/InvestorCampaign?IHNO='+data.jsonStr.ihno,'_blank','location=no');
+            var url='https://finozen.com';  
+            $scope.id=$sce.trustAsResourceUrl(url);
+                  console.log($scope.id)
+                  // var ref =  window.open('https://finotrust.com/WealthWeb/ws/pymt/pymtView?mfOrderId='+data.id,'_self');
+                  var dialog= ngDialog.open({
+                    template: 'modalDialogId',
+                    closeByEscape : false,
+                    closeByDocument: false
+                });
+            
+            
+          }
+        }
         else{
           alert("$ionicLoading.hidelert");
         }
@@ -1028,7 +1058,11 @@ $timeout(function() {
         $scope.mess="Enter a value";
             });
         };
-
+  // iframe call back function for tracking url
+      $scope.iframeLoadedCallBack = function(){
+        var loc2= document.getElementById("iframe_id").contentWindow.location;
+        console.log(loc2);
+      }
   //nach status
   $scope.nach=function() {
     var date=dateService.getDate();
@@ -1067,21 +1101,8 @@ $timeout(function() {
 })
 
 .controller('schemeText', function($scope,$sessionStorage) {
-  /*{
-    $scope.schemeName="Reliance Liquid Fund Cash Plan - Growth";
-    $scope.schemeBody="Reliance Liquid Fund ensure that your investments are very low risk, no-lock in on withdrawl and generate stable returns. This fund primarily invests in money market instruments of public sector banks like Axis Bank, Kotak Mahindra Bank and undertakings such as Steel Authority of India, Idea Cellular, Tata Capital making it ultra-safe (almost as safe as your savings bank deposits) to invest your money. ";
-    $scope.returnsOneM="7.2%";
-    $scope.returnsThreeM="7.6%";
-    $scope.returnsOneY="7.4%";
-    $scope.returnsThreeY="8.1%";
-    $scope.returnsFiveY="8.5%";
-    $scope.currentAUM=" Rs. 3,775 Crores";
-    $scope.TaxBenifits=" Unlike FD, there is no TDS for investments in this fund. Also, for investments more than 3 years, tax payout becomes negligible as there is indexation benefits. However for investments less than 3 years, you will have to declare the returns from this investment at the time of tax filing and pay tax as per your salary bracket.";
-    $scope.schemeLink="http://www.moneycontrol.com/mutual-funds/nav/reliance-liquid-fund-cash-plan/MRC014";
-    $scope.schemeLinkText=" to read more about Reliance Liquid Fund Cash Plan � Growth on moneycontrol.";
-  }
-  else{
-    $scope.schemeName="Reliance Liquid Fund Treasury Plan (IP) � G";
+  if($sessionStorage.clientType=='GO'){
+    $scope.schemeName="Reliance Liquid Fund Treasury Plan (IP) – G";
     $scope.schemeBody="Reliance Liquid Fund ensure that your investments are very low risk, no-lock in on withdrawl and generate stable returns. This fund primarily invests in money market instruments of public sector banks and undertakings such as HUDCO, L&T and Tata Steel  making it ultra-safe (almost as safe as your savings bank deposits) to invest your money.";
     $scope.returnsOneM="7.1%";
     $scope.returnsThreeM="7.1%";
@@ -1091,22 +1112,25 @@ $timeout(function() {
     $scope.returnsThreeY="8.56%";
     $scope.currentAUM=" INR 20,722 Crores";
     $scope.TaxBenifits=" Unlike FD, there is no TDS for investments in this fund. Also, for investments more than 3 years, tax payout becomes negligible as there is indexation benefits. However for investments less than 3 years, you will have to declare the returns from this investment at the time of tax filing and pay tax as per your salary bracket.";
-    $scope.schemeLink="http://www.moneycontrol.com/mutual-funds/nav/reliance-liquid-fund-treasury-plan-ip/MRC046";
-    $scope.schemeLinkText=" to read more about Reliance Liquid Fund Treasury Plan (IP) � G on moneycontrol.";
+    $scope.schemeLink="https://www.valueresearchonline.com/funds/newsnapshot.asp?schemecode=519";
+    $scope.schemeLinkText=" to read more about Reliance Liquid Fund Treasury Plan (IP) – G on moneycontrol.";
+    $scope.starText="Sep 2016";
   }
-  /*else{
-    $scope.schemeName="Reliance Money Manager Fund � Growth Plan";
+  else{
+    $scope.schemeName="Reliance Money Manager Fund – Growth Plan";
     $scope.schemeBody="Reliance Money Manager Fund ensures that your investments are at low risk, no lock-in on withdrawal and generate stable returns. This fund primarily invests in money market instruments and NCDs of public sector banks and AAA rated companies like Axis Bank, ICICI Bank, HDFC Ltd. etc. making it a safe option to park your surplus bank balance.";
     $scope.returnsOneM="7.80%";
     $scope.returnsThreeM="9.04%";
-    $scope.returnsOneY="9.26%";
-    $scope.returnsThreeY="8.77%";
-    $scope.returnsFiveY="8.63%";
-    $scope.currentAUM=" Rs. 14,469 Crores";
-    $scope.TaxBenifits=" Unlike FD, there is no TDS for investments in this fund. Also, for investments more than 3 years, tax payout becomes negligible as there is indexation benefits. However for investments less than 3 years, you will have to declare the returns from this investment at the time of tax filing and pay tax as per your salary bracket.";
-    $scope.schemeLink="http://www.moneycontrol.com/mutual-funds/nav/reliance-liquid-fund-treasury-plan-ip/MRC046";
-    $scope.schemeLinkText=" to read more about Reliance Liquid Fund Treasury Plan (IP) � G on moneycontrol.";
-  }*/
+    $scope.returnsSixM="9.26%";
+    $scope.returnsNineM="8.77%";
+    $scope.returnsOneY="8.63%";
+    $scope.returnsThreeY="8.88%";
+    $scope.currentAUM=" INR 17,024 Crores";
+    $scope.TaxBenifits=" Unlike FD, there is no TDS for investments in this fund. Also, for investments more than 3 years, tax payout becomes negligible as there is indexation benefit. However, for investments less than 3 years, you will have to declare the interest accrued from this investment at the time of tax filing and pay tax as per your salary bracket.";
+    $scope.schemeLink="https://www.valueresearchonline.com/funds/newsnapshot.asp?schemecode=4547";
+    $scope.schemeLinkText=" to read more about Reliance Money Manager Fund – Growth Plan";
+    $scope.starText="Sep 2016";
+  }
 })
 
 .controller('changeCtrl', function(changePinService,$scope,$sessionStorage,$state, $rootScope,loadSpin,ngDialog){
@@ -1853,7 +1877,7 @@ $scope.stopSpin=function(){
                     className: 'ngdialog-theme-default',
                     closeByEscape : false,
                     closeByDocument: false
-                })
+                });
     };
     $scope.close=function(){
       ngDialogData.closeAllNow();
@@ -1909,7 +1933,6 @@ $scope.stopSpin=function(){
 
     //uploading images 
     .controller('ImageUpload',function($scope,$timeout,panImageService,$window){
-       
        $scope.onLoad = function (e, reader, file, fileList, fileOjects, fileObj) {
               console.log(file.base64);
            };
@@ -1937,12 +1960,44 @@ $scope.stopSpin=function(){
     })
 
 .controller('Frames', function($scope,$location) {
-  $scope.iframeLoadedCallBack = function(loc){
+var url='https://finozen.com';  
+$scope.id=$sce.trustAsResourceUrl(url);
+  $scope.iframeLoadedCallBack = function(){
         var loc2= document.getElementById("iframe_id").contentWindow.location;
-        //var n = loc2.includes("finozen.com");
-        console.log(loc2.href);
-        if(loc2=="https://app.finozen.com/"){
-          console.log(loc2 + 'true')  ;
+        console.log(loc2);
         }
-    }
-});
+})
+.controller('imageUploadCtrl', function($scope,$state) {
+
+   $scope.choiceOptions = [
+    { name: 'Aadhar card', value: 'AA' },
+    { name: 'Voter ID', value: 'VO' },
+    { name: 'Driving Licence', value: 'DL' },
+    { name: 'Passport', value: 'PP' }
+    ];
+    $scope.choice = {type : $scope.choiceOptions[0].value};
+        $scope.imgShow=false;
+       $scope.showImg=function(choice){
+        if(choice.type == 'AA'){$scope.cimageFront="img/AADHAR_FRONT.jpg"; $scope.cimageBack="img/AADHAR_BACK.jpg";}
+        else if(choice.type == 'PP'){$scope.cimageFront="img/Passport_front.jpg"; $scope.cimageBack="img/Passport_back.jpg"; }
+        else if(choice.type == 'VO'){$scope.cimageFront="img/VOTER_FRONT.jpg"; $scope.cimageBack="img/VOTER_BACK.jpg";}
+        else if(choice.type == 'DL'){$scope.cimageFront="img/DL.jpg"; $scope.cimageBack="img/DL_back.png";}
+        console.log(choice.type);
+        $scope.imgShow=true;
+       }
+  console.log("reached");
+  $scope.uploadImg=function(a,b){
+    console.log(a , b);
+          console.log($sessionStorage.SessionStatus+ "   bank submit $sessionStorage.SessionStatus");
+          console.log($sessionStorage.docStatus+ "   bank submit $sessionStorage.docStatus");
+                console.log($sessionStorage.SessionStatus + "    $sessionStorage.SessionStatus");
+      if($sessionStorage.SessionStatus=="T"){$state.go('activeClientStatus');}
+          else if($sessionStorage.SessionStatus=="I" || $sessionStorage.SessionStatus==null || $sessionStorage.SessionStatus=="null" || $sessionStorage.SessionStatus==undefined ){$state.go('inactiveClient');}
+          else{$state.go('verifySuccess');}
+        
+
+  }
+})
+
+;
+

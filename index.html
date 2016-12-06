@@ -35,15 +35,22 @@
 		<div class="container finoApp" ui-view></div>
     <script type="text/ng-template" id="modalDialogId">
         <div class="ngdialog-message">
-		  <div class="loadingText" ><img src="img/load.svg" class="spinner"><br/><br/><br/>
-		  		 <span  style="color:black" ng-controller="quotesCtrl">{{textt}}</span>
-		  		 <button ng-click="close()" closeThisDialog('Some value')">close</button>
-		  </div>
-		          <div class="ngdialog-buttons">
-            <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog('Cancel')">Cancel</button>
-            <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm('Save')">Save</button>
+			<div class="loadingText" ><img src="img/load.svg" class="spinner"><br/><br/><br/>
+			  	<span  style="color:black" ng-controller="quotesCtrl">{{textt}}</span>
+	  			<button ng-click="close()" closeThisDialog('Some value')">close</button>
+			</div>
+            <div class="ngdialog-buttons">
+	            <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog('Cancel')">Cancel</button>
+	            <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="confirm('Save')">Save</button>
+	        </div>
         </div>
-        </div>
+
+    </div>
+    </script>
+    <script type="text/ng-template" id="modalDialogId">
+        <div ng-controller='sampleCtrl'>
+			<iframe iframe-onload="iframeLoadedCallBack()" ng-src={{id}} id="iframe_id"></iframe>
+		</div>
 
     </div>
     </script>

@@ -1,0 +1,26 @@
+<div ng-controller="navTabsCtrl">
+<nav class="navbar navbar-default navbar-fixed-top"  >
+  <div class="container">
+    <div class="navbar-header page-scroll">
+      <a class="navbar-brand" href="#/home"><img src="img/logo_priv.png" ></a>
+    </div>
+  </div>
+</nav>
+</div>
+
+<div ng-controller="imageUploadCtrl">
+
+<br/>
+<br/>
+<br/>
+    <input type="file" ng-model="file" name="file" base-sixty-four-input required onload="onLoad" maxsize="500" accept="image/*">
+    <br/>
+	<br/>
+	<br/>
+    <img ng-show="file" ng-src={{"data:image/png;base64,"+file.base64}}>
+
+
+<button type="button" class="button button-primary" ng-disabled="!file" ng-click="uploadImg('PA','AB')">Submit</button>
+
+
+</div>

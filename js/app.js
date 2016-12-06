@@ -89,6 +89,36 @@ angular.module('myApp', ['ngRoute','myApp.services','myApp.directives','myApp.co
           templateUrl: 'templates/invest.html'
 
     })  
+    .state('panImage', {
+      url: '/panImage',         
+          templateUrl: 'templates/panImage.html'
+
+    })  
+    .state('selfiImage', {
+      url: '/selfiImage',         
+          templateUrl: 'templates/selfiImage.html'
+
+    })  
+    .state('addressSelect', {
+      url: '/addressSelect',         
+          templateUrl: 'templates/addressSelect.html'
+
+    })  
+    .state('addressFrontImage', {
+      url: '/addressFrontImage',         
+          templateUrl: 'templates/addressFrontImage.html'
+
+    })  
+    .state('backFrontImage', {
+      url: '/backFrontImage',         
+          templateUrl: 'templates/backFrontImage.html'
+
+    })  
+    .state('signature', {
+      url: '/signature',         
+          templateUrl: 'templates/signature.html'
+
+    })  
 
     .state('withdraw', {
       url: '/withdraw',         
