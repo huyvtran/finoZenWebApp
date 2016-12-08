@@ -75,7 +75,7 @@ angular.module('myApp.services', [])
 
 .factory('proofRedirectFactory', function() {
   return {
-      name : ['panImage','selfie','imageSelection','addressProofImage','signature','feedback']
+      name : ['panImage','selfiImage','addressFrontImage','addressFrontImage','signature','feedback']
   };
 })
 

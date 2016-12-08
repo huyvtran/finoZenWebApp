@@ -2,25 +2,35 @@
 <nav class="navbar navbar-default navbar-fixed-top"  >
   <div class="container">
     <div class="navbar-header page-scroll">
-      <a class="navbar-brand" href="#/home"><img src="img/logo_priv.png" ></a>
+      <a class="navbar-brand" href="#/panImage"><img src="img/logo_priv.png" ></a>
     </div>
   </div>
 </nav>
 </div>
 
-<div ng-controller="imageUploadCtrl">
+<div ng-controller="imageUploadCtrl" class="frontImage text-center">
 
-<br/>
-<br/>
-<br/>
-    <input type="file" ng-model="file" name="file" base-sixty-four-input required onload="onLoad" maxsize="500" accept="image/*">
+  <br/>
+  <br/>
+  <br/>
+
+<div class="text-center ">
+      <img ng-show="!file" ng-src={{panImg}}>
+      <img ng-show="file" height="300" ng-src={{"data:image/png;base64,"+file.base64}}>
+      <br/>
+      <br/>
+      <input type="file" ng-model="file" name="file" base-sixty-four-input required onload="onLoad" maxsize="300" accept="image/*">
     <br/>
-	<br/>
-	<br/>
-    <img ng-show="file" ng-src={{"data:image/png;base64,"+file.base64}}>
+    <br/>
+    <br/>
+    <button type="button" class="button button-primary" ng-disabled="!file" ng-click="uploadImg('PA','AB')">Submit</button>    
+</div>
 
 
-<button type="button" class="button button-primary" ng-disabled="!file" ng-click="uploadImg('PA','AB')">Submit</button>
 
 
+<div>
+  <div ng-class="{testSpin: spinneractive}"></div>
+  <span us-spinner spinner-key="spinner-1"></span>
+</div>
 </div>

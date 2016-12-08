@@ -214,6 +214,7 @@ $scope.xirrRate= function(){
 	
 .controller('AuthSigninCtrl', function($scope,$state,$sessionStorage,$http,ngDialog,loginInfoService,$localStorage,$timeout, $rootScope,loadSpin) {
  $sessionStorage.SessionClientCode="none";
+ $sessionStorage.stepCount=0;
  $scope.mobileNumber=$localStorage.loginData;
 	$scope.signIn = function(form,loginForm) {
 		if(form.$valid) {
@@ -406,6 +407,7 @@ $scope.terms = function()
             console.log(bank);
                bankDetailsService.save(bank,function(data){
                  if(data.responseCode == "Cali_SUC_1030") {
+                  $sessionStorage.stepCount=0;
                   $sessionStorage.docStatus=data.jsonStr.docStatus; // document status received on bank submittion of bank details  (have to update value according to response)
                   $sessionStorage.SessionStatus=data.jsonStr.activeStatus;
                   console.log($sessionStorage.SessionStatus+ "   bank submit $sessionStorage.SessionStatus");
@@ -1967,7 +1969,7 @@ $scope.id=$sce.trustAsResourceUrl(url);
         console.log(loc2);
         }
 })
-.controller('imageUploadCtrl', function($scope,$state) {
+.controller('imageUploadCtrl', function($scope,$state,usSpinnerService,panImageService,myService,proofRedirectFactory, $rootScope,loadSpin,$timeout,$sessionStorage) {
 
    $scope.choiceOptions = [
     { name: 'Aadhar card', value: 'AA' },
@@ -1975,29 +1977,128 @@ $scope.id=$sce.trustAsResourceUrl(url);
     { name: 'Driving Licence', value: 'DL' },
     { name: 'Passport', value: 'PP' }
     ];
+    $scope.panImg="img/Pancard.jpg";
+    $scope.panSelfi="img/panSelfi.jpg";
+    //$scope.panImg="img/Pancard.jpg";
     $scope.choice = {type : $scope.choiceOptions[0].value};
         $scope.imgShow=false;
+        $scope.cimageBack=$sessionStorage.cimageBack;
        $scope.showImg=function(choice){
-        if(choice.type == 'AA'){$scope.cimageFront="img/AADHAR_FRONT.jpg"; $scope.cimageBack="img/AADHAR_BACK.jpg";}
-        else if(choice.type == 'PP'){$scope.cimageFront="img/Passport_front.jpg"; $scope.cimageBack="img/Passport_back.jpg"; }
-        else if(choice.type == 'VO'){$scope.cimageFront="img/VOTER_FRONT.jpg"; $scope.cimageBack="img/VOTER_BACK.jpg";}
-        else if(choice.type == 'DL'){$scope.cimageFront="img/DL.jpg"; $scope.cimageBack="img/DL_back.png";}
-        console.log(choice.type);
-        $scope.imgShow=true;
+        loadSpin.showSpin($scope.spinneractive );
+        $timeout(function() {
+          if(choice.type == 'AA'){$scope.cimageFront="img/AADHAR_FRONT.jpg"; $sessionStorage.cimageBack="img/AADHAR_BACK.jpg";}
+          else if(choice.type == 'PP'){$scope.cimageFront="img/Passport_front.jpg"; $sessionStorage.cimageBack="img/Passport_back.jpg"; }
+          else if(choice.type == 'VO'){$scope.cimageFront="img/VOTER_FRONT.jpg"; $sessionStorage.cimageBack="img/VOTER_BACK.jpg";}
+          else if(choice.type == 'DL'){$scope.cimageFront="img/DL.jpg"; $sessionStorage.cimageBack="img/DL_back.png";}
+          console.log(choice.type);
+          loadSpin.stopSpin($scope.spinneractive );
+          $scope.imgShow=true;
+        }, 1000);
        }
   console.log("reached");
+  $scope.imgFrontUpload=function(a,b){
+    $sessionStorage.stepCount=$sessionStorage.stepCount+1;
+    $state.go("addressBackImage");
+  }
   $scope.uploadImg=function(a,b){
     console.log(a , b);
           console.log($sessionStorage.SessionStatus+ "   bank submit $sessionStorage.SessionStatus");
           console.log($sessionStorage.docStatus+ "   bank submit $sessionStorage.docStatus");
                 console.log($sessionStorage.SessionStatus + "    $sessionStorage.SessionStatus");
-      if($sessionStorage.SessionStatus=="T"){$state.go('activeClientStatus');}
-          else if($sessionStorage.SessionStatus=="I" || $sessionStorage.SessionStatus==null || $sessionStorage.SessionStatus=="null" || $sessionStorage.SessionStatus==undefined ){$state.go('inactiveClient');}
-          else{$state.go('verifySuccess');}
+
+
+
+          var nextSteps=myService.myFunction($sessionStorage.docStatus);
+          var nextStepsUrl=proofRedirectFactory.name;
+          var totalSteps=myService.myFunction($sessionStorage.docStatus).length;
+          console.log(nextSteps[$sessionStorage.stepCount]  + " next state" );
+          $sessionStorage.stepCount=$sessionStorage.stepCount+1;
+          if(nextSteps[$sessionStorage.stepCount]==3 || nextSteps[$sessionStorage.stepCount]==4 ){
+            console.log(nextSteps[$sessionStorage.stepCount]  + " next state" );
+        if(totalSteps==$sessionStorage.stepCount){confirmation=1; console.log("iam going");  $state.go('feedback');}
+            else{
+              console.log(nextStepsUrl[nextSteps[$sessionStorage.stepCount]]);
+              $state.go(nextStepsUrl[nextSteps[$sessionStorage.stepCount]]);
+
+            }
+          }
+          else{
+        if(totalSteps==$sessionStorage.stepCount){confirmation=1; console.log("iam going");  $state.go('feedback');}
+            else{$state.go(nextStepsUrl[nextSteps[$sessionStorage.stepCount]]);}
+          }
         
 
   }
+      $scope.spinneractive = false;
+
+    $rootScope.$on('us-spinner:spin', function(event, key) {
+      $scope.spinneractive = true;
+    });
+
+    $rootScope.$on('us-spinner:stop', function(event, key) {
+      $scope.spinneractive = false;
+    });
+
 })
+
+
+            /*for signature image*/
+    .controller('signImageCTRL',function(panImageService,myService,proofRedirectFactory,$scope,$sessionStorage,$state,$window){
+
+    $scope.diasbleSkip=$sessionStorage.disbledSkip;
+        var canvas = document.getElementById('signatureCanvas');
+    var signaturePad = new SignaturePad(canvas);
+    $scope.clearCanvas = function() {
+      signaturePad.clear();
+    }
+    $scope.saveCanvas = function() {
+      var sigImg = signaturePad.toDataURL();
+      $scope.signature = sigImg;
+    }
+    $scope.signatureFunction=function(){
+      $state.go('feedback');
+      //$state.go(nextStepsUrl[5]);
+    }
+    $scope.signUpload = function() {
+      $ionicLoading.show({templateUrl:"templates/loading.html"});
+      var uploadsign=JSON.parse(JSON.stringify({}));
+            uploadsign.kyphCode = $sessionStorage.SessionClientCode;
+            //uploadsign.kyphCode = "CRN23919";;
+            uploadsign.imageData = $scope.signature;//replace with session storage of sign
+            uploadsign.imageType = 'SI';
+            uploadsign.addressType = '';
+            uploadsign = JSON.stringify(uploadsign);
+            console.log(uploadsign + 'pan json data');
+            panImageService.save(uploadsign,function(data){
+                console.log(data);
+                if(data.responseCode != "Cali_SUC_1030") {
+                    $ionicLoading.hide();
+
+                  var refer=$ionicPopup.alert({
+                    title: 'Upload Error',
+                    template: 'Please try again'
+                  });
+                  refer.then(function(res) {
+                    $window.location.reload(true)
+                  });
+                }
+                else {
+          $ionicLoading.hide();
+          $state.go('feedback');
+                }
+            },function(error){
+              $ionicLoading.hide();
+              var referesh= $ionicPopup.alert({
+                   title: 'Please try again',
+                   template: 'Unable to submit request'
+                });
+              referesh.then(function(res) {
+                  $window.location.reload(true)
+                });
+
+            });
+        }
+    })
 
 ;
 

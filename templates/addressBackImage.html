@@ -2,7 +2,7 @@
 <nav class="navbar navbar-default navbar-fixed-top"  >
   <div class="container">
     <div class="navbar-header page-scroll">
-      <a class="navbar-brand" href="#/home"><img src="img/logo_priv.png" ></a>
+      <a class="navbar-brand" href="#/addressBackImage"><img src="img/logo_priv.png" ></a>
     </div>
   </div>
 </nav>
@@ -13,16 +13,8 @@
   <br/>
   <br/>
   <br/>
-<div ng-hide="imgShow">
-
-  <span>Select address proof  </span>
-  <select class="imageSelection"  ng-model='choice.type' required ng-options='option.value as option.name for option in choiceOptions'></select>  
- 
-  <button ng-click="showImg(choice)">submit</button>
-</div>
-
-<div ng-show="imgShow" class="text-center ">
-      <img ng-show="!file" ng-src={{cimageFront}}>
+<div class="text-center ">
+      <img ng-show="!file" ng-src={{cimageBack}}>
       <img ng-show="file" height="300" ng-src={{"data:image/png;base64,"+file.base64}}>
       <br/>
       <br/>
@@ -30,7 +22,7 @@
     <br/>
     <br/>
     <br/>
-    <button type="button" class="button button-primary" ng-disabled="!file" ng-click="imgFrontUpload('PA','AB')">Submit</button>    
+    <button type="button" class="button button-primary" ng-disabled="!file" ng-click="uploadImg('PA','AB')">Submit</button>    
 </div>
 
 

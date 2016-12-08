@@ -109,9 +109,9 @@ angular.module('myApp', ['ngRoute','myApp.services','myApp.directives','myApp.co
           templateUrl: 'templates/addressFrontImage.html'
 
     })  
-    .state('backFrontImage', {
-      url: '/backFrontImage',         
-          templateUrl: 'templates/backFrontImage.html'
+    .state('addressBackImage', {
+      url: '/addressBackImage',         
+          templateUrl: 'templates/addressBackImage.html'
 
     })  
     .state('signature', {
