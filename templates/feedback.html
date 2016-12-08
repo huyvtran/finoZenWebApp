@@ -1,0 +1,23 @@
+<ion-view title="Success" class="verification" >
+<div class="bar bar-header fino_head" ng-controller="popupController as popup">
+	<div class="h1 title"><p class="head_title"><span id="title">ACCOUNT ACTIVATION</span></p></div>
+	<a class="button button-clear button-positive  ion-android-call" ng-click="showPopup()"></a>
+</div>
+    <ion-content overflow-scroll="false" padding="false" class="has-header">
+		<div class="container">
+			<div class="rows"><img src="img/steplast.jpg" class="steps" /></div>
+			<div class="rows padding">
+				<h5 class="text-center" style="font-weight:600; text-transform:uppercase;color:#18bb9c;">Congratulations!</h5>
+				<p class="padding">We have received your details, we will update you within 12 hours on status of your account activation.</p>
+				<p class="padding">However, if you have submitted all details please sign out of your account and then sign in back again to start investing. <br/></p><p  class="text-center"><b>Happy Investing!</b></p>
+			</div>
+		</div>
+    </ion-content>
+
+<ion-footer-bar padding="false">
+	<div class="button-bar " style="padding:0;">
+		<a class="button button-positive" href="#/tour" ng-disabled="true" style="margin:1px;line-height: 44px;" >Know More</a>
+		<a class="button button-positive" href="#/tour" style="margin:1px; line-height: 44px;" >Start Investing</a>
+	</div>
+</ion-footer-bar>
+</ion-view>

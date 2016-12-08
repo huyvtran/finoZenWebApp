@@ -16,7 +16,10 @@ angular.module('myApp', ['ngRoute','myApp.services','myApp.directives','myApp.co
 		templateUrl: 'templates/tabsController.html',
 		controller: 'withdrawCtrl'
 	})
-	        
+	.state('feedback', {
+      url: '/feedback',         
+	  templateUrl: 'templates/feedback.html'   
+    })        
    .state('sliders', {
     url: '/sliders',
     templateUrl: 'templates/slides.html',

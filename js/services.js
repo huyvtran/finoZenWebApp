@@ -5,40 +5,40 @@ angular.module('myApp.services', [])
 }])
 
 .factory('accessUrlService', ['$resource',function($resource){
-	return $resource('http://52.66.96.81/WealthWeb/ws/login/restLogin');
+	return $resource('https://finotrust.com/WealthWeb/ws/login/restLogin');
 }])
 
 /*For Sign up*/
 .factory('SignUpUrlService', ['$resource',function($resource){
-	return $resource('http://52.66.96.81/WealthWeb/ws/clientFcps/clientFcp');
+	return $resource('https://finotrust.com/WealthWeb/ws/clientFcps/clientFcp');
 }])
 
 .factory('getPerformanceService', ['$resource','$filter','$sessionStorage',function($resource,$filter,$sessionStorage){
 	var date = new Date();
     date = $filter('date')(date,'MM/dd/yyyy');
-	return $resource('http://52.66.96.81/WealthWeb/ws/clientRepos/getPerfomRepo?pfolioCode='+$sessionStorage.SessionPortfolio+'&endDate='+date+'&noOfDays=40');
+	return $resource('https://finotrust.com/WealthWeb/ws/clientRepos/getPerfomRepo?pfolioCode='+$sessionStorage.SessionPortfolio+'&endDate='+date+'&noOfDays=40');
 }])
 
 /*For fetching the NAV webservices*/
   .factory('getNAVService', ['$resource','$sessionStorage',function($resource,$sessionStorage){
-    return $resource('http://52.66.96.81/WealthWeb/ws/clientRepos/getInvReco?pfolioCode='+$sessionStorage.SessionPortfolio);
+    return $resource('https://finotrust.com/WealthWeb/ws/clientRepos/getInvReco?pfolioCode='+$sessionStorage.SessionPortfolio);
   }])
 
 
   /*For fetching the transaction webservices*/
   .factory('getReportService', ['$resource','$sessionStorage',function($resource,$sessionStorage){
-    return $resource('http://52.66.96.81/WealthWeb/ws/clientRepos/getOrders?pfolioCode='+$sessionStorage.SessionPortfolio+'&noOfOrders=100');
+    return $resource('https://finotrust.com/WealthWeb/ws/clientRepos/getOrders?pfolioCode='+$sessionStorage.SessionPortfolio+'&noOfOrders=100');
   }])
 
   /*Reliance ZBF page service*/
    .factory('getZBFService', ['$resource','$sessionStorage',function($resource,$sessionStorage){
 	   console.log($sessionStorage.portfolioCode+"portfolioCode");
-    return $resource('http://52.66.96.81/WealthWeb/ws/clientOrders/zbf?portfolioCode=CRN26946E20018&rtaCode=RMFLPIG');
+    return $resource('https://finotrust.com/WealthWeb/ws/clientOrders/zbf?portfolioCode=CRN26946E20018&rtaCode=RMFLPIG');
   }])
 
   /*Reliance folio number sending it to backend */
    .factory('relianceInstantZBF',['$resource','$sessionStorage',function($resource,$sessionStorage){
-       var relianceZBF = $resource('http://52.66.96.81//ealthweb/ws/clientorders/createfolio',{},{
+       var relianceZBF = $resource('https://finotrust.com//ealthweb/ws/clientorders/createfolio',{},{
           save:{
               method:'POST',
               headers:{
@@ -55,12 +55,12 @@ angular.module('myApp.services', [])
 
  .factory('getReferalStat', ['$resource','$sessionStorage',function($resource,$sessionStorage){
 	console.log($sessionStorage.SessionMobNo);
-	return $resource('hhttp://52.66.96.81/WealthWeb/ws/login/getMyReferrals?mobile='+$sessionStorage.SessionMobNo);
+	return $resource('hhttps://finotrust.com/WealthWeb/ws/login/getMyReferrals?mobile='+$sessionStorage.SessionMobNo);
 
 }])
 /*For reliance api instant redemption and getting the bank details*/
   .factory('relianceInstantAmountAPI',['$resource','$sessionStorage',function($resource,$sessionStorage){
-       var relianceIntsaAmount = $resource('http://52.66.96.81/WealthWeb/ws/pymt/wrapperWS',{},{
+       var relianceIntsaAmount = $resource('https://finotrust.com/WealthWeb/ws/pymt/wrapperWS',{},{
           save:{
               method:'POST',
               headers:{
@@ -157,7 +157,7 @@ return totalIndex;
 //console.log();
 	var jsid=$sessionStorage.SessionIdstorage;
 	console.log(jsid + "  jsid");
-	 var change = $resource('http://52.66.96.81/WealthWeb/ws/secure/fcpSecure/changePassword',{},{
+	 var change = $resource('https://finotrust.com/WealthWeb/ws/secure/fcpSecure/changePassword',{},{
         save:{
             method:'POST',
             headers:{
@@ -171,7 +171,7 @@ return totalIndex;
 
 	/*PAN image factory*/
 	.factory('panImageService',['$resource','$sessionStorage',function($resource){
-		var panupload = $resource('http://52.66.96.81/WealthWeb/ws/kycs/kyphImg',{},{
+		var panupload = $resource('https://finotrust.com/WealthWeb/ws/kycs/kyphImg',{},{
 			save:{
 				method:'POST',
 				method:'POST',
@@ -186,7 +186,7 @@ return totalIndex;
 
 /*Bank Details*/
     .factory('bankDetailsService',['$resource',function($resource){
-      var bankUpload = $resource('http://52.66.96.81/WealthWeb/ws/kycs/bankDetails',{},{
+      var bankUpload = $resource('https://finotrust.com/WealthWeb/ws/kycs/bankDetails',{},{
         save:{
           method:'POST',
           headers:{
@@ -199,7 +199,7 @@ return totalIndex;
 
       /*Questions factory*/
   .factory('questionsService',['$resource',function($resource){
-    var bankUpload = $resource('http://52.66.96.81/WealthWeb/ws/kycs/addlKyc',{},{ //in final build change it to finotrust.com
+    var bankUpload = $resource('https://finotrust.com/WealthWeb/ws/kycs/addlKyc',{},{ //in final build change it to finotrust.com
       save:{
         method:'POST',
         headers:{
@@ -228,18 +228,18 @@ return totalIndex;
 
 /*send MF orders*/
 .factory('mfOrderUrlService', ['$resource',function($resource){
-	var mfOrderRequest= $resource('http://52.66.96.81/WealthWeb/ws/clientOrders/clientOrderMfBuy',{},{
+	var mfOrderRequest= $resource('https://finotrust.com/WealthWeb/ws/clientOrders/clientOrderMfBuy',{},{
 		save:{
 			method:'POST',
 		},
 	});
 	return mfOrderRequest;
-	//http://52.66.96.81/WealthWeb/ws/clientOrders/clientOrderMfBuy
+	//https://finotrust.com/WealthWeb/ws/clientOrders/clientOrderMfBuy
 }])
 
 /*send MF sell order*/
 .factory('mfSellUrlService', ['$resource',function($resource){
-	var mfSellRequest= $resource('http://52.66.96.81/WealthWeb/ws/clientOrders/clientOrderMfSell',{},{
+	var mfSellRequest= $resource('https://finotrust.com/WealthWeb/ws/clientOrders/clientOrderMfSell',{},{
 		save:{
 			method:'POST',
 		},
@@ -266,7 +266,7 @@ return totalIndex;
 
 }])
 
-//http://52.66.96.81
+//https://finotrust.com
 
 
 .service('loadSpin', ['usSpinnerService', function (usSpinnerService) {

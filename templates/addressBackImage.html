@@ -14,15 +14,15 @@
   <br/>
   <br/>
 <div class="text-center ">
-      <img ng-show="!file" ng-src={{cimageBack}}>
-      <img ng-show="file" height="300" ng-src={{"data:image/png;base64,"+file.base64}}>
+      <img ng-show="!file" height="250" ng-src={{cimageBack}}>
+      <img ng-show="file" height="250" ng-src={{"data:image/png;base64,"+file.base64}}>
       <br/>
       <br/>
       <input type="file" ng-model="file" name="file" base-sixty-four-input required onload="onLoad" maxsize="300" accept="image/*">
     <br/>
     <br/>
     <br/>
-    <button type="button" class="button button-primary" ng-disabled="!file" ng-click="uploadImg('PA','AB')">Submit</button>    
+    <button type="button" class="button button-positive" ng-disabled="!file" ng-click="uploadImg('AB',choiceSelected)">Submit</button>    
 </div>
 
 

@@ -1934,12 +1934,13 @@ $scope.stopSpin=function(){
   })
 
     //uploading images 
-    .controller('ImageUpload',function($scope,$timeout,panImageService,$window){
+    .controller('ImageUpload',function($scope,$timeout,panImageService,$window,$sessionStorage){
        $scope.onLoad = function (e, reader, file, fileList, fileOjects, fileObj) {
-              console.log(file.base64);
-           };
+              //console.log(file.base64);
+			  };
+				$scope.uploadPan=JSON.parse(JSON.stringify({}));
                 $scope.uploadPan.kyphCode = $sessionStorage.SessionClientCode;
-                $scope.uploadPan.imageData = $scope.pan;     //replace with session storage of pan
+                $scope.uploadPan.imageData = "454dsffssg";     //replace with session storage of pan
                 $scope.uploadPan.imageType = 'PA';          //replace if image is selfie or address
                 $scope.uploadPan.addressType = '';         //replace if address type is AF OR AB
                 $scope.uploadPan = JSON.stringify($scope.uploadPan);
@@ -1952,13 +1953,13 @@ $scope.stopSpin=function(){
                           //next page 
                       }
                       else{
-                            $window.location.reload(true);
+                           // $window.location.reload(true);
                       }
 
                 },function(error){
                   //loader stop 
                   $window.location.reload(true);
-                })
+                })           
     })
 
 .controller('Frames', function($scope,$location) {
@@ -1983,13 +1984,14 @@ $scope.id=$sce.trustAsResourceUrl(url);
     $scope.choice = {type : $scope.choiceOptions[0].value};
         $scope.imgShow=false;
         $scope.cimageBack=$sessionStorage.cimageBack;
+        $scope.choiceSelected=$sessionStorage.choiceSelected;
        $scope.showImg=function(choice){
         loadSpin.showSpin($scope.spinneractive );
         $timeout(function() {
-          if(choice.type == 'AA'){$scope.cimageFront="img/AADHAR_FRONT.jpg"; $sessionStorage.cimageBack="img/AADHAR_BACK.jpg";}
-          else if(choice.type == 'PP'){$scope.cimageFront="img/Passport_front.jpg"; $sessionStorage.cimageBack="img/Passport_back.jpg"; }
-          else if(choice.type == 'VO'){$scope.cimageFront="img/VOTER_FRONT.jpg"; $sessionStorage.cimageBack="img/VOTER_BACK.jpg";}
-          else if(choice.type == 'DL'){$scope.cimageFront="img/DL.jpg"; $sessionStorage.cimageBack="img/DL_back.png";}
+          if(choice.type == 'AA'){$scope.cimageFront="img/AADHAR_FRONT.jpg"; $sessionStorage.cimageBack="img/AADHAR_BACK.jpg";$sessionStorage.choiceSelected='AA';}
+          else if(choice.type == 'PP'){$scope.cimageFront="img/Passport_front.jpg"; $sessionStorage.cimageBack="img/Passport_back.jpg";$sessionStorage.choiceSelected='PP'; }
+          else if(choice.type == 'VO'){$scope.cimageFront="img/VOTER_FRONT.jpg"; $sessionStorage.cimageBack="img/VOTER_BACK.jpg";$sessionStorage.choiceSelected='VO';}
+          else if(choice.type == 'DL'){$scope.cimageFront="img/DL.jpg"; $sessionStorage.cimageBack="img/DL_back.png";$sessionStorage.choiceSelected='DL';}
           console.log(choice.type);
           loadSpin.stopSpin($scope.spinneractive );
           $scope.imgShow=true;
@@ -2005,28 +2007,49 @@ $scope.id=$sce.trustAsResourceUrl(url);
           console.log($sessionStorage.SessionStatus+ "   bank submit $sessionStorage.SessionStatus");
           console.log($sessionStorage.docStatus+ "   bank submit $sessionStorage.docStatus");
                 console.log($sessionStorage.SessionStatus + "    $sessionStorage.SessionStatus");
+				$scope.uploadPan=JSON.parse(JSON.stringify({}));
+                $scope.uploadPan.kyphCode = $sessionStorage.SessionClientCode;
+                $scope.uploadPan.imageData = $scope.file.base64;     //replace with session storage of pan
+                $scope.uploadPan.imageType = a;          //replace if image is selfie or address
+                $scope.uploadPan.addressType =b;       //replace if address type is AF OR AB
+                $scope.uploadPan = JSON.stringify($scope.uploadPan);
+                panImageService.save($scope.uploadPan,function(data){
+                      
+                      //loader needs to be added here 
+                      
 
+                      if(data.responseCode=="Cali_SUC_1030"){
+						  //next page 
+						  console.log(data.jsonStr.docStatus + "docStatus");
+						  var nextSteps=myService.myFunction($sessionStorage.docStatus);
+						  var nextStepsUrl=proofRedirectFactory.name;
+						  var totalSteps=myService.myFunction($sessionStorage.docStatus).length;
+						  console.log(nextSteps[$sessionStorage.stepCount]  + " next state" );
+						  $sessionStorage.stepCount=$sessionStorage.stepCount+1;
+						  if(nextSteps[$sessionStorage.stepCount]==3 || nextSteps[$sessionStorage.stepCount]==4 ){
+							console.log(nextSteps[$sessionStorage.stepCount]  + " next state" );
+						if(totalSteps==$sessionStorage.stepCount){confirmation=1; console.log("iam going");  $state.go('feedback');}
+							else{
+							  console.log(nextStepsUrl[nextSteps[$sessionStorage.stepCount]]);
+							  $state.go(nextStepsUrl[nextSteps[$sessionStorage.stepCount]]);
 
+							}
+						  }
+						  else{
+						if(totalSteps==$sessionStorage.stepCount){confirmation=1; console.log("iam going");  $state.go('feedback');}
+							else{$state.go(nextStepsUrl[nextSteps[$sessionStorage.stepCount]]);}
+						  }
+						
+                      }
+                      else{
+                           // $window.location.reload(true);
+                      }
 
-          var nextSteps=myService.myFunction($sessionStorage.docStatus);
-          var nextStepsUrl=proofRedirectFactory.name;
-          var totalSteps=myService.myFunction($sessionStorage.docStatus).length;
-          console.log(nextSteps[$sessionStorage.stepCount]  + " next state" );
-          $sessionStorage.stepCount=$sessionStorage.stepCount+1;
-          if(nextSteps[$sessionStorage.stepCount]==3 || nextSteps[$sessionStorage.stepCount]==4 ){
-            console.log(nextSteps[$sessionStorage.stepCount]  + " next state" );
-        if(totalSteps==$sessionStorage.stepCount){confirmation=1; console.log("iam going");  $state.go('feedback');}
-            else{
-              console.log(nextStepsUrl[nextSteps[$sessionStorage.stepCount]]);
-              $state.go(nextStepsUrl[nextSteps[$sessionStorage.stepCount]]);
+                },function(error){
+                  //loader stop 
+                  $window.location.reload(true);
+                })
 
-            }
-          }
-          else{
-        if(totalSteps==$sessionStorage.stepCount){confirmation=1; console.log("iam going");  $state.go('feedback');}
-            else{$state.go(nextStepsUrl[nextSteps[$sessionStorage.stepCount]]);}
-          }
-        
 
   }
       $scope.spinneractive = false;
@@ -2060,7 +2083,7 @@ $scope.id=$sce.trustAsResourceUrl(url);
       //$state.go(nextStepsUrl[5]);
     }
     $scope.signUpload = function() {
-      $ionicLoading.show({templateUrl:"templates/loading.html"});
+      //$ionicLoading.show({templateUrl:"templates/loading.html"});
       var uploadsign=JSON.parse(JSON.stringify({}));
             uploadsign.kyphCode = $sessionStorage.SessionClientCode;
             //uploadsign.kyphCode = "CRN23919";;
@@ -2070,9 +2093,10 @@ $scope.id=$sce.trustAsResourceUrl(url);
             uploadsign = JSON.stringify(uploadsign);
             console.log(uploadsign + 'pan json data');
             panImageService.save(uploadsign,function(data){
-                console.log(data);
+				$sessionStorage.docStatus=data.jsonStr.docStatus;
+                console.log(data.jsonStr.docStatus + "docStatus");
                 if(data.responseCode != "Cali_SUC_1030") {
-                    $ionicLoading.hide();
+                    //$ionicLoading.hide();
 
                   var refer=$ionicPopup.alert({
                     title: 'Upload Error',
@@ -2083,7 +2107,7 @@ $scope.id=$sce.trustAsResourceUrl(url);
                   });
                 }
                 else {
-          $ionicLoading.hide();
+         // $ionicLoading.hide();
           $state.go('feedback');
                 }
             },function(error){
